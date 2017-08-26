@@ -1,13 +1,13 @@
 ---
 title: gradle 问题总结
 date: 2016-10-30 11:47:21
-tags:
+tags: gradle
 
 ---
 
-<font size=4>好久没更新博客了，因此把最近遇到的问题记录下来，主要包括以下2个问题，以供大家参考！</font>
-   
-<font size=3>1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出</font>     
+好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!  
+
+####  1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出
 
 在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解
 
@@ -35,10 +35,10 @@ tags:
 首先从兼容性入手，排查是否是因为Android studio 2.2.0与Robolectri、JUnit、Mockito的版本不兼容问题，几经尝试，排除了兼容性问题。最后发现Robolectric每次运行的时候会去读取工程的Manifest文件,默认路径如下：
 
 	if (FileFsFile.from(buildOutputDir, "manifests").exists()) {
-      manifest = FileFsFile.from(buildOutputDir, "manifests", "full", flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
-    } else {
-      manifest = FileFsFile.from(buildOutputDir, "bundles", flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
-    }	
+	  manifest = FileFsFile.from(buildOutputDir, "manifests", "full", flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
+	} else {
+	  manifest = FileFsFile.from(buildOutputDir, "bundles", flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
+	}	
 在我的工程里面先前是：
 
 	build/intermediates/manifests/full/debug/AndroidManifest.xml
@@ -75,28 +75,28 @@ tags:
 最后在配置的Config的时候直接指定Manifest的路径即可：
 
 	@Config(constants = BuildConfig.class,
-        manifest = "src/main/AndroidManifest.xml",
-        shadows = {ShadowMyManager.class,}, sdk = 23)
-因此该问题就解决了！
+	    manifest = "src/main/AndroidManifest.xml",
+	    shadows = {ShadowMyManager.class,}, sdk = 23)
+因此该问题就解决了！  
 
+#### 2. gradle利用maven-publish脚本打包library到maven仓库问题  
 
-<font size=3>2. gradle利用maven-publish脚本打包library到maven仓库问题</font>
 由于项目需要，需要将自己的library打包上传到公司的maven服务器，由于以前用的是maven插件来打包library库，但是发现十分麻烦，而且不太灵活；最后发现有maven-publish插件，于是就通过maven-publish来写了个脚本，实现一键打包上传到仓库，十分方便，而且通用、灵活。
 
 既可以上传到私有maven，又可以上传到公司的maven仓库，debug和release版本可以同时发布。
 
 	apply plugin: 'maven-publish'
 	def getRepositoryUsername() {
-    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+	return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
 	}
-
+	
 	def getRepositoryPassword() {
-    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+	return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 	}
-
+	
 	task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
+	classifier = 'sources'
+	from android.sourceSets.main.java.srcDirs
 	}
 	
 	publishing {
@@ -118,8 +118,8 @@ tags:
 	            url SANPSHOT_REPOSITORY_URL
 	        }
 	    }
-    publications {
-
+	publications {
+	
 	        // Create different publications for every build types (debug and release)
 	        android.libraryVariants.all { variant ->
 	            "${variant.name}"(MavenPublication) {
@@ -176,40 +176,40 @@ tags:
 
 
     }
-	}
-	task publishRelease(dependsOn: [
-	        'generatePomFileForReleasePublication',
-	        'publishReleasePublicationToRepository-Remote-ReleaseRepository'
-	])
-	task publishDebug(dependsOn: [
-	        'generatePomFileForDebugPublication',
-	        'publishDebugPublicationToRepository-Remote-SnapshotRepository'
-	])
-	task publish(overwrite: true, dependsOn: [
-	        'publishRelease',
-	        'publishDebug'
-	])
-
-	/**
-	 *
-	 * 执行gradle publish命令时,默认执行以下task,忽略其他task
-	 * publishDebugPublicationToRepository-Remote-SnapshotRepository
-	 * publishReleasePublicationToRepository-Remote-ReleaseRepository
-	 *
-	 */
-	gradle.taskGraph.whenReady { taskGraph ->
-	    def tasks = taskGraph.getAllTasks()
-	    if (tasks.find { ("publish").equals(it.name) }) {
-	        tasks.findAll {
-	                    ("publishDebugPublicationToRepository-Remote-ReleaseRepository").equals(it.name) ||
-	                    ("publishReleasePublicationToRepository-Remote-SnapshotRepository").equals(it.name)
-	        }.each { task ->
-	            task.enabled = false
-	            task.group = null
-	            return false
-	        }
-	    }
-	}
+    }
+    task publishRelease(dependsOn: [
+            'generatePomFileForReleasePublication',
+            'publishReleasePublicationToRepository-Remote-ReleaseRepository'
+    ])
+    task publishDebug(dependsOn: [
+            'generatePomFileForDebugPublication',
+            'publishDebugPublicationToRepository-Remote-SnapshotRepository'
+    ])
+    task publish(overwrite: true, dependsOn: [
+            'publishRelease',
+            'publishDebug'
+    ])
+    
+    /**
+     *
+     * 执行gradle publish命令时,默认执行以下task,忽略其他task
+     * publishDebugPublicationToRepository-Remote-SnapshotRepository
+     * publishReleasePublicationToRepository-Remote-ReleaseRepository
+     *
+     */
+    gradle.taskGraph.whenReady { taskGraph ->
+        def tasks = taskGraph.getAllTasks()
+        if (tasks.find { ("publish").equals(it.name) }) {
+            tasks.findAll {
+                        ("publishDebugPublicationToRepository-Remote-ReleaseRepository").equals(it.name) ||
+                        ("publishReleasePublicationToRepository-Remote-SnapshotRepository").equals(it.name)
+            }.each { task ->
+                task.enabled = false
+                task.group = null
+                return false
+            }
+        }
+    }
 私有的Maven可以自己配置，不在赘述。
 在需要发布library的模块中的build.gradle脚本中直接引用该脚本即可：
 
@@ -220,4 +220,4 @@ tags:
 	gradle publishDebug（发布debug版本到snapshot仓库中）
 	gradle publishRelease（发布release版本到release仓库中）
 
-暂定写到这儿，还有几个问题，下次再总结！！！
+暂定写到这儿，还有几个坑，下次再补上！！！

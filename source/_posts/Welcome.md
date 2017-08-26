@@ -1,7 +1,7 @@
 ---
 title: 开博客啦！
 date: 2016-08-15 00:18:42
-tags:
+tags: 杂记
 ---
 # 开博客啦！ #
 人们都说不爱折腾的程序猿不是好程序猿，以前折腾过，不过还是放弃了，现在又折腾了两天，终于把博客弄好了！
@@ -12,12 +12,12 @@ tags:
 - 建立两个分支，一个管理源码（src）；另外一个专门用于静态页面展示（master）——就是Hexo默认提交的public文件夹里面的内容！
 - 建立两个分支，一个管理源码（src）；另外一个专门用于静态页面展示（master）——就是Hexo默认提交的public文件夹里面的内容！
 - 建立两个分支，一个管理源码（src）；另外一个专门用于静态页面展示（master）——就是Hexo默认提交的public文件夹里面的内容！
-（重要的事情说三遍！！！）
+  （重要的事情说三遍！！！）
 ----------
 只要注意到了这一点儿，剩下的看下教程就很简单啦，主要就是这两篇教程就行了，附上链接：
 
-[http://www.rolrence.cn/2016/07/31/deploy-hexo-blog/](http://www.rolrence.cn/2016/07/31/deploy-hexo-blog/)
-[http://lijianchang.xyz/2016/03/16/%E5%B0%8F%E7%99%BD%E7%8B%AC%E7%AB%8B%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-Github-Pages%E5%92%8CHexo%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/](http://lijianchang.xyz/2016/03/16/%E5%B0%8F%E7%99%BD%E7%8B%AC%E7%AB%8B%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-Github-Pages%E5%92%8CHexo%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/)
+[http://www.rolrence.cn/2016/07/31/deploy-hexo-blog/](http://www.rolrence.cn/2016/07/31/deploy-hexo-blog/)  
+[http://lijianchang.xyz/2016/03/16/%E5%B0%8F%E7%99%BD%E7%8B%AC%E7%AB%8B%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-Github-Pages%E5%92%8CHexo%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/](http://lijianchang.xyz/2016/03/16/%E5%B0%8F%E7%99%BD%E7%8B%AC%E7%AB%8B%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-Github-Pages%E5%92%8CHexo%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/)  
 
 第一次就写到这里了，从今天开始努力记录工作、学习、生活中的点点滴滴！加油！
 
