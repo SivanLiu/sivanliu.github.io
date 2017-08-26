@@ -6,8 +6,8 @@
 title: Sivan
 subtitle: Fortune always appreciate a hardworking man!
 description: 雅兴至然，随风而懿
-author: 雅然风懿
-language: Chinese
+author: SivanLiu
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -83,6 +83,25 @@ social:
     Github: https://github.com/SivanLiu/ 
 #    微博: ****
 #    知乎: 
+
+# Social Icons
+social_icons:
+  enable: true
+  # Icon Mappings
+  GitHub: github
+
+reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+wechatpay: /uploads/weixin.JPG
+alipay: /uploads/zhifubao.JPG
+
+# 外链
+#links_title: Links
+#links:
+#  MacTalk: http://macshuo.com/
+#  Title: http://example.com/
+
+# 站点的建立时间
+since: 2017
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
