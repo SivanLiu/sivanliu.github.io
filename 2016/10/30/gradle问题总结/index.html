@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="gradle," />
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要包括以下2个问题，以供大家参考！  1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出       在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version:">
+<meta name="description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
+<meta name="keywords" content="gradle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gradle 问题总结">
 <meta property="og:url" content="http://yoursite.com/2016/10/30/gradle问题总结/index.html">
 <meta property="og:site_name" content="Sivan">
-<meta property="og:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要包括以下2个问题，以供大家参考！  1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出       在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version:">
+<meta property="og:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
 <meta property="og:locale" content="Chinese">
-<meta property="og:updated_time" content="2017-08-26T05:56:10.000Z">
+<meta property="og:updated_time" content="2017-08-26T06:15:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gradle 问题总结">
-<meta name="twitter:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要包括以下2个问题，以供大家参考！  1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出       在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version:">
+<meta name="twitter:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
 
 
 
@@ -329,11 +330,8 @@
       
 
       
-        <font size="4">好久没更新博客了，因此把最近遇到的问题记录下来，主要包括以下2个问题，以供大家参考！</font>
-
-<font size="3">1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出</font>     
-
-<p>在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解</p>
+        <p>好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!  </p>
+<h4 id="1-Android-studio升级到2-2-0之后，Robolectric配置的单元测试无结果输出"><a href="#1-Android-studio升级到2-2-0之后，Robolectric配置的单元测试无结果输出" class="headerlink" title="1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出"></a>1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出</h4><p>在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解</p>
 <p>更新前的配置：</p>
 <pre><code>Android studio 2.1.9
 Gradle plugin version: 2.2.0
@@ -389,8 +387,8 @@ return appManifest;
 <pre><code>@Config(constants = BuildConfig.class,
     manifest = &quot;src/main/AndroidManifest.xml&quot;,
     shadows = {ShadowMyManager.class,}, sdk = 23)
-</code></pre><p>因此该问题就解决了！</p>
-<p><font size="3">2. gradle利用maven-publish脚本打包library到maven仓库问题</font><br>由于项目需要，需要将自己的library打包上传到公司的maven服务器，由于以前用的是maven插件来打包library库，但是发现十分麻烦，而且不太灵活；最后发现有maven-publish插件，于是就通过maven-publish来写了个脚本，实现一键打包上传到仓库，十分方便，而且通用、灵活。</p>
+</code></pre><p>因此该问题就解决了！  </p>
+<h4 id="2-gradle利用maven-publish脚本打包library到maven仓库问题"><a href="#2-gradle利用maven-publish脚本打包library到maven仓库问题" class="headerlink" title="2. gradle利用maven-publish脚本打包library到maven仓库问题"></a>2. gradle利用maven-publish脚本打包library到maven仓库问题</h4><p>由于项目需要，需要将自己的library打包上传到公司的maven服务器，由于以前用的是maven插件来打包library库，但是发现十分麻烦，而且不太灵活；最后发现有maven-publish插件，于是就通过maven-publish来写了个脚本，实现一键打包上传到仓库，十分方便，而且通用、灵活。</p>
 <p>既可以上传到私有maven，又可以上传到公司的maven仓库，debug和release版本可以同时发布。</p>
 <pre><code>apply plugin: &apos;maven-publish&apos;
 def getRepositoryUsername() {
@@ -523,7 +521,7 @@ gradle.taskGraph.whenReady { taskGraph -&gt;
 <pre><code>gradle publish（分别发布release和debug版本到release和snapshot仓库中）
 gradle publishDebug（发布debug版本到snapshot仓库中）
 gradle publishRelease（发布release版本到release仓库中）
-</code></pre><p>暂定写到这儿，还有几个问题，下次再总结！！！</p>
+</code></pre><p>暂定写到这儿，还有几个坑，下次再补上！！！</p>
 
       
     </div>
@@ -538,6 +536,12 @@ gradle publishRelease（发布release版本到release仓库中）
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gradle/" rel="tag"># gradle</a>
+          
+        </div>
       
 
       
@@ -608,8 +612,17 @@ gradle publishRelease（发布release版本到release仓库中）
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -633,6 +646,15 @@ gradle publishRelease（发布release版本到release仓库中）
           
 
           
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
 
         </nav>
 
@@ -653,6 +675,22 @@ gradle publishRelease（发布release版本到release仓库中）
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-studio升级到2-2-0之后，Robolectric配置的单元测试无结果输出"><span class="nav-number">1.</span> <span class="nav-text">1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-gradle利用maven-publish脚本打包library到maven仓库问题"><span class="nav-number">2.</span> <span class="nav-text">2. gradle利用maven-publish脚本打包library到maven仓库问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
