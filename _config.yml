@@ -5,8 +5,8 @@
 # Site
 title: Sivan
 subtitle: Fortune always appreciate a hardworking man!
-description: 
-author: Sivan Liu
+description: 雅兴至然，随风而懿
+author: 雅然风懿
 language: Chinese
 timezone: Asia/Shanghai
 
@@ -37,6 +37,7 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+highlight_theme: normal
 highlight:
   enable: true
   line_number: true
@@ -75,7 +76,13 @@ pagination_dir: page
 theme: next
 
 #头像
-#avatar: /images/lyg.jpg
+avatar: /images/lyg.jpg
+
+#Social links
+social:
+    Github: https://github.com/SivanLiu/ 
+#    微博: ****
+#    知乎: 
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
