@@ -1231,6 +1231,16 @@ pre .javascript .function {
   -o-transform: rotate(30deg);
   transform: rotate(30deg);
 }
+.post-body p a {
+  color: #0593d3;
+  border-bottom: none;
+  border-bottom: 1px solid #0593d3;
+}
+.post-body p a:hover {
+  color: #fc6423;
+  border-bottom: none;
+  border-bottom: 1px solid #fc6423;
+}
 .posts-expand {
   padding-top: 40px;
 }
@@ -1736,6 +1746,9 @@ pre .javascript .function {
   font-size: 14px;
   color: #999;
 }
+.links-of-author-item {
+  text-align: center;
+}
 .site-state {
   overflow: hidden;
   line-height: 1.4;
@@ -1807,7 +1820,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #75fff2;
+  background: #955bff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2645,4 +2658,12 @@ embed {
 }
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
+}
+.post-body p a {
+  color: #0593d3;
+  border-bottom: none;
+}
+.post-body p a:hover {
+  color: #0477ab;
+  text-decoration: underline;
 }
