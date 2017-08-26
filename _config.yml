@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-author: John Doe
-language:
-timezone:
+title: Sivan
+subtitle: Fortune always appreciate a hardworking man!
+description: Welcome to my blog!
+author: Sivan Liu
+language: Chinese
+timezone: China
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
