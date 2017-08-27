@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
+<meta name="description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： 1234567Android studio 2.1.9Gradle plugin version: 2.">
 <meta name="keywords" content="gradle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gradle 问题总结">
 <meta property="og:url" content="http://yoursite.com/2016/10/30/gradle问题总结/index.html">
 <meta property="og:site_name" content="Sivan">
-<meta property="og:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
+<meta property="og:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： 1234567Android studio 2.1.9Gradle plugin version: 2.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-26T07:22:54.000Z">
+<meta property="og:updated_time" content="2017-08-27T02:37:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gradle 问题总结">
-<meta name="twitter:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： Android studio 2.1.9 Gradle plugin version: 2.2.0 Gr">
+<meta name="twitter:description" content="好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!   1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解 更新前的配置： 1234567Android studio 2.1.9Gradle plugin version: 2.">
 
 
 
@@ -333,195 +333,29 @@
         <p>好久没更新博客了，因此把最近遇到的问题记录下来，主要有如下两个坑，以供大家参考!  </p>
 <h4 id="1-Android-studio升级到2-2-0之后，Robolectric配置的单元测试无结果输出"><a href="#1-Android-studio升级到2-2-0之后，Robolectric配置的单元测试无结果输出" class="headerlink" title="1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出"></a>1. Android studio升级到2.2.0之后，Robolectric配置的单元测试无结果输出</h4><p>在Android studio更新到2.2.0之后，发现单元测试用例都跑不通，苦思不得其解</p>
 <p>更新前的配置：</p>
-<pre><code>Android studio 2.1.9
-Gradle plugin version: 2.2.0
-Gradle version: 2.14.1
-Build tools version: 24.0.2
-JUnit 4.12
-Robolectric 3.1.2
-Mockito 1.10.19
-</code></pre><p>更新后的配置</p>
-<pre><code>Android studio 2.1.9
-Gradle plugin version: 2.2.0
-Gradle version: 2.14.1
-Build tools version: 24.0.2
-JUnit 4.12
-Robolectric 3.1.2
-Mockito 1.10.19
-</code></pre><p>仅仅是Android studio升级了，其他都没有变化，结果单元测试却跑不过。<br>首先从兼容性入手，排查是否是因为Android studio 2.2.0与Robolectri、JUnit、Mockito的版本不兼容问题，几经尝试，排除了兼容性问题。最后发现Robolectric每次运行的时候会去读取工程的Manifest文件,默认路径如下：</p>
-<pre><code>if (FileFsFile.from(buildOutputDir, &quot;manifests&quot;).exists()) {
-  manifest = FileFsFile.from(buildOutputDir, &quot;manifests&quot;, &quot;full&quot;, flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
-} else {
-  manifest = FileFsFile.from(buildOutputDir, &quot;bundles&quot;, flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);
-}    
-</code></pre><p>在我的工程里面先前是：</p>
-<pre><code>build/intermediates/manifests/full/debug/AndroidManifest.xml
-</code></pre><p>在Android studio升级后，Manifest路径变成了：</p>
-<pre><code>build/intermediates/manifests/aapt/debug/AndroidManifest.xml
-</code></pre><p>因此单元测试用例都无法通过，因此需要修改Robolectric读取的Manifest默认路径，我通过反射方法修改了其默认路径：</p>
-<pre><code>@Override
-protected AndroidManifest getAppManifest(final Config config) {
-AndroidManifest appManifest = super.getAppManifest(config);
-if (config.manifest() != null &amp;&amp; !&quot;&quot;.equals(config.manifest())) {
-    FileFsFile manifestFile = FileFsFile.from(config.manifest());
-    Class&lt;? extends AndroidManifest&gt; appManifestClass = null;
-    try {
-        appManifestClass = appManifest.getClass();
-        Field androidManifestFileField;
-        try {
-            androidManifestFileField = appManifestClass.getDeclaredField(&quot;androidManifestFile&quot;);
-        } catch (NoSuchFieldException e) {
-            androidManifestFileField = appManifestClass.getSuperclass().getDeclaredField(&quot;androidManifestFile&quot;);
-        }
-        androidManifestFileField.setAccessible(true);
-        androidManifestFileField.set(appManifest, manifestFile);
-    } catch (NoSuchFieldException e) {
-        e.printStackTrace();
-    } catch (IllegalAccessException e) {
-        e.printStackTrace();
-    }
-}
-return appManifest;
-}
-</code></pre><p>最后在配置的Config的时候直接指定Manifest的路径即可：</p>
-<pre><code>@Config(constants = BuildConfig.class,
-    manifest = &quot;src/main/AndroidManifest.xml&quot;,
-    shadows = {ShadowMyManager.class,}, sdk = 23)
-</code></pre><p>因此该问题就解决了！  </p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Android studio <span class="number">2.1</span><span class="number">.9</span></div><div class="line">Gradle plugin <span class="string">version:</span> <span class="number">2.2</span><span class="number">.0</span></div><div class="line">Gradle <span class="string">version:</span> <span class="number">2.14</span><span class="number">.1</span></div><div class="line">Build tools <span class="string">version:</span> <span class="number">24.0</span><span class="number">.2</span></div><div class="line">JUnit <span class="number">4.12</span></div><div class="line">Robolectric <span class="number">3.1</span><span class="number">.2</span></div><div class="line">Mockito <span class="number">1.10</span><span class="number">.19</span></div></pre></td></tr></table></figure>
+<p>更新后的配置</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Android studio <span class="number">2.1</span><span class="number">.9</span></div><div class="line">Gradle plugin <span class="string">version:</span> <span class="number">2.2</span><span class="number">.0</span></div><div class="line">Gradle <span class="string">version:</span> <span class="number">2.14</span><span class="number">.1</span></div><div class="line">Build tools <span class="string">version:</span> <span class="number">24.0</span><span class="number">.2</span></div><div class="line">JUnit <span class="number">4.12</span></div><div class="line">Robolectric <span class="number">3.1</span><span class="number">.2</span></div><div class="line">Mockito <span class="number">1.10</span><span class="number">.19</span></div></pre></td></tr></table></figure>
+<p>仅仅是Android studio升级了，其他都没有变化，结果单元测试却跑不过。<br>首先从兼容性入手，排查是否是因为Android studio 2.2.0与Robolectri、JUnit、Mockito的版本不兼容问题，几经尝试，排除了兼容性问题。最后发现Robolectric每次运行的时候会去读取工程的Manifest文件,默认路径如下：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (FileFsFile.from(buildOutputDir, <span class="string">"manifests"</span>).exists()) &#123;</div><div class="line">  manifest = FileFsFile.from(buildOutputDir, <span class="string">"manifests"</span>, <span class="string">"full"</span>, flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  manifest = FileFsFile.from(buildOutputDir, <span class="string">"bundles"</span>, flavor, abiSplit, type, DEFAULT_MANIFEST_NAME);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在我的工程里面先前是：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build<span class="regexp">/intermediates/</span>manifests<span class="regexp">/full/</span>debug/AndroidManifest.xml</div></pre></td></tr></table></figure>
+<p>在Android studio升级后，Manifest路径变成了：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build<span class="regexp">/intermediates/</span>manifests<span class="regexp">/aapt/</span>debug/AndroidManifest.xml</div></pre></td></tr></table></figure>
+<p>因此单元测试用例都无法通过，因此需要修改Robolectric读取的Manifest默认路径，我通过反射方法修改了其默认路径：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> AndroidManifest <span class="title">getAppManifest</span><span class="params">(<span class="keyword">final</span> Config config)</span> </span>&#123;</div><div class="line">AndroidManifest appManifest = <span class="keyword">super</span>.getAppManifest(config);</div><div class="line"><span class="keyword">if</span> (config.manifest() != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(config.manifest())) &#123;</div><div class="line">    FileFsFile manifestFile = FileFsFile.from(config.manifest());</div><div class="line">    Class&lt;? extends AndroidManifest&gt; appManifestClass = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        appManifestClass = appManifest.getClass();</div><div class="line">        Field androidManifestFileField;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            androidManifestFileField = appManifestClass.getDeclaredField(<span class="string">"androidManifestFile"</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</div><div class="line">            androidManifestFileField = appManifestClass.getSuperclass().getDeclaredField(<span class="string">"androidManifestFile"</span>);</div><div class="line">        &#125;</div><div class="line">        androidManifestFileField.setAccessible(<span class="keyword">true</span>);</div><div class="line">        androidManifestFileField.set(appManifest, manifestFile);</div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> appManifest;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后在配置的Config的时候直接指定Manifest的路径即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Config</span>(constants = BuildConfig.class,</div><div class="line">    manifest = <span class="string">"src/main/AndroidManifest.xml"</span>,</div><div class="line">    shadows = &#123;ShadowMyManager.class,&#125;, sdk = <span class="number">23</span>)</div></pre></td></tr></table></figure>
+<p>因此该问题就解决了！  </p>
 <h4 id="2-gradle利用maven-publish脚本打包library到maven仓库问题"><a href="#2-gradle利用maven-publish脚本打包library到maven仓库问题" class="headerlink" title="2. gradle利用maven-publish脚本打包library到maven仓库问题"></a>2. gradle利用maven-publish脚本打包library到maven仓库问题</h4><p>由于项目需要，需要将自己的library打包上传到公司的maven服务器，由于以前用的是maven插件来打包library库，但是发现十分麻烦，而且不太灵活；最后发现有maven-publish插件，于是就通过maven-publish来写了个脚本，实现一键打包上传到仓库，十分方便，而且通用、灵活。</p>
 <p>既可以上传到私有maven，又可以上传到公司的maven仓库，debug和release版本可以同时发布。</p>
-<pre><code>apply plugin: &apos;maven-publish&apos;
-def getRepositoryUsername() {
-return hasProperty(&apos;NEXUS_USERNAME&apos;) ? NEXUS_USERNAME : &quot;&quot;
-}
-
-def getRepositoryPassword() {
-return hasProperty(&apos;NEXUS_PASSWORD&apos;) ? NEXUS_PASSWORD : &quot;&quot;
-}
-
-task androidSourcesJar(type: Jar) {
-classifier = &apos;sources&apos;
-from android.sourceSets.main.java.srcDirs
-}
-
-publishing {
-    repositories {
-        maven {
-            credentials {
-                username getRepositoryUsername()
-                password getRepositoryPassword()
-            }
-            name &apos;Repository-Remote-Release&apos;
-            url RELEASE_REPOSITORY_URL
-        }
-        maven {
-            credentials {
-                username getRepositoryUsername()
-                password getRepositoryPassword()
-            }
-            name &apos;Repository-Remote-Snapshot&apos;
-            url SANPSHOT_REPOSITORY_URL
-        }
-    }
-publications {
-
-        // Create different publications for every build types (debug and release)
-        android.libraryVariants.all { variant -&gt;
-            &quot;${variant.name}&quot;(MavenPublication) {
-                //Create aar or jar
-                if ((&quot;aar&quot;).equals(POM_PACKAGING)) {
-                    artifact bundleRelease
-                } else if ((&quot;jar&quot;).equals(POM_PACKAGING)) {
-                    def name = variant.buildType.name
-                    def task = project.tasks.create &quot;jar${name.capitalize()}&quot;, Jar
-                    task.dependsOn variant.javaCompile
-                    task.from variant.javaCompile.destinationDir
-                    task.exclude(&quot;**/R.class&quot;)
-                    task.exclude(&quot;**/R\$**.class&quot;)
-                    artifact task
-                }
-                artifact androidSourcesJar
-
-                if (&quot;${variant.name}&quot;.equalsIgnoreCase(&quot;debug&quot;)) {
-                    publications.&quot;${variant.name}&quot;.version = project.version + &quot;-SNAPSHOT&quot;
-
-                } else {
-                    publications.&quot;${variant.name}&quot;.version = project.version
-                }
-                artifactId = POM_ARTIFACT_ID
-                groupId = GROUP
-
-                pom.withXml {
-                    def dependenciesNode = asNode().appendNode(&apos;dependencies&apos;)
-
-                    def configurationNames = [&quot;${variant.name}Compile&quot;, &apos;compile&apos;]
-
-                    configurationNames.each { configurationName -&gt;
-                        this.configurations[configurationName].allDependencies.each {
-                            if (it.group != null &amp;&amp; it.name != null) {
-                                def dependencyNode = dependenciesNode.appendNode(&apos;dependency&apos;)
-                                dependencyNode.appendNode(&apos;groupId&apos;, it.group)
-                                dependencyNode.appendNode(&apos;artifactId&apos;, it.name)
-                                dependencyNode.appendNode(&apos;version&apos;, it.version)
-
-                                if (it.excludeRules.size() &gt; 0) {
-                                    def exclusionsNode = dependencyNode.appendNode(&apos;exclusions&apos;)
-                                    it.excludeRules.each { rule -&gt;
-                                        def exclusionNode = exclusionsNode.appendNode(&apos;exclusion&apos;)
-                                        exclusionNode.appendNode(&apos;groupId&apos;, rule.group)
-                                        exclusionNode.appendNode(&apos;artifactId&apos;, rule.module)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-}
-}
-task publishRelease(dependsOn: [
-        &apos;generatePomFileForReleasePublication&apos;,
-        &apos;publishReleasePublicationToRepository-Remote-ReleaseRepository&apos;
-])
-task publishDebug(dependsOn: [
-        &apos;generatePomFileForDebugPublication&apos;,
-        &apos;publishDebugPublicationToRepository-Remote-SnapshotRepository&apos;
-])
-task publish(overwrite: true, dependsOn: [
-        &apos;publishRelease&apos;,
-        &apos;publishDebug&apos;
-])
-
-/**
- *
- * 执行gradle publish命令时,默认执行以下task,忽略其他task
- * publishDebugPublicationToRepository-Remote-SnapshotRepository
- * publishReleasePublicationToRepository-Remote-ReleaseRepository
- *
- */
-gradle.taskGraph.whenReady { taskGraph -&gt;
-    def tasks = taskGraph.getAllTasks()
-    if (tasks.find { (&quot;publish&quot;).equals(it.name) }) {
-        tasks.findAll {
-                    (&quot;publishDebugPublicationToRepository-Remote-ReleaseRepository&quot;).equals(it.name) ||
-                    (&quot;publishReleasePublicationToRepository-Remote-SnapshotRepository&quot;).equals(it.name)
-        }.each { task -&gt;
-            task.enabled = false
-            task.group = null
-            return false
-        }
-    }
-}
-</code></pre><p>私有的Maven可以自己配置，不在赘述。<br>在需要发布library的模块中的build.gradle脚本中直接引用该脚本即可：</p>
-<pre><code>apply from: &quot;$rootDir/maven_publish.gradle&quot;
-</code></pre><p>执行命令：</p>
-<pre><code>gradle publish（分别发布release和debug版本到release和snapshot仓库中）
-gradle publishDebug（发布debug版本到snapshot仓库中）
-gradle publishRelease（发布release版本到release仓库中）
-</code></pre><p>暂定写到这儿，还有几个坑，下次再补上！！！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'maven-publish'</span></div><div class="line"><span class="function">def <span class="title">getRepositoryUsername</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> hasProperty(<span class="string">'NEXUS_USERNAME'</span>) ? NEXUS_USERNAME : <span class="string">""</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">getRepositoryPassword</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> hasProperty(<span class="string">'NEXUS_PASSWORD'</span>) ? NEXUS_PASSWORD : <span class="string">""</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">task <span class="title">androidSourcesJar</span><span class="params">(type: Jar)</span> </span>&#123;</div><div class="line">classifier = <span class="string">'sources'</span></div><div class="line">from android.sourceSets.main.java.srcDirs</div><div class="line">&#125;</div><div class="line"></div><div class="line">publishing &#123;</div><div class="line">    repositories &#123;</div><div class="line">        maven &#123;</div><div class="line">            credentials &#123;</div><div class="line">                <span class="function">username <span class="title">getRepositoryUsername</span><span class="params">()</span></span></div><div class="line"><span class="function">                password <span class="title">getRepositoryPassword</span><span class="params">()</span></span></div><div class="line"><span class="function">            &#125;</span></div><div class="line"><span class="function">            name 'Repository-Remote-Release'</span></div><div class="line"><span class="function">            url RELEASE_REPOSITORY_URL</span></div><div class="line"><span class="function">        &#125;</span></div><div class="line"><span class="function">        maven </span>&#123;</div><div class="line">            credentials &#123;</div><div class="line">                <span class="function">username <span class="title">getRepositoryUsername</span><span class="params">()</span></span></div><div class="line"><span class="function">                password <span class="title">getRepositoryPassword</span><span class="params">()</span></span></div><div class="line"><span class="function">            &#125;</span></div><div class="line"><span class="function">            name 'Repository-Remote-Snapshot'</span></div><div class="line"><span class="function">            url SANPSHOT_REPOSITORY_URL</span></div><div class="line"><span class="function">        &#125;</span></div><div class="line"><span class="function">    &#125;</span></div><div class="line"><span class="function">publications </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">// Create different publications for every build types (debug and release)</span></div><div class="line">        android.libraryVariants.all &#123; variant -&gt;</div><div class="line">            <span class="string">"$&#123;variant.name&#125;"</span>(MavenPublication) &#123;</div><div class="line">                <span class="comment">//Create aar or jar</span></div><div class="line">                <span class="keyword">if</span> ((<span class="string">"aar"</span>).equals(POM_PACKAGING)) &#123;</div><div class="line">                    artifact bundleRelease</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="string">"jar"</span>).equals(POM_PACKAGING)) &#123;</div><div class="line">                    def name = variant.buildType.name</div><div class="line">                    def task = project.tasks.create <span class="string">"jar$&#123;name.capitalize()&#125;"</span>, Jar</div><div class="line">                    task.dependsOn variant.javaCompile</div><div class="line">                    task.from variant.javaCompile.destinationDir</div><div class="line">                    task.exclude(<span class="string">"**/R.class"</span>)</div><div class="line">                    task.exclude(<span class="string">"**/R\$**.class"</span>)</div><div class="line">                    artifact task</div><div class="line">                &#125;</div><div class="line">                artifact androidSourcesJar</div><div class="line"></div><div class="line">                <span class="keyword">if</span> (<span class="string">"$&#123;variant.name&#125;"</span>.equalsIgnoreCase(<span class="string">"debug"</span>)) &#123;</div><div class="line">                    publications.<span class="string">"$&#123;variant.name&#125;"</span>.version = project.version + <span class="string">"-SNAPSHOT"</span></div><div class="line"></div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    publications.<span class="string">"$&#123;variant.name&#125;"</span>.version = project.version</div><div class="line">                &#125;</div><div class="line">                artifactId = POM_ARTIFACT_ID</div><div class="line">                groupId = GROUP</div><div class="line"></div><div class="line">                pom.withXml &#123;</div><div class="line">                    def dependenciesNode = asNode().appendNode(<span class="string">'dependencies'</span>)</div><div class="line"></div><div class="line">                    def configurationNames = [<span class="string">"$&#123;variant.name&#125;Compile"</span>, <span class="string">'compile'</span>]</div><div class="line"></div><div class="line">                    configurationNames.each &#123; configurationName -&gt;</div><div class="line">                        <span class="keyword">this</span>.configurations[configurationName].allDependencies.each &#123;</div><div class="line">                            <span class="keyword">if</span> (it.group != <span class="keyword">null</span> &amp;&amp; it.name != <span class="keyword">null</span>) &#123;</div><div class="line">                                def dependencyNode = dependenciesNode.appendNode(<span class="string">'dependency'</span>)</div><div class="line">                                dependencyNode.appendNode(<span class="string">'groupId'</span>, it.group)</div><div class="line">                                dependencyNode.appendNode(<span class="string">'artifactId'</span>, it.name)</div><div class="line">                                dependencyNode.appendNode(<span class="string">'version'</span>, it.version)</div><div class="line"></div><div class="line">                                <span class="keyword">if</span> (it.excludeRules.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">                                    def exclusionsNode = dependencyNode.appendNode(<span class="string">'exclusions'</span>)</div><div class="line">                                    it.excludeRules.each &#123; rule -&gt;</div><div class="line">                                        def exclusionNode = exclusionsNode.appendNode(<span class="string">'exclusion'</span>)</div><div class="line">                                        exclusionNode.appendNode(<span class="string">'groupId'</span>, rule.group)</div><div class="line">                                        exclusionNode.appendNode(<span class="string">'artifactId'</span>, rule.<span class="keyword">module</span>)</div><div class="line">                                    &#125;</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"><span class="function">task <span class="title">publishRelease</span><span class="params">(dependsOn: [</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'generatePomFileForReleasePublication'</span>,</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'publishReleasePublicationToRepository-Remote-ReleaseRepository'</span></span></span></div><div class="line"><span class="function"><span class="params">])</span></span></div><div class="line"><span class="function">task <span class="title">publishDebug</span><span class="params">(dependsOn: [</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'generatePomFileForDebugPublication'</span>,</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'publishDebugPublicationToRepository-Remote-SnapshotRepository'</span></span></span></div><div class="line"><span class="function"><span class="params">])</span></span></div><div class="line"><span class="function">task <span class="title">publish</span><span class="params">(overwrite: <span class="keyword">true</span>, dependsOn: [</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'publishRelease'</span>,</span></span></div><div class="line"><span class="function"><span class="params">        <span class="string">'publishDebug'</span></span></span></div><div class="line"><span class="function"><span class="params">])</span></span></div><div class="line"><span class="function"></span></div><div class="line"><span class="function"><span class="comment">/**</span></span></div><div class="line"><span class="function"><span class="comment"> *</span></span></div><div class="line"><span class="function"><span class="comment"> * 执行gradle publish命令时,默认执行以下task,忽略其他task</span></span></div><div class="line"><span class="function"><span class="comment"> * publishDebugPublicationToRepository-Remote-SnapshotRepository</span></span></div><div class="line"><span class="function"><span class="comment"> * publishReleasePublicationToRepository-Remote-ReleaseRepository</span></span></div><div class="line"><span class="function"><span class="comment"> *</span></span></div><div class="line"><span class="function"><span class="comment"> */</span></span></div><div class="line"><span class="function">gradle.taskGraph.whenReady </span>&#123; taskGraph -&gt;</div><div class="line">    def tasks = taskGraph.getAllTasks()</div><div class="line">    <span class="keyword">if</span> (tasks.find &#123; (<span class="string">"publish"</span>).equals(it.name) &#125;) &#123;</div><div class="line">        tasks.findAll &#123;</div><div class="line">                    (<span class="string">"publishDebugPublicationToRepository-Remote-ReleaseRepository"</span>).equals(it.name) ||</div><div class="line">                    (<span class="string">"publishReleasePublicationToRepository-Remote-SnapshotRepository"</span>).equals(it.name)</div><div class="line">        &#125;.each &#123; task -&gt;</div><div class="line">            task.enabled = <span class="keyword">false</span></div><div class="line">            task.group = <span class="keyword">null</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>私有的Maven可以自己配置，不在赘述。<br>在需要发布library的模块中的build.gradle脚本中直接引用该脚本即可：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply <span class="string">from:</span> <span class="string">"$rootDir/maven_publish.gradle"</span></div></pre></td></tr></table></figure>
+<p>执行命令：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gradle publish（分别发布release和debug版本到release和snapshot仓库中）</div><div class="line">gradle publishDebug（发布debug版本到snapshot仓库中）</div><div class="line">gradle publishRelease（发布release版本到release仓库中）</div></pre></td></tr></table></figure>
+<p>暂定写到这儿，还有几个坑，下次再补上！！！</p>
 
       
     </div>
