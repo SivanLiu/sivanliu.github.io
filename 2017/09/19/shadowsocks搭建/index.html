@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c/c++," />
+  <meta name="keywords" content="工具," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题1clang: /lib64/libc.so.6: version `GLIBC_2.14&apos; not found (required by clang) google了下，看到该问是由于编译环境的gcc版本高于运行环境的gcc版本，解决方案大概">
-<meta name="keywords" content="c&#x2F;c++">
+<meta name="description" content="由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。1.准备工作： 选择适合自己 VPS； 部署 shadowsocks 服务； 安装 shadowsocks 客户端； 开始 Internet 自由之旅；  2.选择 VPS：个人觉得选择 VPS 还是尽量选择国外比较有">
+<meta name="keywords" content="工具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sqlcipher静态编译">
-<meta property="og:url" content="http://yoursite.com/2017/09/04/Sqlcipher静态编译/index.html">
+<meta property="og:title" content="Shadowsocks 搭建">
+<meta property="og:url" content="http://yoursite.com/2017/09/19/shadowsocks搭建/index.html">
 <meta property="og:site_name" content="Sivan">
-<meta property="og:description" content="简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题1clang: /lib64/libc.so.6: version `GLIBC_2.14&apos; not found (required by clang) google了下，看到该问是由于编译环境的gcc版本高于运行环境的gcc版本，解决方案大概">
+<meta property="og:description" content="由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。1.准备工作： 选择适合自己 VPS； 部署 shadowsocks 服务； 安装 shadowsocks 客户端； 开始 Internet 自由之旅；  2.选择 VPS：个人觉得选择 VPS 还是尽量选择国外比较有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-04T15:41:23.000Z">
+<meta property="og:updated_time" content="2017-09-18T14:33:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sqlcipher静态编译">
-<meta name="twitter:description" content="简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题1clang: /lib64/libc.so.6: version `GLIBC_2.14&apos; not found (required by clang) google了下，看到该问是由于编译环境的gcc版本高于运行环境的gcc版本，解决方案大概">
+<meta name="twitter:title" content="Shadowsocks 搭建">
+<meta name="twitter:description" content="由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。1.准备工作： 选择适合自己 VPS； 部署 shadowsocks 服务； 安装 shadowsocks 客户端； 开始 Internet 自由之旅；  2.选择 VPS：个人觉得选择 VPS 还是尽量选择国外比较有">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/04/Sqlcipher静态编译/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/19/shadowsocks搭建/"/>
 
 
 
 
 
-  <title>Sqlcipher静态编译 | Sivan</title>
+  <title>Shadowsocks 搭建 | Sivan</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/04/Sqlcipher静态编译/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/19/shadowsocks搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SivanLiu">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Sqlcipher静态编译</h1>
+          <h1 class="post-title" itemprop="name headline">Shadowsocks 搭建</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T22:42:21+08:00">
-                2017-09-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T22:42:21+08:00">
+                2017-09-19
               </time>
             
 
@@ -330,43 +330,16 @@
       
 
       
-        <h5 id="简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题"><a href="#简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题" class="headerlink" title="简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题"></a>简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clang: /lib64/libc.so.6: version `GLIBC_2.14<span class="string">' not found (required by clang)</span></div></pre></td></tr></table></figure>
-<p>google了下，看到该问是由于编译环境的gcc版本高于运行环境的gcc版本，解决方案大概有以下两种：</p>
-<h6 id="1-修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；"><a href="#1-修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；" class="headerlink" title="1. 修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；"></a>1. 修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；</h6><h6 id="2-在源码编译的时候指定memcpy的版本，需要修改configure和makefile-in文件"><a href="#2-在源码编译的时候指定memcpy的版本，需要修改configure和makefile-in文件" class="headerlink" title="2.在源码编译的时候指定memcpy的版本，需要修改configure和makefile.in文件"></a>2.在源码编译的时候指定memcpy的版本，需要修改configure和makefile.in文件</h6><p>按照顺序来吧，先说第一种解决方案，请参考：</p>
-<p><a href="http://www.lightofdawn.org/wiki/wiki.cgi/NewAppsOnOldGlibc" target="_blank" rel="external">http://www.lightofdawn.org/wiki/wiki.cgi/NewAppsOnOldGlibc</a></p>
-<p><a href="http://www.jianshu.com/p/308a4e803c81" target="_blank" rel="external">http://www.jianshu.com/p/308a4e803c81</a></p>
-<h6 id="第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步："><a href="#第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步：" class="headerlink" title="第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步："></a>第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步：</h6><ul>
-<li><p>1）查看编译后的sqlcipher可执行文件的版本信息： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">readelf -V /path/sqlcipher</div></pre></td></tr></table></figure>
-</li>
-<li><p>2） 更改依赖： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">for addr in 0x2f18; do printf '\x02' | dd conv=notrunc of=/home/users/kinva/tools/lib/python2.7/site-packages/annoy/annoylib.so  bs=1 seek=$((addr));</div></pre></td></tr></table></figure>
-</li>
-<li><p>3) 将memcpy.c编译成memcpy.o文件，在执行sqlcipher时候，动态依赖： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LD_PRELOAD=./libs/memcpy.o ./sqlcipher test.db</div></pre></td></tr></table></figure>
-<p>到此为止，第一种方案就大功告成了。</p>
-</li>
+        <h3 id="由于诸多原因，使用中的好些-vpn-都被-GFW-干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索-vpn-了，唯一的缺点就是需要-RMB，没有付出，哪有回报，总是值得的。"><a href="#由于诸多原因，使用中的好些-vpn-都被-GFW-干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索-vpn-了，唯一的缺点就是需要-RMB，没有付出，哪有回报，总是值得的。" class="headerlink" title="由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。"></a>由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。</h3><h4 id="1-准备工作："><a href="#1-准备工作：" class="headerlink" title="1.准备工作："></a>1.准备工作：</h4><ul>
+<li>选择适合自己 VPS；</li>
+<li>部署 shadowsocks 服务；</li>
+<li>安装 shadowsocks 客户端；</li>
+<li>开始 Internet 自由之旅；</li>
 </ul>
-<h5 id="再来说说第二种方案吧，请参考："><a href="#再来说说第二种方案吧，请参考：" class="headerlink" title="再来说说第二种方案吧，请参考："></a>再来说说第二种方案吧，请参考：</h5><p><a href="http://m.blog.csdn.net/nullzhou/article/details/51123435" target="_blank" rel="external">http://m.blog.csdn.net/nullzhou/article/details/51123435</a></p>
-<p>原来基本上差不多，都是修改依赖，提供依赖函数，姑且也分为三步：</p>
-<ul>
-<li><p>1.编写memcpy.c文件；</p>
-</li>
-<li><p>2.修改makefile.in文件： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TLIBS = @LIBS@ -L./libs -static $(LIBS)  </div><div class="line"></div><div class="line">-o $@ $(TOP)/src/shell.c $(TOP)/src/memcpy.c libsqlcipher.la \</div></pre></td></tr></table></figure>
-<p> 其中./libs为libcrypto.a的位置</p>
-</li>
-</ul>
-<ul>
-<li><p>3.修改configure:  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CFLAGS="$CFLAGS -Wl,-wrap,memcpy"</div></pre></td></tr></table></figure>
-<p>其中memcpy为添加的memcpy.c的名字</p>
-</li>
-</ul>
-<p>编译选项：方案1，2都相同：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure --disable-shared --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" LDFLAGS="./libs/libcrypto.a"</div></pre></td></tr></table></figure>
-<p>接下来可以编译了，完美解决。 </p>
-<p>写的比较糙，后续有时间再详细点儿，有不明白的可以留言。</p>
+<h4 id="2-选择-VPS："><a href="#2-选择-VPS：" class="headerlink" title="2.选择 VPS："></a>2.选择 VPS：</h4><p>个人觉得选择 VPS 还是尽量选择国外比较有名的提供商吧，至少可以保证稳定性，价格也比较合理，甚至还比国内的便宜，如 Vultr、Digital Ocean、Linode、bandwagonhost、BudgetVM。对比了下，最终选择了 BudgetVM 最便宜的一个 $25：RAM(512), VSwap(256MB), Storage(50GB), Transfer(2TB)。这个配置对于搭建 ss 来说绰绰有余，而且流量也够用了。</p>
+<h4 id="3-部署-ss-服务："><a href="#3-部署-ss-服务：" class="headerlink" title="3.部署 ss 服务："></a>3.部署 ss 服务：</h4><p>此过程为了方便，选择的是脚本一键安装（<a href="https://teddysun.com/486.html），很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。" target="_blank" rel="external">https://teddysun.com/486.html），很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。</a></p>
+<h3 id="4-安装-ss-客户端："><a href="#4-安装-ss-客户端：" class="headerlink" title="4.安装 ss 客户端："></a>4.安装 ss 客户端：</h3><p>ss 客户端基本上都有现成的：<br><a href="https://sourceforge.net/projects/shadowsocksgui/files/dist/" target="_blank" rel="external">https://sourceforge.net/projects/shadowsocksgui/files/dist/</a><br><a href="https://github.com/shadowsocks" target="_blank" rel="external">https://github.com/shadowsocks</a><br>选择适合自己系统的版本下载、安装。<br>我用的是 Debian，无奈装了个 linux 版本的不行，只有自己手动编译个 deb 包了，最后果然好使<br>iphone: 可在 appstore 中下载相应的客户端， 如黑洞（全局代理），wingy（自动代理，需要切换到美国区下载）<br>对于谷歌浏览器，可以安装 SwitchyOmega 插件进行设置，教程网上很多，按照操作即可</p>
+<h3 id="5-Internet-自由之旅："><a href="#5-Internet-自由之旅：" class="headerlink" title="5.Internet 自由之旅："></a>5.Internet 自由之旅：</h3><p>如果按照以上操作还不能翻越强大的 GFW， 那最大的可能性客户端配置的有问题，可以重新配置试试。<br>最后可以尽情地享受 Internet 自由之旅了！</p>
 
       
     </div>
@@ -413,7 +386,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/c-c/" rel="tag"># c/c++</a>
+            <a href="/tags/工具/" rel="tag"># 工具</a>
           
         </div>
       
@@ -426,8 +399,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/27/定个小计划/" rel="next" title="定个小计划">
-                <i class="fa fa-chevron-left"></i> 定个小计划
+              <a href="/2017/09/04/Sqlcipher静态编译/" rel="next" title="Sqlcipher静态编译">
+                <i class="fa fa-chevron-left"></i> Sqlcipher静态编译
               </a>
             
           </div>
@@ -435,10 +408,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/19/shadowsocks搭建/" rel="prev" title="Shadowsocks 搭建">
-                Shadowsocks 搭建 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -576,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题"><span class="nav-number">1.</span> <span class="nav-text">简而言之，按照自己的需求，在linux中，将sqlcipher编译成不依赖系统环境的二进制文件，源码编译出来的是动态库，需要依赖系统环境，这样会导致一个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；"><span class="nav-number">1.1.</span> <span class="nav-text">1. 修改生成的可执行文件，并且在执行的时候动态依赖改写的memcpy库；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-在源码编译的时候指定memcpy的版本，需要修改configure和makefile-in文件"><span class="nav-number">1.2.</span> <span class="nav-text">2.在源码编译的时候指定memcpy的版本，需要修改configure和makefile.in文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步："><span class="nav-number">1.3.</span> <span class="nav-text">第二篇基本上是第一篇的翻译简洁版，修改二进制文件的方式与第一篇有所不同，英文好的童鞋可以直接看英文的，很详细，说下我解决的过程，主要分为三步：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#再来说说第二种方案吧，请参考："><span class="nav-number">2.</span> <span class="nav-text">再来说说第二种方案吧，请参考：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#由于诸多原因，使用中的好些-vpn-都被-GFW-干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索-vpn-了，唯一的缺点就是需要-RMB，没有付出，哪有回报，总是值得的。"><span class="nav-number">1.</span> <span class="nav-text">由于诸多原因，使用中的好些 vpn 都被 GFW 干掉了，无奈只能自己动手搭建一个了，好处是再也不用四处搜索 vpn 了，唯一的缺点就是需要 RMB，没有付出，哪有回报，总是值得的。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-准备工作："><span class="nav-number">1.1.</span> <span class="nav-text">1.准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择-VPS："><span class="nav-number">1.2.</span> <span class="nav-text">2.选择 VPS：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-部署-ss-服务："><span class="nav-number">1.3.</span> <span class="nav-text">3.部署 ss 服务：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-安装-ss-客户端："><span class="nav-number">2.</span> <span class="nav-text">4.安装 ss 客户端：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Internet-自由之旅："><span class="nav-number">3.</span> <span class="nav-text">5.Internet 自由之旅：</span></a></li></ol></div>
             
 
           </div>
