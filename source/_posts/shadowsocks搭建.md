@@ -28,12 +28,12 @@ top: 13
 ss 客户端基本上都有现成的：
 https://sourceforge.net/projects/shadowsocksgui/files/dist/  
 https://github.com/shadowsocks  
-选择适合自己系统的版本下载、安装。
-我用的是 Debian，无奈装了个 linux 版本的不行，只有自己手动编译个 deb 包了，最后果然好使
-iphone: 可在 appstore 中下载相应的客户端， 如黑洞（全局代理），wingy（自动代理，需要切换到美国区下载）
+选择适合自己系统的版本下载、安装  
+我用的是 Debian，无奈装了个 linux 版本的不行，只有自己手动编译个 deb 包了，最后果然好使  
+iphone: 可在 appstore 中下载相应的客户端， 如黑洞（全局代理），wingy（自动代理，需要切换到美国区下载）  
 对于谷歌浏览器，可以安装 SwitchyOmega 插件进行设置，教程网上很多，按照操作即可
 
 ### 5.Internet 自由之旅：
-如果按照以上操作还不能翻越强大的 GFW， 那最大的可能性客户端配置的有问题，可以重新配置试试。
+如果按照以上操作还不能翻越强大的 GFW， 那最大的可能性客户端配置的有问题，可以重新配置试试。  
 最后可以尽情地享受 Internet 自由之旅了！
 
