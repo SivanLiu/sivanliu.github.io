@@ -22,7 +22,7 @@ top: 13
 个人觉得选择 VPS 还是尽量选择国外比较有名的提供商吧，至少可以保证稳定性，价格也比较合理，甚至还比国内的便宜，如 Vultr、Digital Ocean、Linode、bandwagonhost、BudgetVM。对比了下，最终选择了 BudgetVM 最便宜的一个 $25：RAM(512), VSwap(256MB), Storage(50GB), Transfer(2TB)。这个配置对于搭建 ss 来说绰绰有余，而且流量也够用了。
 
 #### 3.部署 ss 服务：
-此过程为了方便，选择的是脚本一键安装（https://teddysun.com/486.html），很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。
+此过程为了方便，选择的是脚本一键安装（https://teddysun.com/486.html)，很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。
 
 ### 4.安装 ss 客户端：
 ss 客户端基本上都有现成的：
