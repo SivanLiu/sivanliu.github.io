@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="最近看到网上有人专门针对如何破解qq、微信数据库，自己也想试试，于是就有了此文，主要讲下如何读取聊天信息, 前提是需要一部 root 过的手机。概述： 微信数据库加密方式； 微信多账户数据读取； 微信好友消息以及群消息； QQ 消息加密方式； QQ 讨论组消息； QQ 群消息； QQ 多账户数据读取；  1.微信数据库加密方式：微信数据库加密方式已经有高人研究过了，就不细说了，主要是：1Strin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-19T12:15:06.000Z">
+<meta property="og:updated_time" content="2017-09-25T14:30:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊微信、qq数据库解密">
 <meta name="twitter:description" content="最近看到网上有人专门针对如何破解qq、微信数据库，自己也想试试，于是就有了此文，主要讲下如何读取聊天信息, 前提是需要一部 root 过的手机。概述： 微信数据库加密方式； 微信多账户数据读取； 微信好友消息以及群消息； QQ 消息加密方式； QQ 讨论组消息； QQ 群消息； QQ 多账户数据读取；  1.微信数据库加密方式：微信数据库加密方式已经有高人研究过了，就不细说了，主要是：1Strin">
@@ -359,7 +359,14 @@
 <p>其中大部分字段都是加密的，需要对应的 uin 的 md5 来解密。</p>
 <h4 id="5-QQ讨论组消息："><a href="#5-QQ讨论组消息：" class="headerlink" title="5.QQ讨论组消息："></a>5.QQ讨论组消息：</h4><p>所有的讨论组信息都在 discussionInfo 表中，可以找到讨论组的 uin, 然后根据 uin 构造表名称，根据表名称去查对应的表信息</p>
 <h4 id="6-群消息；"><a href="#6-群消息；" class="headerlink" title="6.群消息；"></a>6.群消息；</h4><p>所有群的相关信息都记录在 TroopInfo 中，而且在 TroopStatisticsInfo 中记录了群的总数，这样一来就可以构造出每个群聊的表名称，根据表名称去查找对应的表信息即可</p>
-<h4 id="7-多账户数据读取；"><a href="#7-多账户数据读取；" class="headerlink" title="7.多账户数据读取；"></a>7.多账户数据读取；</h4><p>相比微信来说，QQ 多账户记录读取简单很多，在 QQ 数据库目录中的所有的账号数据库都在此，一目了然，并无什么特别的技巧。</p>
+<h4 id="7-多账户数据读取；"><a href="#7-多账户数据读取；" class="headerlink" title="7.多账户数据读取；"></a>7.多账户数据读取；</h4><ul>
+<li>QQ 当前账户的号码存储在 \data\data\com.tencent.mobileqq\shared_prefs\Last_Login.xml 中：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">'1.0'</span> encoding=<span class="string">'utf-8'</span> standalone=<span class="string">'yes'</span> ?&gt;</div><div class="line">&lt;map&gt;</div><div class="line">    &lt;string name="uin"&gt;2324047797&lt;/string&gt;</div><div class="line">&lt;/map&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中 uin 就是当前登录的 qq 号码  </p>
+<ul>
+<li>相比微信来说，QQ 多账户记录读取简单很多，在 QQ 数据库目录中的所有的账号数据库都在此，一目了然，并无什么特别的技巧。</li>
+</ul>
 <p>基本上就这么些东西了，借助前人的研究做起来还是比较顺畅，如果真要整理出每条聊天消息，还是需要花些功夫的。</p>
 <p>好了，就写到这里了，有什么不明白的可以留言！谢谢！</p>
 
