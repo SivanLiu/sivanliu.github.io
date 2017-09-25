@@ -92,7 +92,15 @@ selfuin 本人的 uin | senderuin 发消息的 uin | msgtype 消息类型 | msgD
 所有群的相关信息都记录在 TroopInfo 中，而且在 TroopStatisticsInfo 中记录了群的总数，这样一来就可以构造出每个群聊的表名称，根据表名称去查找对应的表信息即可
 
 #### 7.多账户数据读取；
-相比微信来说，QQ 多账户记录读取简单很多，在 QQ 数据库目录中的所有的账号数据库都在此，一目了然，并无什么特别的技巧。
+- QQ 当前账户的号码存储在 \data\data\com.tencent.mobileqq\shared_prefs\Last_Login.xml 中：
+```java
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="uin">2324047797</string>
+</map>
+```
+其中 uin 就是当前登录的 qq 号码  
+- 相比微信来说，QQ 多账户记录读取简单很多，在 QQ 数据库目录中的所有的账号数据库都在此，一目了然，并无什么特别的技巧。
 
 基本上就这么些东西了，借助前人的研究做起来还是比较顺畅，如果真要整理出每条聊天消息，还是需要花些功夫的。
 
