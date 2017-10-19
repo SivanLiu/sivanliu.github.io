@@ -71,19 +71,19 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 - 1. 注册：
 ```java
 <receiver android:name="cm.android.receiver.OrderBroadcastReceiver$FirstBroadcast">
-            <intent-filter android:priority="3000">
+            <intent-filter android:priority="300">
                 <action android:name="cm.android.order.broadcast" />
             </intent-filter>
         </receiver>
 
         <receiver android:name="cm.android.receiver.OrderBroadcastReceiver$MiddleBroadcast">
-            <intent-filter android:priority="2000">
+            <intent-filter android:priority="200">
                 <action android:name="cm.android.order.broadcast" />
             </intent-filter>
         </receiver>
 
         <receiver android:name="cm.android.receiver.OrderBroadcastReceiver$LastBroadcast">
-            <intent-filter android:priority="1000">
+            <intent-filter android:priority="100">
                 <action android:name="cm.android.order.broadcast" />
             </intent-filter>
         </receiver>
