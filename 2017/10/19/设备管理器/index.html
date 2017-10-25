@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Android 7.0 上同时移除 deviceowner 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：  1    经过一番分析后，发现 deviceowner 移除的时候同时也会去">
+<meta name="description" content="1. 问题描述：Android 7.0 上先后执行 clearDeviceOwnerApp(String packageName) 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常： 1234567Caused by: java.lang.IllegalArgumentException: Trying to set an admin which is being removed">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 移除设备管理器">
+<meta property="og:title" content="踩一踩 Android 移除 deviceowner 和设备管理器的坑">
 <meta property="og:url" content="http://yoursite.com/2017/10/19/设备管理器/index.html">
 <meta property="og:site_name" content="Sivan">
-<meta property="og:description" content="Android 7.0 上同时移除 deviceowner 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：  1    经过一番分析后，发现 deviceowner 移除的时候同时也会去">
+<meta property="og:description" content="1. 问题描述：Android 7.0 上先后执行 clearDeviceOwnerApp(String packageName) 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常： 1234567Caused by: java.lang.IllegalArgumentException: Trying to set an admin which is being removed">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-21T05:47:58.700Z">
+<meta property="og:updated_time" content="2017-10-25T12:08:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 移除设备管理器">
-<meta name="twitter:description" content="Android 7.0 上同时移除 deviceowner 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：  1    经过一番分析后，发现 deviceowner 移除的时候同时也会去">
+<meta name="twitter:title" content="踩一踩 Android 移除 deviceowner 和设备管理器的坑">
+<meta name="twitter:description" content="1. 问题描述：Android 7.0 上先后执行 clearDeviceOwnerApp(String packageName) 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常： 1234567Caused by: java.lang.IllegalArgumentException: Trying to set an admin which is being removed">
 
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <title>Android 移除设备管理器 | Sivan</title>
+  <title>踩一踩 Android 移除 deviceowner 和设备管理器的坑 | Sivan</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android 移除设备管理器</h1>
+          <h1 class="post-title" itemprop="name headline">踩一踩 Android 移除 deviceowner 和设备管理器的坑</h1>
         
 
         <div class="post-meta">
@@ -330,8 +330,12 @@
       
 
       
-        <p>  Android 7.0 上同时移除 deviceowner 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：<br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"> </div></pre></td></tr></table></figure></p>
-<p>  经过一番分析后，发现 deviceowner 移除的时候同时也会去 </p>
+        <h3 id="1-问题描述："><a href="#1-问题描述：" class="headerlink" title="1. 问题描述："></a>1. 问题描述：</h3><p>Android 7.0 上先后执行 clearDeviceOwnerApp(String packageName) 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Caused by: java.lang.IllegalArgumentException: Trying to set an admin which is being removed</div><div class="line">   at android.os.Parcel.readException(Parcel.java:<span class="number">1687</span>)</div><div class="line">   at android.os.Parcel.readException(Parcel.java:<span class="number">1636</span>)</div><div class="line">   at com.gionee.mdm.IGnMdmManager$Stub$Proxy.setActiveAdmin(IGnMdmManager.java:<span class="number">1228</span>)</div><div class="line">   at com.gionee.mdm.GnMdmManager.setActiveAdmin(GnMdmManager.java:<span class="number">538</span>)</div><div class="line">   at cm.android.mdm.interfaces.IDeviceManagerImpl.setActiveAdmin(IDeviceManagerImpl.java:<span class="number">36</span>)</div><div class="line">   at java.lang.reflect.Method.invoke(Native Method)</div></pre></td></tr></table></figure>
+<h3 id="2-分析问题原因："><a href="#2-分析问题原因：" class="headerlink" title="2. 分析问题原因："></a>2. 分析问题原因：</h3><p>  问题造成的原因看日志大概就是激活设备管理器的时候，但设备管理器已经移除了。<br>  经过一番分析后，发现在 7.0 设备上执行 clearDeviceOwnerApp(String packageName) 方法的同时也会去自动调用 removeActiveAdmin(ComponentName admin) 方法，<br>  在 7.0 以下设备上，执行 cleardeviceowner() 的方法不会去调用 removeActiveAdmin(ComponentName admin) 方法，因此，在 7.0 设备上移除 deviceowner 后再去调用 removeActiveAdmin(ComponentName admin) 方法时，会导致一直在移除中，从而无法再次激活设备管理器。</p>
+<h4 id="3-解决方法："><a href="#3-解决方法：" class="headerlink" title="3.解决方法："></a>3.解决方法：</h4><h5 id="1）-根据-Android-os-版本号来判断是否需要手动调用-removeActiveAdmin-ComponentName-admin-方法；"><a href="#1）-根据-Android-os-版本号来判断是否需要手动调用-removeActiveAdmin-ComponentName-admin-方法；" class="headerlink" title="1） 根据 Android os 版本号来判断是否需要手动调用 removeActiveAdmin(ComponentName admin) 方法；"></a>1） 根据 Android os 版本号来判断是否需要手动调用 removeActiveAdmin(ComponentName admin) 方法；</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">DevicePolicyManager policyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);</div><div class="line"></div><div class="line">ComponentName component = <span class="keyword">new</span> ComponentName(getActivity(), AdminReceiver.class);</div><div class="line"></div><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.JELLY_BEAN_MR2) &#123;</div><div class="line">    <span class="keyword">if</span> (policyManager.isDeviceOwnerApp(getActivity().getPackageName())) &#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">            policyManager.clearDeviceOwnerApp(getActivity().getPackageName());</div><div class="line"></div><div class="line">            <span class="comment">//在 7.0 以下设备手动调用 removeActiveAdmin 方法</span></div><div class="line">            <span class="keyword">if</span> (!(Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N)) &#123;</div><div class="line">                policyManager.removeActiveAdmin(component);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行-removeActiveAdmin-ComponentName-admin-方法；"><a href="#2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行-removeActiveAdmin-ComponentName-admin-方法；" class="headerlink" title="2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行 removeActiveAdmin(ComponentName admin) 方法；"></a>2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行 removeActiveAdmin(ComponentName admin) 方法；</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DevicePolicyManager policyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);</div><div class="line">                </div><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.JELLY_BEAN_MR2) &#123;</div><div class="line">    <span class="keyword">if</span> (policyManager.isDeviceOwnerApp(getActivity().getPackageName())) &#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">            policyManager.clearDeviceOwnerApp(getActivity().getPackageName());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ComponentName component = <span class="keyword">new</span> ComponentName(getActivity(), AdminReceiver.class);</div><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    Method isRemoving = Class.forName(<span class="string">"android.app.admin.DevicePolicyManager"</span>).getDeclaredMethod(<span class="string">"isRemovingAdmin"</span>, ComponentName.class, <span class="keyword">int</span>.class);</div><div class="line">    isRemoving.setAccessible(<span class="keyword">true</span>);</div><div class="line">    <span class="keyword">boolean</span> isRemove = (<span class="keyword">boolean</span>) isRemoving.invoke(policyManager, component, <span class="number">0</span>);</div><div class="line">    logger.error(<span class="string">"ggg clear isRemove = "</span> + isRemove);</div><div class="line">    <span class="keyword">if</span> (!isRemove) &#123;</div><div class="line">        <span class="comment">//若设别管理器不在移除中，则移除</span></div><div class="line">        policyManager.removeActiveAdmin(component);</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，该坑已经填完！</p>
 
       
     </div>
@@ -455,8 +459,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/lyg.jpg"
@@ -522,6 +535,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述："><span class="nav-number">1.</span> <span class="nav-text">1. 问题描述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-分析问题原因："><span class="nav-number">2.</span> <span class="nav-text">2. 分析问题原因：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-解决方法："><span class="nav-number">2.1.</span> <span class="nav-text">3.解决方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）-根据-Android-os-版本号来判断是否需要手动调用-removeActiveAdmin-ComponentName-admin-方法；"><span class="nav-number">2.1.1.</span> <span class="nav-text">1） 根据 Android os 版本号来判断是否需要手动调用 removeActiveAdmin(ComponentName admin) 方法；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行-removeActiveAdmin-ComponentName-admin-方法；"><span class="nav-number">2.1.2.</span> <span class="nav-text">2）在移除设备管理器之前判断其是否在移除中，若不在移除中，则执行 removeActiveAdmin(ComponentName admin) 方法；</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

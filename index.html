@@ -413,7 +413,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/19/设备管理器/" itemprop="url">Android 移除设备管理器</a></h1>
+                <a class="post-title-link" href="/2017/10/19/设备管理器/" itemprop="url">踩一踩 Android 移除 deviceowner 和设备管理器的坑</a></h1>
         
 
         <div class="post-meta">
@@ -465,10 +465,9 @@
       
         
           
-            Android 7.0 上同时移除 deviceowner 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：  1 
-  经过一番分析后，发现 deviceowner 移除的时候同时也会去 
-
-          
+          1. 问题描述：Android 7.0 上先后执行 clearDeviceOwnerApp(String packageName) 和 设备管理器之后，发现再重新激活设备管理器的时候，会抛出异常：
+1234567Caused by: java.lang.IllegalArgumentExceptio
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/10/19/设备管理器/#more" rel="contents">
