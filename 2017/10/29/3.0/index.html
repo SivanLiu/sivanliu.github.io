@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。 1.升级大概流程： 1）升级 gradle 版本：  1distributionUrl=https\://serv">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android gradle 3.0 插件之旅">
+<meta property="og:url" content="http://yoursite.com/2017/10/29/3.0/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。 1.升级大概流程： 1）升级 gradle 版本：  1distributionUrl=https\://serv">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-29T03:27:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android gradle 3.0 插件之旅">
+<meta name="twitter:description" content="昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。 1.升级大概流程： 1）升级 gradle 版本：  1distributionUrl=https\://serv">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/29/3.0/"/>
+
+
+
+
+
+  <title>Android gradle 3.0 插件之旅 | Sivan</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/29/3.0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android gradle 3.0 插件之旅</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T12:00:21+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <pre><code>昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。
+</code></pre><h3 id="1-升级大概流程："><a href="#1-升级大概流程：" class="headerlink" title="1.升级大概流程："></a>1.升级大概流程：</h3><ul>
+<li>1）升级 gradle 版本：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-4.1-all.zip</span></div></pre></td></tr></table></figure>
+<ul>
+<li>2）修改 maven 仓库：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line">        google()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">        google()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>3）升级 gradle-plugin 插件版本：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.0.0'</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-踩到的坑以及插件变更的方面："><a href="#2-踩到的坑以及插件变更的方面：" class="headerlink" title="2.踩到的坑以及插件变更的方面："></a>2.踩到的坑以及插件变更的方面：</h3><h4 id="1-META-INF-MANIFEST-MF-问题："><a href="#1-META-INF-MANIFEST-MF-问题：" class="headerlink" title="1) META-INF/MANIFEST.MF 问题："></a>1) META-INF/MANIFEST.MF 问题：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* What went wrong:</div><div class="line">Execution failed <span class="keyword">for</span> task <span class="string">':app:transformResourcesWithMergeJavaResForJdDebug'</span>.</div><div class="line">&gt; More than one file was found with OS independent path <span class="string">'META-INF/MANIFEST.MF'</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">        packagingOptions.excludes = [</div><div class="line">                <span class="string">'META-INF/MANIFEST.MF'</span></div><div class="line">        ]</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="2-依赖问题："><a href="#2-依赖问题：" class="headerlink" title="2) 依赖问题："></a>2) 依赖问题：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Could not resolve project :code:<span class="keyword">module</span>:MdmBasicInfo.</div><div class="line">     Required by:</div><div class="line">         project :code:app:MdmApp</div><div class="line">      &gt; Unable to find a matching configuration of project :code:<span class="keyword">module</span>:MdmBasicInfo:</div><div class="line">          - Configuration <span class="string">'debugApiElements'</span>:</div><div class="line">              - Required com.android.build.api.attributes.BuildTypeAttr <span class="string">'rtest'</span> and found incompatible value <span class="string">'debug'</span>.</div><div class="line">              - Required com.android.build.gradle.internal.dependency.AndroidTypeAttr <span class="string">'Aar'</span> and found compatible value <span class="string">'Aar'</span>.</div><div class="line">              - Found com.android.build.gradle.internal.dependency.VariantAttr <span class="string">'debug'</span> but wasn<span class="string">'t required.</span></div><div class="line"><span class="string">              - Required org.gradle.api.attributes.Usage '</span>java-api<span class="string">' and found compatible value '</span>java-api<span class="string">'.</span></div><div class="line"><span class="string">              - Required type_product '</span>jd<span class="string">' but no value provided.</span></div></pre></td></tr></table></figure>
+<p>按照后面改进的依赖方式配置</p>
+<h4 id="3-AAPT2-问题："><a href="#3-AAPT2-问题：" class="headerlink" title="3) AAPT2 问题："></a>3) AAPT2 问题：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt; Task :app:MdmApp:processJdRtestResources</div><div class="line">Failed to execute aapt</div><div class="line">com.android.ide.common.process.ProcessException: Failed to execute aapt</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed <span class="keyword">for</span> task <span class="string">':app:MdmApp:processJdRtestResources'</span>.</div><div class="line">&gt; Failed to execute aapt</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div></pre></td></tr></table></figure>
+<p>在根项目的 gradle.properties 文件中添加:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">android.enableAapt2=<span class="literal">false</span></div></pre></td></tr></table></figure>
+<h4 id="4-flavor-dimension-必须设置："><a href="#4-flavor-dimension-必须设置：" class="headerlink" title="4) flavor dimension 必须设置："></a>4) flavor dimension 必须设置：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Error:All flavors must now belong to a named flavor dimension.</div><div class="line">The flavor <span class="string">'flavor_name'</span> is not assigned to a flavor dimension.</div></pre></td></tr></table></figure>
+<p>依赖机制改动：在使用 library 时会自动匹配 variant（debug、release)，即 app 的 debug 会自动匹配 library 的 debug；同样地，如果使用 flavor 的时候，比如 app 的 freeDebug 也会自动匹配 library 的 freeDebug。尽管如此，但在使用到 flavor 时，必须为所有的 flavor 配置一个 flavor dimension</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Specifies two flavor dimensions.</span></div><div class="line">flavorDimensions <span class="string">"tier"</span>, <span class="string">"minApi"</span></div><div class="line">productFlavors &#123;</div><div class="line">     free &#123;</div><div class="line">      <span class="comment">// Assigns this product flavor to the "tier" flavor dimension. Specifying</span></div><div class="line">      <span class="comment">// this property is optional if you are using only one dimension.</span></div><div class="line">      dimension <span class="string">"tier"</span></div><div class="line">      ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    paid &#123;</div><div class="line">      dimension <span class="string">"tier"</span></div><div class="line">      ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    minApi23 &#123;</div><div class="line">        dimension <span class="string">"minApi"</span></div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    minApi18 &#123;</div><div class="line">        dimension <span class="string">"minApi"</span></div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="6-依赖配置："><a href="#6-依赖配置：" class="headerlink" title="6) 依赖配置："></a>6) 依赖配置：</h4><p>解决依赖构建错误: 如果 app 依赖 library A, app 的 buildType 为 debug、rtest、release, 但是 library buildType 只有 debug、release，当构建 debug app 的时候，插件会自动去寻找 library rtest，最后会发现不到，错误信息如下：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span>Failed to <span class="string">resolve:</span> Could not resolve <span class="string">project :</span>mylibrary.</div><div class="line">Required <span class="string">by:</span></div><div class="line">    <span class="string">project :</span>app</div></pre></td></tr></table></figure>
+<p>出现该错误的原因大致可以分为三类：</p>
+<ul>
+<li>app 存在的 buildType，但是 library 没有；通过 matchingFallbacks 去给 buildType 设置依赖：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In the app's build.gradle file.</span></div><div class="line">android &#123;</div><div class="line">    buildTypes &#123;</div><div class="line">        debug &#123;&#125;</div><div class="line">        release &#123;&#125;</div><div class="line">        staging &#123;</div><div class="line">            <span class="comment">// Specifies a sorted list of fallback build types that the</span></div><div class="line">            <span class="comment">// plugin should try to use when a dependency does not include a</span></div><div class="line">            <span class="comment">// "staging" build type. You may specify as many fallbacks as you</span></div><div class="line">            <span class="comment">// like, and the plugin selects the first build type that's</span></div><div class="line">            <span class="comment">// available in the dependency.</span></div><div class="line">            matchingFallbacks = [<span class="string">'debug'</span>, <span class="string">'qa'</span>, <span class="string">'release'</span>]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>对于 app 和 library 都存在的 flavor dimension，app 中存在的 flavor，但是 library 没有；通过 matchingFallbacks 去给 flavor 设置依赖:</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In the app's build.gradle file.</span></div><div class="line">android &#123;</div><div class="line">    defaultConfig&#123;</div><div class="line">    <span class="comment">// Do not configure matchingFallbacks in the defaultConfig block.</span></div><div class="line">    <span class="comment">// Instead, you must specify fallbacks for a given product flavor in the</span></div><div class="line">    <span class="comment">// productFlavors block, as shown below.</span></div><div class="line">  &#125;</div><div class="line">    flavorDimensions <span class="string">'tier'</span></div><div class="line">    productFlavors &#123;</div><div class="line">        paid &#123;</div><div class="line">            dimension <span class="string">'tier'</span></div><div class="line">            <span class="comment">// Because the dependency already includes a "paid" flavor in its</span></div><div class="line">            <span class="comment">// "tier" dimension, you don't need to provide a list of fallbacks</span></div><div class="line">            <span class="comment">// for the "paid" flavor.</span></div><div class="line">        &#125;</div><div class="line">        free &#123;</div><div class="line">            dimension <span class="string">'tier'</span></div><div class="line">            <span class="comment">// Specifies a sorted list of fallback flavors that the plugin</span></div><div class="line">            <span class="comment">// should try to use when a dependency's matching dimension does</span></div><div class="line">            <span class="comment">// not include a "free" flavor. You may specify as many</span></div><div class="line">            <span class="comment">// fallbacks as you like, and the plugin selects the first flavor</span></div><div class="line">            <span class="comment">// that's available in the dependency's "tier" dimension.</span></div><div class="line">            matchingFallbacks = [<span class="string">'demo'</span>, <span class="string">'trial'</span>]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>library 依赖包括的 flavor dimension，但是 app 没有：通过 missingDimensionStrategy 在 defaultConfig 中指定默认的 flavor， 这样插件找不到 dimension 时，就会去使用默认的 flvor；同时也可以在 productFlavors 中为每个匹配指定默认的 flavor：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In the app's build.gradle file.</span></div><div class="line">android &#123;</div><div class="line">    defaultConfig&#123;</div><div class="line">    <span class="comment">// Specifies a sorted list of flavors that the plugin should try to use from</span></div><div class="line">    <span class="comment">// a given dimension. The following tells the plugin that, when encountering</span></div><div class="line">    <span class="comment">// a dependency that includes a "minApi" dimension, it should select the</span></div><div class="line">    <span class="comment">// "minApi18" flavor. You can include additional flavor names to provide a</span></div><div class="line">    <span class="comment">// sorted list of fallbacks for the dimension.</span></div><div class="line">    missingDimensionStrategy <span class="string">'minApi'</span>, <span class="string">'minApi18'</span>, <span class="string">'minApi23'</span></div><div class="line">    <span class="comment">// You should specify a missingDimensionStrategy property for each</span></div><div class="line">    <span class="comment">// dimension that exists in a local dependency but not in your app.</span></div><div class="line">    missingDimensionStrategy <span class="string">'abi'</span>, <span class="string">'x86'</span>, <span class="string">'arm64'</span></div><div class="line">    &#125;</div><div class="line">    flavorDimensions <span class="string">'tier'</span></div><div class="line">    productFlavors &#123;</div><div class="line">        free &#123;</div><div class="line">            dimension <span class="string">'tier'</span></div><div class="line">            <span class="comment">// You can override the default selection at the product flavor</span></div><div class="line">            <span class="comment">// level by configuring another missingDimensionStrategy property</span></div><div class="line">            <span class="comment">// for the "minApi" dimension.</span></div><div class="line">            missingDimensionStrategy <span class="string">'minApi'</span>, <span class="string">'minApi23'</span>, <span class="string">'minApi18'</span></div><div class="line">        &#125;</div><div class="line">        paid &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="7"><a href="#7" class="headerlink" title="7)"></a>7)</h4><ul>
+<li>本地模块以来配置：自动匹配 variant 的机制，无须手动指定 variant 的配置，而且不支持如下配置了：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    debugCompile project(<span class="string">path:</span> <span class="string">':lib:appstore'</span>, <span class="string">configuration:</span> <span class="string">'debug'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可修改为以下配置：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// This is the old method and no longer works for local</span></div><div class="line">    <span class="comment">// library modules:</span></div><div class="line">    <span class="comment">// debugImplementation project(path: ':lib:appstore', configuration: 'debug')</span></div><div class="line">    <span class="comment">// releaseImplementation project(path: ':lib:appstore', configuration: 'release')</span></div><div class="line"></div><div class="line">    <span class="comment">// Instead, simply use the following to take advantage of</span></div><div class="line">    <span class="comment">// variant-aware dependency resolution. You can learn more about</span></div><div class="line">    <span class="comment">// the 'implementation' configuration in the section about</span></div><div class="line">    <span class="comment">// new dependency configurations.</span></div><div class="line">    implementation project(<span class="string">':lib:appstore'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// You can, however, keep using variant-specific configurations when</span></div><div class="line">    <span class="comment">// targeting external dependencies. The following line adds 'app-magic'</span></div><div class="line">    <span class="comment">// as a dependency to only the "debug" version of your module.</span></div><div class="line"></div><div class="line">    debugImplementation <span class="string">'ggg.android:cm.android.mdmsdk:1.77'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="8-Gradle-3-4-引入了新的-Java-库插件配置-允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android-插件正在采用这些新的依赖配置-迁移大型项目来使用它们可以大大缩短构建时间。"><a href="#8-Gradle-3-4-引入了新的-Java-库插件配置-允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android-插件正在采用这些新的依赖配置-迁移大型项目来使用它们可以大大缩短构建时间。" class="headerlink" title="8) Gradle 3.4 引入了新的 Java 库插件配置, 允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android 插件正在采用这些新的依赖配置, 迁移大型项目来使用它们可以大大缩短构建时间。"></a>8) Gradle 3.4 引入了新的 Java 库插件配置, 允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android 插件正在采用这些新的依赖配置, 迁移大型项目来使用它们可以大大缩短构建时间。</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">新配置</th>
+<th style="text-align:left">旧配置</th>
+<th style="text-align:left">概述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">implementation</td>
+<td style="text-align:left">compile</td>
+<td style="text-align:left">module 编译时可用，但 module 的依赖者运行时可用；只在内部使用了该 module，不会向外部暴露其依赖的 module 内容</td>
+</tr>
+<tr>
+<td style="text-align:left">api</td>
+<td style="text-align:left">compile</td>
+<td style="text-align:left">module 编译时可用，module 的依赖者编译和运行时可用，和 compile 的作用一样，当前 module 会暴露其依赖的其他 module 内容</td>
+</tr>
+<tr>
+<td style="text-align:left">compileOnly</td>
+<td style="text-align:left">provided</td>
+<td style="text-align:left">module 编译时可用，但是 module 的依赖者，在编译和运行时均不可用，和之前的 provided 类似</td>
+</tr>
+<tr>
+<td style="text-align:left">runtimeOnly</td>
+<td style="text-align:left">apk</td>
+<td style="text-align:left">module 和 module 依赖者，仅仅在运行时可用</td>
+</tr>
+</tbody>
+</table>
+<h4 id="9-发布依赖：如下配置保存了-library-的传递依赖性-供其使用者使用"><a href="#9-发布依赖：如下配置保存了-library-的传递依赖性-供其使用者使用" class="headerlink" title="9) 发布依赖：如下配置保存了 library 的传递依赖性, 供其使用者使用"></a>9) 发布依赖：如下配置保存了 library 的传递依赖性, 供其使用者使用</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 编译时使用</span></div><div class="line">variant_nameApiElements</div><div class="line"></div><div class="line"><span class="comment">// 运行时使用</span></div><div class="line">variant_nameRuntimeElements</div></pre></td></tr></table></figure>
+<h4 id="10-自定义依赖：如下配置来解决变量的所有依赖项"><a href="#10-自定义依赖：如下配置来解决变量的所有依赖项" class="headerlink" title="10) 自定义依赖：如下配置来解决变量的所有依赖项"></a>10) 自定义依赖：如下配置来解决变量的所有依赖项</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">新配置(运行时)</th>
+<th style="text-align:left">旧配置(编译时)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">variant_nameRuntimeClasspath</td>
+<td style="text-align:left">_variant_nameCompile 不再生效</td>
+</tr>
+<tr>
+<td style="text-align:left">variant_nameCompileClasspath</td>
+<td style="text-align:left">_variant_nameApk 不再生效</td>
+</tr>
+</tbody>
+</table>
+<p>如果继续使用旧有的配置，则会抛出以下错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span>Configuration with old name _debugCompile found.</div><div class="line">Use <span class="keyword">new</span> name debugCompileClasspath instead.</div></pre></td></tr></table></figure>
+<p>由于新的依赖方式延迟了依赖 resolution, 因此可以使用 Variant API 来设置 resolution strategy：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Previously, you had to apply a custom resolution strategy during the configuration phase, rather than in the execution phase. That's because, by the time the variant was created and the Variant API was called, the dependencies were already resolved. But now these configurations DO NOT WORK with the 3.0.0 Gradle plugin:</span></div><div class="line"></div><div class="line"><span class="comment">// configurations &#123;</span></div><div class="line"><span class="comment">//     _debugCompile</span></div><div class="line"><span class="comment">//     _debugApk</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// configurations._debugCompile.resolutionStrategy &#123;</span></div><div class="line"><span class="comment">//     ...</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// configurations.all &#123;</span></div><div class="line"><span class="comment">//     resolutionStrategy &#123;</span></div><div class="line"><span class="comment">//     ...</span></div><div class="line"><span class="comment">//     &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"></div><div class="line"><span class="comment">// Instead, because the new build model delays dependency resolution, you should query and modify the resolution strategy using the Variant API:</span></div><div class="line">android &#123;</div><div class="line">    applicationVariants.all &#123; variant -&gt;</div><div class="line">        variant.getCompileConfiguration().resolutionStrategy &#123;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">        variant.runtimeConfiguration.resolutionStrategy &#123;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">        variant.getAnnotationProcessorConfiguration().resolutionStrategy &#123;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="11-从-test-配置中排除-app-依赖项"><a href="#11-从-test-配置中排除-app-依赖项" class="headerlink" title="11) 从 test 配置中排除 app 依赖项"></a>11) 从 test 配置中排除 app 依赖项</h4><ul>
+<li>原有的排除依赖方式：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    implementation <span class="string">"com.jakewharton.threetenabp:threetenabp:1.0.5"</span></div><div class="line">    <span class="comment">// Note: You can still use the exclude keyword to omit certain artifacts of dependencies you add only to your test configurations.</span></div><div class="line">    androidTestImplementation(<span class="string">"org.threeten:threetenbp:1.3.3"</span>) &#123;</div><div class="line">        exclude <span class="string">group:</span> <span class="string">'com.jakewharton.threetenabp'</span>, <span class="string">module:</span> <span class="string">'threetenabp'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>新的排除依赖方式：这是因为 androidTestImplementation 和 androidTestApi 扩展了 Implementation 和 api 配置</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android.testVariants.all &#123; variant -&gt;</div><div class="line">    variant.getCompileConfiguration().exclude <span class="string">group:</span> <span class="string">'com.jakewharton.threetenabp'</span>, <span class="string">module:</span> <span class="string">'threetenabp'</span></div><div class="line">    variant.getRuntimeConfiguration().exclude <span class="string">group:</span> <span class="string">'com.jakewharton.threetenabp'</span>, <span class="string">module:</span> <span class="string">'threetenabp'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="12-原有的-variant-outputs-在构建时不再生效，不过新的插件仍然支持修改生成的-apk-的名称："><a href="#12-原有的-variant-outputs-在构建时不再生效，不过新的插件仍然支持修改生成的-apk-的名称：" class="headerlink" title="12) 原有的 variant outputs 在构建时不再生效，不过新的插件仍然支持修改生成的 apk 的名称："></a>12) 原有的 variant outputs 在构建时不再生效，不过新的插件仍然支持修改生成的 apk 的名称：</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// If you use each() to iterate through the variant objects,</span></div><div class="line"><span class="comment">// you need to start using all(). That's because each() iterates</span></div><div class="line"><span class="comment">// through only the objects that already exist during configuration time—</span></div><div class="line"><span class="comment">// but those object don't exist at configuration time with the new model.</span></div><div class="line"><span class="comment">// However, all() adapts to the new model by picking up object as they are</span></div><div class="line"><span class="comment">// added during execution.</span></div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.all &#123;</div><div class="line">        outputFileName = <span class="string">"$&#123;variant.name&#125;-$&#123;variant.versionName&#125;.apk"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="13-processManifest-manifestOutputFile-方法已经废弃，如果继续使用，会抛出如下错误："><a href="#13-processManifest-manifestOutputFile-方法已经废弃，如果继续使用，会抛出如下错误：" class="headerlink" title="13) processManifest.manifestOutputFile() 方法已经废弃，如果继续使用，会抛出如下错误："></a>13) processManifest.manifestOutputFile() 方法已经废弃，如果继续使用，会抛出如下错误：</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">A problem occurred configuring project <span class="string">':myapp'</span>.</div><div class="line">   Could not get unknown property <span class="string">'manifestOutputFile'</span> <span class="keyword">for</span> task <span class="string">':myapp:processDebugManifest'</span></div><div class="line">   of type com.android.build.gradle.tasks.ProcessManifest.</div></pre></td></tr></table></figure>
+<p>但是可以调用 processManifest.manifestOutputDirectory () 返回包含所有生成的 manifest 的目录的路径，然后可以根据需要修改某个 manifest：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.all &#123; output -&gt;</div><div class="line">        output.processManifest.doLast &#123;</div><div class="line">            <span class="comment">// Stores the path to the maifest.</span></div><div class="line">            String manifestPath = <span class="string">"$manifestOutputDirectory/AndroidManifest.xml"</span></div><div class="line">            <span class="comment">// Stores the contents of the manifest.</span></div><div class="line">            <span class="keyword">def</span> manifestContent = file(manifestPath).getText()</div><div class="line">            <span class="comment">// Changes the version code in the stored text.</span></div><div class="line">            manifestContent = manifestContent.replace(<span class="string">'android:versionCode="1"'</span>,</div><div class="line">                    String.format(<span class="string">'android:versionCode="%s"'</span>, generatedCode))</div><div class="line">            <span class="comment">// Overwrites the manifest with the new text.</span></div><div class="line">            file(manifestPath).write(manifestContent)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="14-使用-annotation-processor-依赖配置："><a href="#14-使用-annotation-processor-依赖配置：" class="headerlink" title="14) 使用 annotation processor 依赖配置："></a>14) 使用 annotation processor 依赖配置：</h4><p>在之前的插件中, compile classpath 上的依赖项被自动添加到processor classpath 中。即你可以将 annotation processor添加到 compile classpath 中；但是, 通过向 processor 添加大量不必要的依赖关系, 这将对性能产生重大影响。</p>
+<p>在 Android 3.0.0 插件中, 规定必须使用 annotationProcessor 将依赖项配置将 annotation processors 添加到 processor classpath 中：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    ...</div><div class="line">    annotationProcessor <span class="string">'com.google.dagger:dagger-compiler:&lt;version-number&gt;'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="15-禁用-annotation-processor-错误检查："><a href="#15-禁用-annotation-processor-错误检查：" class="headerlink" title="15) 禁用 annotation processor 错误检查："></a>15) 禁用 annotation processor 错误检查：</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    ...</div><div class="line">    defaultConfig &#123;</div><div class="line">        ...</div><div class="line">        javaCompileOptions &#123;</div><div class="line">            annotationProcessorOptions &#123;</div><div class="line">                includeCompileClasspath <span class="literal">false</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="16-使用独立的测试模块："><a href="#16-使用独立的测试模块：" class="headerlink" title="16) 使用独立的测试模块："></a>16) 使用独立的测试模块：</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    variantFilter &#123; variant -&gt;</div><div class="line">        <span class="keyword">if</span> (variant.buildType.name.equals(<span class="string">'debug'</span>) &#123;</div><div class="line">            variant.setIgnore(<span class="literal">true</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="17-libraries-中的本地-jar-包可传递："><a href="#17-libraries-中的本地-jar-包可传递：" class="headerlink" title="17) libraries 中的本地 jar 包可传递："></a>17) libraries 中的本地 jar 包可传递：</h4><p>之前的插件在库模块中将以非标准方式处理本地 jar 的依赖关系, 并将它们打包到 aar 中；新的插件3.0.0 和新的 Gradle api, 支持本地 jar 可传递依赖性, 类似于基于 maven 的依赖关系：</p>
+<ul>
+<li><p>在 project 中发布：</p>
+<ul>
+<li>library 模块不再处理本地 jar；</li>
+<li>library 模块的改变只会影响 project，PROJECT_LOCAL_DEPS 已经废弃；</li>
+<li>app 模块中的本地 jar 作为EXTERNAL stream 的一部分, PROJECT_LOCAL_DEPS 和 SUB_PROJECT_LOCAL_DEPS 总是为空；</li>
+<li>library modules 中的 ProGuard 不会影响 library 代码，只需在依赖 library 的 app 中使用 ProGuard；</li>
+<li>之前，需要在 library 中解决和本地 jar 包中的资源冲突，现在需要在 app 中去解决冲突；</li>
+</ul>
+</li>
+<li><p>Maven 仓库发布：这个和之前类似，没有改变；</p>
+</li>
+</ul>
+<h4 id="18-AAPT2-的变化："><a href="#18-AAPT2-的变化：" class="headerlink" title="18) AAPT2 的变化："></a>18) AAPT2 的变化：</h4><ul>
+<li>Android manifest 中元素的层级：在之前的 aapt 中，Manifest 中不正确的层级会报警告或者被忽略，如下：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;manifest <span class="string">xmlns:</span>android=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">   <span class="keyword">package</span>=<span class="string">"com.example.myname.myapplication"</span>&gt;</div><div class="line">   &lt;application</div><div class="line">       ...</div><div class="line">       &lt;activity <span class="string">android:</span>name=<span class="string">".MainActivity"</span>&gt;</div><div class="line">           &lt;intent-filter&gt;</div><div class="line">               &lt;action <span class="string">android:</span>name=<span class="string">"android.intent.action.MAIN"</span> /&gt;</div><div class="line">               &lt;category <span class="string">android:</span>name=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</div><div class="line">           &lt;/intent-filter&gt;</div><div class="line">           &lt;action <span class="string">android:</span>name=<span class="string">"android.intent.action.CUSTOM"</span> /&gt;</div><div class="line">       &lt;/activity&gt;</div><div class="line">   &lt;/application&gt;</div><div class="line">&lt;/manifest&gt;</div></pre></td></tr></table></figure>
+<p>之前的 aapt 只会忽略 action，然而，在最新的 AAPT2 中，将会报错：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AndroidManifest.<span class="string">xml:</span><span class="number">15</span>: <span class="string">error:</span> unknown element &lt;action&gt; found.</div></pre></td></tr></table></figure>
+<p>解决方法就是按照正确的语法结构去修改，确保 manifest 元素正确</p>
+<ul>
+<li>资源定义：不支持从 name 属性中指定资源类型，如：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;style name=<span class="string">"foo"</span> parent=<span class="string">"bar"</span>&gt;</div><div class="line">    &lt;item name=<span class="string">"attr/my_attr"</span>&gt;<span class="meta">@color</span><span class="regexp">/pink&lt;/</span>item&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+<p>上述定义资源类型将会导致如下错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span> style attribute <span class="string">'attr/attr/my_attr (aka my.package:attr/attr/my_attr)'</span> not found.</div></pre></td></tr></table></figure>
+<p>解决方法：明确指定资源类型(type = “attr”)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;style name=<span class="string">"foo"</span> parent=<span class="string">"bar"</span>&gt;</div><div class="line">  &lt;item type=<span class="string">"attr"</span> name=<span class="string">"my_attr"</span>&gt;<span class="meta">@color</span><span class="regexp">/pink&lt;/</span>item&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+<p>此外，定义 style 元素时，它的父元素也必须是 style 资源类型，否则会导致同样的错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span> (...) invalid resource type <span class="string">'attr'</span> <span class="keyword">for</span> parent of style</div></pre></td></tr></table></figure>
+<ul>
+<li>Android ForegroundLinearLayout 中的 namespace：ForegroundLinearLayout 包括三种 foregroundInsidePadding, android:foreground, and android:foregroundGravity 三种属性，注意 android namespace 不包括 foregroundInsidePadding；在之前的 AAPT 中，编译器会忽略 foregroundInsidePadding，但是在 AAPT2 中，则会抛出错误：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span> (...) resource <span class="string">android:</span>attr/foregroundInsidePadding is <span class="keyword">private</span></div></pre></td></tr></table></figure>
+<p>解决方法：用 android:foregroundInsidePadding 替换 foregroundInsidePadding 即可：</p>
+<ul>
+<li>不恰当地使用 @ 资源引用符号：检测到忽略或者不当使用 @ 时，AAPT2 会抛出错误，例如，当指定 style 属性时，遗漏了 @ 时</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;style name=<span class="string">"AppTheme"</span> parent=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;</div><div class="line">  ...</div><div class="line">  &lt;!-- Note the missing <span class="string">'@'</span> symbol when specifying the resource type. --&gt;</div><div class="line">  &lt;item name=<span class="string">"colorPrimary"</span>&gt;color<span class="regexp">/colorPrimary&lt;/</span>item&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+<p>将会导致如下错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">ERROR:</span> expected color but got (raw string) color/colorPrimary</div></pre></td></tr></table></figure>
+<p>此外，如果不当的使用 @ 引用  android namespace 中的资源时，如下所示：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&lt;!-- When referencing resources from the <span class="string">'android'</span> namespace, omit the <span class="string">'@'</span> symbol. --&gt;</div><div class="line">&lt;item name=<span class="string">"@android:windowEnterAnimation"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>将会导致如下错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">Error:</span> style attribute <span class="string">'@android:attr/windowEnterAnimation'</span> not found</div></pre></td></tr></table></figure>
+<p>参考：<br>[1] <a href="https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration.html#known_issues" target="_blank" rel="external">https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration.html#known_issues</a><br>[2] <a href="http://blog.csdn.net/ncuboy045wsq/article/details/73521856" target="_blank" rel="external">http://blog.csdn.net/ncuboy045wsq/article/details/73521856</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/21/混淆/" rel="next" title="关于你想知道的 Android 混淆都在这儿了！">
+                <i class="fa fa-chevron-left"></i> 关于你想知道的 Android 混淆都在这儿了！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-升级大概流程："><span class="nav-number">1.</span> <span class="nav-text">1.升级大概流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-踩到的坑以及插件变更的方面："><span class="nav-number">2.</span> <span class="nav-text">2.踩到的坑以及插件变更的方面：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-META-INF-MANIFEST-MF-问题："><span class="nav-number">2.1.</span> <span class="nav-text">1) META-INF/MANIFEST.MF 问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-依赖问题："><span class="nav-number">2.2.</span> <span class="nav-text">2) 依赖问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-AAPT2-问题："><span class="nav-number">2.3.</span> <span class="nav-text">3) AAPT2 问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-flavor-dimension-必须设置："><span class="nav-number">2.4.</span> <span class="nav-text">4) flavor dimension 必须设置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-依赖配置："><span class="nav-number">2.5.</span> <span class="nav-text">6) 依赖配置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7"><span class="nav-number">2.6.</span> <span class="nav-text">7)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Gradle-3-4-引入了新的-Java-库插件配置-允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android-插件正在采用这些新的依赖配置-迁移大型项目来使用它们可以大大缩短构建时间。"><span class="nav-number">2.7.</span> <span class="nav-text">8) Gradle 3.4 引入了新的 Java 库插件配置, 允许您控制是否将依赖项发布到使用该库的项目的编译和运行时路径。Android 插件正在采用这些新的依赖配置, 迁移大型项目来使用它们可以大大缩短构建时间。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-发布依赖：如下配置保存了-library-的传递依赖性-供其使用者使用"><span class="nav-number">2.8.</span> <span class="nav-text">9) 发布依赖：如下配置保存了 library 的传递依赖性, 供其使用者使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-自定义依赖：如下配置来解决变量的所有依赖项"><span class="nav-number">2.9.</span> <span class="nav-text">10) 自定义依赖：如下配置来解决变量的所有依赖项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-从-test-配置中排除-app-依赖项"><span class="nav-number">2.10.</span> <span class="nav-text">11) 从 test 配置中排除 app 依赖项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-原有的-variant-outputs-在构建时不再生效，不过新的插件仍然支持修改生成的-apk-的名称："><span class="nav-number">2.11.</span> <span class="nav-text">12) 原有的 variant outputs 在构建时不再生效，不过新的插件仍然支持修改生成的 apk 的名称：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-processManifest-manifestOutputFile-方法已经废弃，如果继续使用，会抛出如下错误："><span class="nav-number">2.12.</span> <span class="nav-text">13) processManifest.manifestOutputFile() 方法已经废弃，如果继续使用，会抛出如下错误：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-使用-annotation-processor-依赖配置："><span class="nav-number">2.13.</span> <span class="nav-text">14) 使用 annotation processor 依赖配置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-禁用-annotation-processor-错误检查："><span class="nav-number">2.14.</span> <span class="nav-text">15) 禁用 annotation processor 错误检查：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-使用独立的测试模块："><span class="nav-number">2.15.</span> <span class="nav-text">16) 使用独立的测试模块：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-libraries-中的本地-jar-包可传递："><span class="nav-number">2.16.</span> <span class="nav-text">17) libraries 中的本地 jar 包可传递：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-AAPT2-的变化："><span class="nav-number">2.17.</span> <span class="nav-text">18) AAPT2 的变化：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
