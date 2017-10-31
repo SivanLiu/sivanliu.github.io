@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。1. 升级大概流程： 1）升级 gradle 版本：  1distributionUrl=https\://serv">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-31T03:28:36.226Z">
+<meta property="og:updated_time" content="2017-10-31T03:32:11.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android gradle 3.0 插件之旅">
 <meta name="twitter:description" content="昨天，官网（https://developer.android.com/） 更新了Androd studio 版本和 gradle-plugin 版本，迫不及待尝试下，针对自己的项目做了些相应的修改，相比之前，这个版本的改动是最多的，出来了许多新特性。下面总结下升级过程中遇到的坑。1. 升级大概流程： 1）升级 gradle 版本：  1distributionUrl=https\://serv">
@@ -414,7 +414,7 @@
 <li>第三种：</li>
 </ul>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">App (implemetation)---&gt; LibB(api) ---&gt; LibA(api) ---&gt; maven aar</div><div class="line"></div><div class="line"><span class="number">1.</span> App  可使用 LibB、LibA、aar 中的类；</div><div class="line"><span class="number">2.</span> LibB 可以使用 LibA、aar 中的类；</div><div class="line"><span class="number">3.</span> LibA 可以使用 aar 中的类；</div></pre></td></tr></table></figure>
-<p><em>结论：api 与 之前的 compile 作用一样，可以传递依赖；<br>implementation 仅仅依赖当前 module，不具有传递属性</em></p>
+<p><em>结论：api 与 之前的 compile 作用一样，可以传递依赖；implementation 仅仅依赖当前 module，不具有传递属性</em></p>
 <h4 id="9-发布依赖：如下配置保存了-library-的传递依赖性-供其使用者使用"><a href="#9-发布依赖：如下配置保存了-library-的传递依赖性-供其使用者使用" class="headerlink" title="9) 发布依赖：如下配置保存了 library 的传递依赖性, 供其使用者使用"></a>9) 发布依赖：如下配置保存了 library 的传递依赖性, 供其使用者使用</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 编译时使用</span></div><div class="line">variant_nameApiElements</div><div class="line"></div><div class="line"><span class="comment">// 运行时使用</span></div><div class="line">variant_nameRuntimeElements</div></pre></td></tr></table></figure>
 <h4 id="10-自定义依赖：如下配置来解决变量的所有依赖项"><a href="#10-自定义依赖：如下配置来解决变量的所有依赖项" class="headerlink" title="10) 自定义依赖：如下配置来解决变量的所有依赖项"></a>10) 自定义依赖：如下配置来解决变量的所有依赖项</h4><table>
 <thead>
