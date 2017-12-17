@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="反射," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
+<meta name="keywords" content="反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 反射总结">
+<meta property="og:url" content="http://yoursite.com/2017/12/17/reflect/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-17T08:12:44.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 反射总结">
+<meta name="twitter:description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/17/reflect/"/>
+
+
+
+
+
+  <title>Java 反射总结 | Sivan</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/reflect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 反射总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T16:00:21+08:00">
+                2017-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <pre><code>在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？
+</code></pre><h3 id="1-反射原理"><a href="#1-反射原理" class="headerlink" title="1. 反射原理"></a>1. 反射原理</h3><p>反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种<strong>动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。</strong></p>
+<p>简明扼要一句话：<strong>反射能够在程序运行时获取任意一个类的属性和方法</strong>。</p>
+<h3 id="2-如何使用反射"><a href="#2-如何使用反射" class="headerlink" title="2. 如何使用反射"></a>2. 如何使用反射</h3><p>Java 反射是可以让我们在运行时获取类的函数、属性、父类、接口等 Class 内部信息的机制。通过反射还可以让我们在运行期实例化对象，调用方法，通过调用 get/set 方法获取变量的值，即使方法或属性是私有的也可以通过反射的形式调用。</p>
+<h4 id="2-1-核心类："><a href="#2-1-核心类：" class="headerlink" title="2.1 核心类："></a>2.1 核心类：</h4><table>
+<thead>
+<tr>
+<th>代码描述</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java.lang.Class</td>
+<td>类</td>
+</tr>
+<tr>
+<td>java.lang.reflect.Constructor</td>
+<td>构造方法</td>
+</tr>
+<tr>
+<td>java.lang.reflect.Field</td>
+<td>类的属性</td>
+</tr>
+<tr>
+<td>java.lang.reflect.Method</td>
+<td>类的方法</td>
+</tr>
+<tr>
+<td>java.lang.reflect.Modifier</td>
+<td>类的修饰符</td>
+</tr>
+</tbody>
+</table>
+<p>其中 Modifier 取值范围如下： public, protected, private, abstract, static, final, transient, volatile, synchronized, native, strictfp, interface。</p>
+<p>Constructor， Field， Method 这三个类都继承 AccessibleObject，该对象有一个非常重要的方法 setAccessible(boolean flag)，借助该方法，能直接调用非 Public 的属性与方法。</p>
+<h4 id="2-2-核心方法："><a href="#2-2-核心方法：" class="headerlink" title="2.2 核心方法："></a>2.2 核心方法：</h4><ul>
+<li><strong>成员属性</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getFields()</td>
+<td>获得类的 public 类型的属性</td>
+</tr>
+<tr>
+<td>getDeclaredFields()</td>
+<td>获得类的所有属性</td>
+</tr>
+<tr>
+<td>getField(String name)</td>
+<td>获取类中 public 类型的特定属性</td>
+</tr>
+<tr>
+<td>getDeclaredField(String name)</td>
+<td>获取类的特定属性</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>成员方法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getMethods()</td>
+<td>获得类的特定方法</td>
+</tr>
+<tr>
+<td>getDeclaredMethods()</td>
+<td>获得类的所有方法</td>
+</tr>
+<tr>
+<td>getMethod(String name, Class[] parameterTypes)</td>
+<td>获得类的特定方法</td>
+</tr>
+<tr>
+<td>getDeclaredMethod(String name, Class[] parameterTypes)</td>
+<td>获得类的特定方法</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>构造方法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getConstructors()</td>
+<td>获得类的public类型的构造方法</td>
+</tr>
+<tr>
+<td>getDeclaredConstructors()</td>
+<td>获得类的所有构造方法</td>
+</tr>
+<tr>
+<td>getConstructor(Class[] parameterTypes)</td>
+<td>获得类中 public 类型的特定构造方法</td>
+</tr>
+<tr>
+<td>getDeclaredConstructor(Class[] params)</td>
+<td>获得类的特定构造方法</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-3-反射类："><a href="#2-3-反射类：" class="headerlink" title="2.3 反射类："></a>2.3 反射类：</h4><ul>
+<li>getClass():</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String str = <span class="string">"test"</span>;</div><div class="line">Class cls = str.getClass();</div></pre></td></tr></table></figure>
+<ul>
+<li>getSuperClass():</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String str = <span class="string">"test"</span>;</div><div class="line">Class cls = str.getClass().getSuperclass();</div></pre></td></tr></table></figure>
+<ul>
+<li>Class.forName(String name):</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">        String str = <span class="string">"test"</span>;</div><div class="line">        Class cls = Class.forName(<span class="string">"java.lang.String"</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>.class 属性:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String str = <span class="string">"test"</span>;</div><div class="line">Class cls = java.lang.String.class;</div></pre></td></tr></table></figure>
+<ul>
+<li>基本类型包装类的 TYPE 语法():</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Class cls = Integer.TYPE;</div></pre></td></tr></table></figure>
+<h4 id="2-4-私有类以及类的私有方法或属性："><a href="#2-4-私有类以及类的私有方法或属性：" class="headerlink" title="2.4 私有类以及类的私有方法或属性："></a>2.4 私有类以及类的私有方法或属性：</h4><ul>
+<li>私有类：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.company;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> obj = <span class="number">10</span>;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Test</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> x + y;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Class cls = Class.forName(<span class="string">"com.company.Test"</span>);</div><div class="line">Constructor constructor = cls.getDeclaredConstructor();</div><div class="line">constructor.setAccessible(<span class="keyword">true</span>);</div><div class="line">Object instance = constructor.newInstance();</div></pre></td></tr></table></figure>
+<ul>
+<li>私有方法：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Method method = cls.getDeclaredMethod(<span class="string">"add"</span>, <span class="keyword">int</span>.class, <span class="keyword">int</span>.class);</div><div class="line">method.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> sum = (<span class="keyword">int</span>) method.invoke(instance, <span class="number">1</span>, <span class="number">2</span>);</div></pre></td></tr></table></figure>
+<ul>
+<li>私有属性：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Field field = cls.getDeclaredField(<span class="string">"obj"</span>);</div><div class="line">field.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> value = (<span class="keyword">int</span>) field.get(instance);</div></pre></td></tr></table></figure>
+<h4 id="2-5-反射内部类："><a href="#2-5-反射内部类：" class="headerlink" title="2.5 反射内部类："></a>2.5 反射内部类：</h4><p>内部类分 static 内部类与非 static 内部类，两者的反射方式有一定的区别：构造方法有所差异。</p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> obj = <span class="number">10</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Test</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> x + y;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> innerObj = <span class="number">20</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="title">Inner</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">staticInner</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> String innerField = <span class="string">"StaticInner Field"</span>;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> String innerStaticField = <span class="string">"StaticInner static Field"</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="title">staticInner</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">Sub</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">staticSub</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> x - y;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将 staticInner 和 Inner 对应的构造器、字段、方法打印出来，可看到：</p>
+<ul>
+<li><p>static 内部类的默认构造函数： private com.company.Test$staticInner()</p>
+</li>
+<li><p>非 static 内部类的默认构造函数： private com.company.Test$Inner(com.company.Test)</p>
+</li>
+</ul>
+<p>由此可知，非静态内部类相对于静态内部类来说多了一个参数com.company.Test，也就是说非 static 内部类保持了外部类的引用。</p>
+<h5 id="2-5-1-静态内部类："><a href="#2-5-1-静态内部类：" class="headerlink" title="2.5.1 静态内部类："></a>2.5.1 静态内部类：</h5><p>静态内部类构造器、字段、方法调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Class staticInnerCls = Class.forName(<span class="string">"com.company.Test$staticInner"</span>);</div><div class="line">Constructor staticInnerCons = staticInnerCls.getDeclaredConstructors()[<span class="number">0</span>];</div><div class="line">staticInnerCons.setAccessible(<span class="keyword">true</span>);</div><div class="line">Object staticInnerInstance = staticInnerCons.newInstance();</div><div class="line"></div><div class="line">Method staticInnerMethod = staticInnerCls.getDeclaredMethod(<span class="string">"Sub"</span>, <span class="keyword">int</span>.class, <span class="keyword">int</span>.class);</div><div class="line">staticInnerMethod.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> staticResult = (<span class="keyword">int</span>) staticInnerMethod.invoke(staticInnerInstance, <span class="number">4</span>, <span class="number">2</span>);</div><div class="line"></div><div class="line">Method staticMethod = staticInnerCls.getDeclaredMethod(<span class="string">"staticSub"</span>, <span class="keyword">int</span>.class, <span class="keyword">int</span>.class);</div><div class="line">staticMethod.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> staticMethodResult = (<span class="keyword">int</span>) staticMethod.invoke(staticInnerCls, <span class="number">5</span>, <span class="number">2</span>);</div><div class="line"></div><div class="line">Field staticField = staticInnerCls.getDeclaredField(<span class="string">"innerStaticField"</span>);</div><div class="line">staticField.setAccessible(<span class="keyword">true</span>);</div><div class="line">String staticValue = (String) staticField.get(staticInnerCls);</div><div class="line"></div><div class="line">Field staticInnerField = staticInnerCls.getDeclaredField(<span class="string">"innerField"</span>);</div><div class="line">staticInnerField.setAccessible(<span class="keyword">true</span>);</div><div class="line">String staticInnerValue = (String) staticInnerField.get(staticInnerInstance);</div></pre></td></tr></table></figure>
+<h5 id="2-5-2-非静态内部类："><a href="#2-5-2-非静态内部类：" class="headerlink" title="2.5.2 非静态内部类："></a>2.5.2 非静态内部类：</h5><p>反射构造器、字段、方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Class innerCls = Class.forName(<span class="string">"com.company.Test$Inner"</span>);</div><div class="line">Constructor innerConstructor = innerCls.getDeclaredConstructors()[<span class="number">0</span>];</div><div class="line">innerConstructor.setAccessible(<span class="keyword">true</span>);</div><div class="line">Object inngerObj = innerConstructor.newInstance(instance);</div><div class="line"></div><div class="line">Method innerMethod = innerCls.getDeclaredMethod(<span class="string">"sub"</span>, <span class="keyword">int</span>.class, <span class="keyword">int</span>.class);</div><div class="line">innerMethod.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> innerResult = (<span class="keyword">int</span>) innerMethod.invoke(inngerObj, <span class="number">3</span>, <span class="number">2</span>);</div><div class="line"></div><div class="line">Field innerField = innerCls.getDeclaredField(<span class="string">"innerObj"</span>);</div><div class="line">innerField.setAccessible(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">int</span> innerValue = (<span class="keyword">int</span>) innerField.get(inngerObj);</div></pre></td></tr></table></figure>
+<h3 id="3-反射功能："><a href="#3-反射功能：" class="headerlink" title="3. 反射功能："></a>3. 反射功能：</h3><ul>
+<li>在运行时判断任意一个对象所属的类；</li>
+<li>在运行时构造任意一个类的对象；</li>
+<li>在运行时判断任意一个类所具有的成员变量和方法；</li>
+<li>在运行时调用任意一个对象的方法；</li>
+<li>生成动态代理。</li>
+</ul>
+<h3 id="4-反射的利弊"><a href="#4-反射的利弊" class="headerlink" title="4. 反射的利弊"></a>4. 反射的利弊</h3><p>为什么要用反射机制？与直接创建对象相比， 有什么区别？此处就需要说明下动态与静态编译的概念。</p>
+<h4 id="4-1-静态编译和动态编译："><a href="#4-1-静态编译和动态编译：" class="headerlink" title="4.1 静态编译和动态编译："></a>4.1 静态编译和动态编译：</h4><ul>
+<li>静态编译：在编译时确定类型，绑定对象。 </li>
+<li>动态编译：运行时确定类型，绑定对象。动态编译最大限度发挥了java的灵活性，体现了多态的应用，有以降低类之间的藕合性。</li>
+</ul>
+<h4 id="4-2-利弊："><a href="#4-2-利弊：" class="headerlink" title="4.2 利弊："></a>4.2 利弊：</h4><ul>
+<li>优点：可以实现动态创建对象和编译，体现出很大的灵活性；比如，一个大型的软件，不可能一次就把把它设计的很完美，当这个程序编译后，发布了，当发现需要更新某些功能时，我们不可能要用户把以前的卸载，再重新安装新的版本，假如这样的话，这个软件肯定是没有多少人用的。采用静态的话，需要把整个程序重新编译一次才可以实现功能的更新，而采用反射机制的话，它就可以不用卸载，只需要在运行时才动态的创建和编译，就可以实现该功能。</li>
+<li>缺点：性能影响。使用反射基本上是一种解释操作，我们可以告诉JVM，我们希望做什么并且它满足我们的要求。这类操作总是慢于只直接执行相同的操作。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/反射/" rel="tag"># 反射</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/16/provider初始化/" rel="next" title="Android 多个 ContentProvider 初始化顺序">
+                <i class="fa fa-chevron-left"></i> Android 多个 ContentProvider 初始化顺序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-反射原理"><span class="nav-number">1.</span> <span class="nav-text">1. 反射原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何使用反射"><span class="nav-number">2.</span> <span class="nav-text">2. 如何使用反射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-核心类："><span class="nav-number">2.1.</span> <span class="nav-text">2.1 核心类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-核心方法："><span class="nav-number">2.2.</span> <span class="nav-text">2.2 核心方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-反射类："><span class="nav-number">2.3.</span> <span class="nav-text">2.3 反射类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-私有类以及类的私有方法或属性："><span class="nav-number">2.4.</span> <span class="nav-text">2.4 私有类以及类的私有方法或属性：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-反射内部类："><span class="nav-number">2.5.</span> <span class="nav-text">2.5 反射内部类：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-1-静态内部类："><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1 静态内部类：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-2-非静态内部类："><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2 非静态内部类：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-反射功能："><span class="nav-number">3.</span> <span class="nav-text">3. 反射功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-反射的利弊"><span class="nav-number">4.</span> <span class="nav-text">4. 反射的利弊</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-静态编译和动态编译："><span class="nav-number">4.1.</span> <span class="nav-text">4.1 静态编译和动态编译：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-利弊："><span class="nav-number">4.2.</span> <span class="nav-text">4.2 利弊：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
