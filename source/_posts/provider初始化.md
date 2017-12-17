@@ -1,6 +1,6 @@
 ---
 
-title: Android 多个 provider 初始化顺序
+title: Android 多个 ContentProvider 初始化顺序
 
 date:  2017-12-16 12:42:21
 
@@ -11,9 +11,9 @@ top: 22
 ---
 
 **缘起**：
-    利用 provider 来初始化你的 provider， 这个相信大家已经不太陌生了，下面简要说下。
+    利用 ContentProvider 来初始化你的 Library， 这个相信大家已经不太陌生了，下面简要说下。
 
-## 1. provider 初始化 library:
+## 1. 利用 ContentProvider 初始化 Library:
 
     在日常开发过程中， 经常会遇到 Library 都需要传入 Context 参数以完成初始化，此时这个 Context 参数一般会从 Application 对象的 onCreate 方法中获取。于是，很多 library 都会提供一个 init 方法，在Application Object中完成调用.
 
@@ -51,87 +51,62 @@ public class FirstProvider extends ContentProvider {
 Application.attachBaseContext(super before) -> Application.attachBaseContext(super after) -> ContentProvider.attachInfo(super before) -> ContentProvider.onCreate() -> ContentProvider.attachInfo(super after) -> Application.onCreate(super before) -> Application.onCreate(super after)
 ```
 
-## 2. 多个 provider 初始化顺序：
+## 2. 自定义 ContentProvider 初始化顺序：
  
-1. 如果 library 中有业务需要用到多个自定义 provider，如 A、B、C， 但是自定义用来初始化的 provider 为D， 由于初始化流程在 provider D 中开始的， 那么 A、B、C 就必须在 D 之后起来才行，那么D ->A、B、C 顺序怎么来定义呢？也就是如何保证 D 最先初始化。
+1. 如果 library 中有业务需要用到多个自定义 ContentProvider，如 A、B、C， 但是自定义用来初始化的 provider 为D， 由于初始化流程在 provider D 中开始的， 那么 A、B、C 就必须在 D 之后起来才行，那么D ->A、B、C 顺序怎么来定义呢？也就是如何保证 D 最先初始化。
 
-2. 为了验证多个 provider 初始化顺序，demo 中定义了三个 provider， 具体如下：
+2. 为了定义 provider 的初始化顺序，可以再 Manifest 中设置 initOrder 的值(值越大，最先初始化)，同时如果 Library 中有多进程， 那么也需要设置 android:multiprocess，具体如下：
    
    ```java
-   public class FirstProvider extends ContentProvider {
-    private static final String TAG = "FirstProvider";
-
-    @Override
-    public void attachInfo(Context context, ProviderInfo info) {
-        Log.e(TAG, "attachInfo 0 info = " + info.authority);
-        super.attachInfo(context, info);
-        Log.e(TAG, "attachInfo 1 info = " + info.authority);
-    }
-
-    @Override
-    public boolean onCreate() {
-        Log.e(TAG, "onCreate  pid = " + Process.myPid());
-        return true;
-    }
-    ......
-}
+    <provider
+    android:authorities="com.sivan.DContentProvider"
+                android:exported="false"
+                android:multiprocess="true"
+                android:initOrder="100"
+                android:name=".DContentProvider" />
    ```
-如此定义了 FirstProvider，SecondProvider 以及 ThirdProvider，然后在 Manifest 中注册：
+如此在 Demo 中定义了 FirstProvider，SecondProvider 以及 ThirdProvider 的 initOrder 的值：
 
 ```java
         <provider
                 android:authorities="com.sivan.FirstProvider"
                 android:exported="false"
+                android:initOrder="100"
                 android:name=".FirstProvider" />
+        
+        <provider
+                android:authorities="com.sivan.SecondProvider"
+                android:exported="false"
+                android:initOrder="50"
+                android:name=".SecondProvider" />
 
         <provider
                 android:authorities="com.sivan.ThirdProvider"
                 android:exported="false"
                 android:name=".ThirdProvider" />
-
-        <provider
-                android:authorities="com.sivan.SecondProvider"
-                android:exported="false"
-                android:name=".SecondProvider" />
 ```
 
 最后得到的日志信息如下：
 ```java
-MyApplication: attachBaseContext 0 pid = 8257
-MyApplication: attachBaseContext 1 pid = 8257
-ThirdProvider: attachInfo 0 com.sivan.ThirdProvider
-ThirdProvider: onCreate pid =8257
-ThirdProvider: attachInfo 1 com.sivan.ThirdProvider
+MyApplication: attachBaseContext 0 pid = 3725
+MyApplication: attachBaseContext 1 pid = 3725
+FirstProvider: attachInfo 0 com.sivan.FirstProvider
+FirstProvider: onCreate pid =3725
+FirstProvider: attachInfo 1 com.sivan.FirstProvider
 SecondProvider: attachInfo 0 info = com.sivan.SecondProvider
-SecondProvider: onCreate  pid = 8257
+SecondProvider: onCreate  pid = 3725
 SecondProvider: attachInfo 1 info = com.sivan.SecondProvider
-FirstProvider: attachInfo 0 info = com.sivan.FirstProvider
-FirstProvider: onCreate  pid = 8257
-FirstProvider: attachInfo 1 info = com.sivan.FirstProvider
-MyApplication: onCreate 0 pid = 8257
-MyApplication: onCreate 1 pid = 8257
+ThirdProvider: attachInfo 0 info = com.sivan.ThirdProvider
+ThirdProvider: onCreate  pid = 3725
+ThirdProvider: attachInfo 1 info = com.sivan.ThirdProvider
+MyApplication: onCreate 0 pid = 3725
+MyApplication: onCreate 1 pid = 3725
 ```
-可以看出启动顺序为：Third -> Second -> First
-从中基本上可以猜测出，provider 初始化的顺序是根据 android:name 相关，为了验证该结论， 将 FirstProvider name 修改为 TFirstProvider， 再看下日志信息：
+可以看出初始化流程：FirstProvider -> SecondProvider -> ThirdProvider
 
-```java
-MyApplication: attachBaseContext 0 pid = 9508
-MyApplication: attachBaseContext 1 pid = 9508
-ThirdProvider: attachInfo 0 info = com.sivan.FirstProvider
-ThirdProvider: onCreate  pid = 9508
-ThirdProvider: attachInfo 1 info = com.sivan.FirstProvider
-TFirstProvider: attachInfo 0 com.sivan.ThirdProvider
-TFirstProvider: onCreate pid =9508
-TFirstProvider: attachInfo 1 com.sivan.ThirdProvider
-SecondProvider: attachInfo 0 info = com.sivan.SecondProvider
-SecondProvider: onCreate  pid = 9508
-SecondProvider: attachInfo 1 info = com.sivan.SecondProvider
-MyApplication: onCreate 0 pid = 9508
-MyApplication: onCreate 1 pid = 9508
-```
-可以看出初始化流程：ThirdProvider -> TFirstProvider -> SecondProvider
+所以我们需要根据 android:initOrder 来调整自定义用来初始化的 ContentProvider， 要保证 D 在 A、B、C 之前来初始化。
 
-所以我们需要根据 android:name 来调整自定义用来初始化的 provider， 要保证 D 在 A、B、C 之前来初始化。
+如有不正之处，还请多多指教！
 
 
 
