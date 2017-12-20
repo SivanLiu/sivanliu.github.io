@@ -1,12 +1,12 @@
 ---
 
-title: Java 反射总结
+title: 浅谈 Java 反射
 
-date:  2017-12-17 16:00:21
+date:  2017-12-16 17:42:21
 
-tags: 反射
+tags:  java
 
-top: 22
+top: 23
 
 ---
 
