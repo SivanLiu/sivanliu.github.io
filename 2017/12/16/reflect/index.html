@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="反射," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -95,16 +95,16 @@
 
 
 <meta name="description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
-<meta name="keywords" content="反射">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java 反射总结">
-<meta property="og:url" content="http://yoursite.com/2017/12/17/reflect/index.html">
+<meta property="og:title" content="浅谈 Java 反射">
+<meta property="og:url" content="http://yoursite.com/2017/12/16/reflect/index.html">
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-17T08:12:44.503Z">
+<meta property="og:updated_time" content="2017-12-20T15:38:21.088Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java 反射总结">
+<meta name="twitter:title" content="浅谈 Java 反射">
 <meta name="twitter:description" content="在程序中，我们经常会用到发射，但有木有想到过为什么要使用反射，其实现原理是什么，有哪些使用场景？ 1. 反射原理反射机制就是在程序运行状态中，对于任意的一个类，你都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 简明扼要一句话：反射能够在程序运行时获取任意一个类的属性和方法。 2. 如何">
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/17/reflect/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/16/reflect/"/>
 
 
 
 
 
-  <title>Java 反射总结 | Sivan</title>
+  <title>浅谈 Java 反射 | Sivan</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/reflect/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/16/reflect/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SivanLiu">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java 反射总结</h1>
+          <h1 class="post-title" itemprop="name headline">浅谈 Java 反射</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T16:00:21+08:00">
-                2017-12-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T17:42:21+08:00">
+                2017-12-16
               </time>
             
 
@@ -563,7 +563,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/反射/" rel="tag"># 反射</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -585,6 +585,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/20/ConcurrentModificationException异常分析/" rel="prev" title="Java fast-fail 和 fast-safe 机制">
+                Java fast-fail 和 fast-safe 机制 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -661,7 +665,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -674,7 +678,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
