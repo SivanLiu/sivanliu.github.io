@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在实际需求中，往往会碰到需要检测当前正在运行的应用的 packageName 或者获取 Top Activity 等等，现在就来捋一捋该需求的实现方案。 1. getRunningTasks:5.0 以下版本可以正常使用，但 5.0 以上就不行了，Google 以泄露用户信息的理由禁用了该方法， getRunningTasks 将只返回应用自身和启动器相关信息 123456789101112131">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 获取 Top Activity 方案总结">
+<meta property="og:url" content="http://yoursite.com/2017/12/23/Android 监控 Top Activity/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="在实际需求中，往往会碰到需要检测当前正在运行的应用的 packageName 或者获取 Top Activity 等等，现在就来捋一捋该需求的实现方案。 1. getRunningTasks:5.0 以下版本可以正常使用，但 5.0 以上就不行了，Google 以泄露用户信息的理由禁用了该方法， getRunningTasks 将只返回应用自身和启动器相关信息 123456789101112131">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-23T00:56:55.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 获取 Top Activity 方案总结">
+<meta name="twitter:description" content="在实际需求中，往往会碰到需要检测当前正在运行的应用的 packageName 或者获取 Top Activity 等等，现在就来捋一捋该需求的实现方案。 1. getRunningTasks:5.0 以下版本可以正常使用，但 5.0 以上就不行了，Google 以泄露用户信息的理由禁用了该方法， getRunningTasks 将只返回应用自身和启动器相关信息 123456789101112131">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/23/Android 监控 Top Activity/"/>
+
+
+
+
+
+  <title>Android 获取 Top Activity 方案总结 | Sivan</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/23/Android 监控 Top Activity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android 获取 Top Activity 方案总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T08:42:21+08:00">
+                2017-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在实际需求中，往往会碰到需要检测当前正在运行的应用的 packageName 或者获取 Top Activity 等等，现在就来捋一捋该需求的实现方案。</p>
+<h3 id="1-getRunningTasks"><a href="#1-getRunningTasks" class="headerlink" title="1. getRunningTasks:"></a>1. getRunningTasks:</h3><p>5.0 以下版本可以正常使用，但 5.0 以上就不行了，Google 以泄露用户信息的理由禁用了该方法， getRunningTasks 将只返回应用自身和启动器相关信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isTopActivy</span><span class="params">(String name, Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (context == <span class="keyword">null</span> || name == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</div><div class="line">        List&lt;ActivityManager.RunningTaskInfo&gt; taskInfos = manager.getRunningTasks(Integer.MAX_VALUE);</div><div class="line">        String topActivityName = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (manager != <span class="keyword">null</span> &amp;&amp; taskInfos != <span class="keyword">null</span>) &#123;</div><div class="line">            topActivityName = (taskInfos.get(<span class="number">0</span>).topActivity).toString();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == topActivityName) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> name.equals(name);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-getRunningAppProcesses"><a href="#2-getRunningAppProcesses" class="headerlink" title="2. getRunningAppProcesses"></a>2. getRunningAppProcesses</h3><p>在 5.0 系统可正常使用，但到 5.1 系统上就不行，调用该方法只能返回应用本身的相关信息，而且官方也说了只是用于 “debugging and management user interfaces”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isFrontApp</span><span class="params">(Context context, String packageName)</span> </span>&#123;</div><div class="line">        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">            List&lt;ActivityManager.RunningAppProcessInfo&gt; tasks = mActivityManager.getRunningAppProcesses();</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != tasks &amp;&amp; tasks.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">return</span> packageName.equals(tasks.get(<span class="number">0</span>).processName);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="3-ActivityLifecycleCallbacks"><a href="#3-ActivityLifecycleCallbacks" class="headerlink" title="3. ActivityLifecycleCallbacks"></a>3. ActivityLifecycleCallbacks</h3><p>大家都知道在 Activity 的生命周期中，如果 Activity 调用了 onResume 方法，那么它在前台，如果 Activity 调用了onPause()，那么该 Activity 就到了后台。那么紧紧靠这两个就够了吗？当然不行，还需要考虑到 onStart() 和 onStop() 回调，为什么呢？因为 onStart() 和 onStop() 是 Activity 可见状态切换的回调；onResume() 和 onPause() 是 Activity 活动状态的回调。<br>如从 A -&gt; B 的时候，跳转流程：<br>A.onPause() -&gt; B.onStart() -&gt; B.onResume() -&gt; A.onStop()<br>基于此类特征，可以定义一个全局计数器，来记录前台页面的数量，在所有 Activity.onStart() 中计数器 +1，在所有 Activity.onStop() 中计数器 -1。计数器数目大于0，说明应用在前台；计数器数目等于 0，说明应用在后台。计数器从 1 变成 0，说明应用从前台进入后台；计数器从 0 变成 1，说明应用从后台进入前台。<br>还有另外两类情况：<br>1）没有配置 configChanges 和 screenOrientation，屏幕旋转造成 Activity 重启；<br>2）手动调用 Activity.recreate() 重启 Activity；</p>
+<p>此类情形下，Activity 会完整的走完销毁流程，之后重走创建流程，这时候计数器逻辑会出现问题。因此添加一个缓冲计数器来处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> ActivityLifecycleCallbacksImpl mActivityLifecycleCallbacksImpl;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate();</div><div class="line">        mActivityLifecycleCallbacksImpl = <span class="keyword">new</span> ActivityLifecycleCallbacksImpl();</div><div class="line">        <span class="keyword">this</span>.registerActivityLifecycleCallbacks(mActivityLifecycleCallbacksImpl);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityLifecycleCallbacksImpl</span> <span class="keyword">implements</span> <span class="title">ActivityLifecycleCallbacks</span> </span>&#123;</div><div class="line">        <span class="comment">// 前台 Activity 的数目</span></div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mFrontActivityCount = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 缓冲计数器，记录 configChanges 的状态</span></div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> tmpCount = <span class="number">0</span>;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span><span class="params">(Activity activity, Bundle savedInstanceState)</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityStarted</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (mFrontActivityCount &lt;= <span class="number">0</span>) &#123;</div><div class="line">                <span class="comment">// TODO 处理从后台恢复到前台的逻辑</span></div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> (tmpCount &lt; <span class="number">0</span>) &#123;</div><div class="line">                tmpCount++;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                mFrontActivityCount++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityResumed</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityPaused</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityStopped</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">            <span class="comment">// 遇到 configChanges 情况，操作缓冲计数器</span></div><div class="line">            <span class="keyword">if</span> (activity.isChangingConfigurations()) &#123;</div><div class="line">                tmpCount--;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                mFrontActivityCount--;</div><div class="line">                <span class="keyword">if</span> (mFrontActivityCount &lt;= <span class="number">0</span>) &#123;</div><div class="line">                    <span class="comment">// TODO 处理从前台进入到后台的逻辑</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivitySaveInstanceState</span><span class="params">(Activity activity, Bundle outState)</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityDestroyed</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="4-UsageStatsManager"><a href="#4-UsageStatsManager" class="headerlink" title="4. UsageStatsManager"></a>4. UsageStatsManager</h3><p>利用 UsageStatsManager，并调用 queryUsageStats 方法来获得启动的历史记录，在这之前需要设置权限“Apps withusage access”。但是这个 queryUsageStats 只能查询一段时间内的使用状态，如果时间间隔较短，并且一段时间不使用手机，获得的列表就可能为空。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.PACKAGE_USAGE_STATS"</span></span></div><div class="line"><span class="tag">            <span class="attr">tools:ignore</span>=<span class="string">"ProtectedPermissions"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getFrontPackageName</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        String topPackageName = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">            UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);</div><div class="line">            <span class="keyword">long</span> time = System.currentTimeMillis();</div><div class="line">            <span class="comment">// We get usage stats for the last 10 seconds</span></div><div class="line">            List&lt;UsageStats&gt; stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - <span class="number">1000</span> * <span class="number">10</span>, time);</div><div class="line">            <span class="comment">// Sort the stats by the last time used</span></div><div class="line">            <span class="keyword">if</span> (stats != <span class="keyword">null</span>) &#123;</div><div class="line">                SortedMap&lt;Long, UsageStats&gt; mySortedMap = <span class="keyword">new</span> TreeMap&lt;&gt;();</div><div class="line">                <span class="keyword">for</span> (UsageStats usageStats : stats) &#123;</div><div class="line">                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (mySortedMap != <span class="keyword">null</span> &amp;&amp; !mySortedMap.isEmpty()) &#123;</div><div class="line">                    topPackageName = mySortedMap.get(mySortedMap.lastKey()).getPackageName();</div><div class="line">                    <span class="keyword">return</span> topPackageName;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="5-辅助功能（AccessibilityService"><a href="#5-辅助功能（AccessibilityService" class="headerlink" title="5. 辅助功能（AccessibilityService)"></a>5. 辅助功能（AccessibilityService)</h3><p>使用辅助功能监控当前 Active Window，然后利用回调函数 onAccessibilityEvent 过滤事件类型 TYPE_WINDOW_STATE_CHANGED 获知当前 window 改变，<br>通过调用 PackageManager.getActivityInfo() 获取当前应用的 packageName，兼容性比较好，但必须要求用户手动在手机的设置页面开启 Android’s accessibility settings 才能收到 AccessibilityEvent事件，当用户在设置页面开启 AccessibilityService 的时候，有些第三方应用会弹出一个悬浮窗盖住屏幕，导致用户无法点击确认按钮。AccessibilityService 是被动触发的，无法主动获知当前应用的信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAccessibilityService</span> <span class="keyword">extends</span> <span class="title">AccessibilityService</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> String mPackageName = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAccessibilityEvent</span><span class="params">(AccessibilityEvent event)</span> </span>&#123;</div><div class="line">            <span class="comment">//过滤下事件类型</span></div><div class="line">            <span class="keyword">if</span> (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) &#123;</div><div class="line"></div><div class="line">                <span class="comment">//TODO 可以根据需要做适当处理</span></div><div class="line">                mPackageName = event.getPackageName().toString();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onInterrupt</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>服务注册：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">service</span></span></div><div class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">".MyAccessibilityService"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:permission</span>=<span class="string">"android.permission.BIND_ACCESSIBILITY_SERVICE"</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.accessibilityservice.AccessibilityService"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></div><div class="line"><span class="tag">            <span class="attr">android:name</span>=<span class="string">"android.accessibilityservice"</span></span></div><div class="line"><span class="tag">            <span class="attr">android:resource</span>=<span class="string">"@xml/accessibility_service_config"</span>/&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">service</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">accessibility-service</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:description</span>=<span class="string">"@string/accessibility_service_description"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:accessibilityEventTypes</span>=<span class="string">"typeAllMask"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:accessibilityFeedbackType</span>=<span class="string">"feedbackGeneric"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:notificationTimeout</span>=<span class="string">"100"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:accessibilityFlags</span>=<span class="string">"flagDefault"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:canRetrieveWindowContent</span>=<span class="string">"true"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:packageNames</span>=<span class="string">"cm.sivan.demo"</span></span></div><div class="line"><span class="tag">        <span class="attr">android:settingsActivity</span>=<span class="string">"cm.sivan.demo.MainActivity"</span>  /&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="6-读取-proc目录下的信息"><a href="#6-读取-proc目录下的信息" class="headerlink" title="6. 读取/proc目录下的信息"></a>6. 读取/proc目录下的信息</h3><p>jaredrummler 的<a href="https://github.com/jaredrummler/AndroidProcesses" target="_blank" rel="external">作品</a>，被很多流行应用使用了，比如 ES File Explorer, Clean Master, Security Master, CM Launcher 3D, Virus Cleaner 等应用，但是在 Android 7.0 (Nougat)不好用了，目前 jaredrummler 已经废弃了该库，感兴趣的可以看看，还是有很多值得学习的地方。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Get a list of running apps</span></div><div class="line">List&lt;AndroidAppProcess&gt; processes = AndroidProcesses.getRunningAppProcesses();</div><div class="line"></div><div class="line"><span class="keyword">for</span> (AndroidAppProcess process : processes) &#123;</div><div class="line">  <span class="comment">// Get some information about the process</span></div><div class="line">  String processName = process.name;</div><div class="line"></div><div class="line">  Stat stat = process.stat();</div><div class="line">  <span class="keyword">int</span> pid = stat.getPid();</div><div class="line">  <span class="keyword">int</span> parentProcessId = stat.ppid();</div><div class="line">  <span class="keyword">long</span> startTime = stat.stime();</div><div class="line">  <span class="keyword">int</span> policy = stat.policy();</div><div class="line">  <span class="keyword">char</span> state = stat.state();</div><div class="line"></div><div class="line">  Statm statm = process.statm();</div><div class="line">  <span class="keyword">long</span> totalSizeOfProcess = statm.getSize();</div><div class="line">  <span class="keyword">long</span> residentSetSize = statm.getResidentSetSize();</div><div class="line"></div><div class="line">  PackageInfo packageInfo = process.getPackageInfo(context, <span class="number">0</span>);</div><div class="line">  String appName = packageInfo.applicationInfo.loadLabel(pm).toString();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>相信看到这里，对于想要获取前台应用包名或者 Top Activity 的需求，你一定会有相应的解决方案了，以后有更好的方法还会继续更新。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>权限要求</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getRunningTasks</td>
+<td>否</td>
+<td>4.0 可判断其他应用是否位于前台，5.0以后被废弃（只能获取自己应用的信息）</td>
+</tr>
+<tr>
+<td>getRunningAppProcesses</td>
+<td>否</td>
+<td>当p存在后台常驻的Service时失效</td>
+</tr>
+<tr>
+<td>ActivityLifecycleCallbacks</td>
+<td>否</td>
+<td>简单、需要适配</td>
+</tr>
+<tr>
+<td>UsageStatsManager</td>
+<td>要</td>
+<td>可判断其他应用是否位于前台，用户手动给予权限</td>
+</tr>
+<tr>
+<td>AccessibilityService</td>
+<td>要</td>
+<td>可判断其他应用是否位于前台，用户手动打开辅助功能</td>
+</tr>
+<tr>
+<td>读取/proc目录下的信息</td>
+<td>否</td>
+<td>可判断其他应用是否位于前台</td>
+</tr>
+</tbody>
+</table>
+<p>参考：</p>
+<ol>
+<li><a href="http://blog.takwolf.com/2017/06/29/android-application-foreground-and-background-switch-listener/index.html" target="_blank" rel="external">http://blog.takwolf.com/2017/06/29/android-application-foreground-and-background-switch-listener/index.html</a></li>
+</ol>
+<p><strong>如有不正之处，还望批评指正！</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/22/Activity/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-getRunningTasks"><span class="nav-number">1.</span> <span class="nav-text">1. getRunningTasks:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-getRunningAppProcesses"><span class="nav-number">2.</span> <span class="nav-text">2. getRunningAppProcesses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ActivityLifecycleCallbacks"><span class="nav-number">3.</span> <span class="nav-text">3. ActivityLifecycleCallbacks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-UsageStatsManager"><span class="nav-number">4.</span> <span class="nav-text">4. UsageStatsManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-辅助功能（AccessibilityService"><span class="nav-number">5.</span> <span class="nav-text">5. 辅助功能（AccessibilityService)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-读取-proc目录下的信息"><span class="nav-number">6.</span> <span class="nav-text">6. 读取/proc目录下的信息</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
