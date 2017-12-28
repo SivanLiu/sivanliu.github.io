@@ -22,12 +22,12 @@ top: 13
 个人觉得选择 VPS 还是尽量选择国外比较有名的提供商吧，至少可以保证稳定性，价格也比较合理，甚至还比国内的便宜，如 Vultr、Digital Ocean、Linode、bandwagonhost、BudgetVM。对比了下，最终选择了 BudgetVM 最便宜的一个 $25：RAM(512), VSwap(256MB), Storage(50GB), Transfer(2TB)。这个配置对于搭建 ss 来说绰绰有余，而且流量也够用了。
 
 #### 3.部署 ss 服务：
-此过程为了方便，选择的是脚本一键安装（https://teddysun.com/486.html)，很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。
+此过程为了方便，选择的是脚本一键安装 <https://teddysun.com/486.html>，很简单，什么配置、优化都帮你做好了，还支持自定义多用户配置，炒鸡方便。
 
 ### 4.安装 ss 客户端：
 ss 客户端基本上都有现成的：
-https://sourceforge.net/projects/shadowsocksgui/files/dist/  
-https://github.com/shadowsocks  
+1）<https://sourceforge.net/projects/shadowsocksgui/files/dist/>  
+2）<https://github.com/shadowsocks>  
 选择适合自己系统的版本下载、安装  
 我用的是 Debian，无奈装了个 linux 版本的不行，只有自己手动编译个 deb 包了，最后果然好使  
 iphone: 可在 appstore 中下载相应的客户端， 如黑洞（全局代理），wingy（自动代理，需要切换到美国区下载）  
