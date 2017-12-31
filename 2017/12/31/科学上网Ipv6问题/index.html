@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="工具," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
+<meta name="keywords" content="工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VPS 设置 IPv6&#x2F;IPv4 模式科学上网">
+<meta property="og:url" content="http://yoursite.com/2017/12/31/科学上网Ipv6问题/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-31T03:32:30.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VPS 设置 IPv6&#x2F;IPv4 模式科学上网">
+<meta name="twitter:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/31/科学上网Ipv6问题/"/>
+
+
+
+
+
+  <title>VPS 设置 IPv6/IPv4 模式科学上网 | Sivan</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/31/科学上网Ipv6问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VPS 设置 IPv6/IPv4 模式科学上网</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T11:42:21+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：</p>
+<ul>
+<li>为什么访问 google 页面偶尔会出现验证码输入页面？</li>
+<li>为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？</li>
+</ul>
+<h3 id="问题的根源："><a href="#问题的根源：" class="headerlink" title="问题的根源："></a>问题的根源：</h3><p>针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当然不是啦，只有 google 检测到你的网段发生异常的时候才会进行过滤，比如说你的 vps，ipv4 或者 ipv6 网段被用来做爬虫爬取 google 内容，但是 google 一般不会把你的 ipv4 和 ipv6 地址全部屏蔽。</p>
+<h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><h5 id="确定-Ipv4-还是-Ipv6-被封锁了："><a href="#确定-Ipv4-还是-Ipv6-被封锁了：" class="headerlink" title="确定 Ipv4 还是 Ipv6 被封锁了："></a>确定 Ipv4 还是 Ipv6 被封锁了：</h5><p>1.找到访问 google 的 ip 地址，当你通过 ss 使用 google 时，出现了验证码页面，上面会有相应的 ip 地址，此时你就可以知道是 ipv4 还是 ipv6 被封掉了。</p>
+<ol>
+<li>可以在 vps 上用 curl 命令测试下：<br>1）Ipv4 测试：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@154255 ~]# curl -4 -s -w 'Testing Website Response Time for :%&#123;url_effective&#125;\n\nLookup Time:\t\t%&#123;time_namelookup&#125;\nConnect Time:\t\t%&#123;time_connect&#125;\nPre-transfer Time:\t%&#123;time_pretransfer&#125;\nStart-transfer Time:\t%&#123;time_starttransfer&#125;\n\nTotal Time:\t\t%&#123;time_total&#125;\n' -o /dev/null http://www.google.com</div><div class="line">Testing Website Response Time for :http://www.google.com/</div></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Lookup Time:		0.030</div><div class="line">Connect Time:		0.032</div><div class="line">Pre-transfer Time:	0.032</div><div class="line">Start-transfer Time:	0.086</div><div class="line"></div><div class="line">Total Time:		0.086</div></pre></td></tr></table></figure>
+<ul>
+<li>Ipv6 测试：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@154255 ~]# curl -s --ipv6 -w 'Testing Website Response Time for :%&#123;url_effective&#125;\n\nLookup Time:\t\t%&#123;time_namelookup&#125;\nConnect Time:\t\t%&#123;time_connect&#125;\nPre-transfer Time:\t%&#123;time_pretransfer&#125;\nStart-transfer Time:\t%&#123;time_starttransfer&#125;\n\nTotal Time:\t\t%&#123;time_total&#125;\n' -o /dev/null http://www.google.com</div><div class="line">Testing Website Response Time for :http://www.google.com/</div></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Lookup Time:            0.061</div><div class="line">Connect Time:           63.063</div><div class="line">Pre-transfer Time:      63.063</div><div class="line">Start-transfer Time:    63.116</div><div class="line"></div><div class="line">Total Time:             63.116</div></pre></td></tr></table></figure>
+<p>从上述结果可以看到，ipv6 连接时间很长，说明 ipv6 不正常，已经被封锁了。</p>
+<h5 id="设置指定模式（Ipv4-or-Ipv6）访问："><a href="#设置指定模式（Ipv4-or-Ipv6）访问：" class="headerlink" title="设置指定模式（Ipv4 or Ipv6）访问："></a>设置指定模式（Ipv4 or Ipv6）访问：</h5><p>1.强制 Ipv4 访问，一般情况下，Vps 会同时支持 Ipv4 和 Ipv6，此时你只需设置禁用 Ipv6 访问模式即可：<br>1）编辑/etc/sysctl.conf，在文件末尾加入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> disable ipv6</div><div class="line">net.ipv6.conf.all.disable_ipv6=1</div><div class="line">net.ipv6.conf.default.disable_ipv6=1</div><div class="line">net.ipv6.conf.lo.disable_ipv6=1</div></pre></td></tr></table></figure>
+<p>然后执行如下命令，让修改过的模式生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sysctl -p</div></pre></td></tr></table></figure>
+<ol>
+<li>强制使用 Ipv6 模式访问：<br>如果是 IPv4 地址被封，那么只需要强制 VPS 使用 Ipv6 访问 Google 就行了。<br>在 VPS 的 hosts 中指定 Google 的Ipv6 <a href="https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts" target="_blank" rel="external">https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts</a> 地址即可。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2404:6800:4008:c00::71 google.com</div><div class="line">2404:6800:4008:c02::63 www.google.com</div><div class="line">2404:6800:4008:c04::66 aboutme.google.com #plus.l.google.com</div><div class="line">2404:6800:4008:c00::54 accounts.google.com #accounts.l.google.com</div><div class="line">2404:6800:4008:c03::71 admin.google.com</div></pre></td></tr></table></figure>
+<p>最后重新启动下 ss 服务，应该就可以正常访问 google 了。</p>
+<h3 id="ssh-解决-SSH-超时断开问题："><a href="#ssh-解决-SSH-超时断开问题：" class="headerlink" title="ssh 解决 SSH 超时断开问题："></a>ssh 解决 SSH 超时断开问题：</h3><p>平时通过终端连接服务器时，当长时间不操作，服务器就会自动断开连接，也就是 SSH 超时断开，下次操作需要重新连接，感觉很麻烦，总结一下解决此问题的方法。</p>
+<ol>
+<li>配置服务器:</li>
+</ol>
+<p>1）修改/etc/ssh/sshd_config 配置文件，找到ClientAliveCountMax（单位为分钟）修改你想要的值，执行service sshd reload：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ClientAliveInterval 30</div><div class="line">ClientAliveCountMax 3</div></pre></td></tr></table></figure>
+<ul>
+<li>ClientAliveInterval：指服务器端向客户端发送检测是否活跃消息的时间间隔。默认是 0，不发送。将其修改为 30，表示每 30 分发送一次消息。</li>
+<li>ClientAliveCountMax：表示服务器发出请求后，服务器可接受的客户端未响应次数，达到该值后，连接会自动断开。默认是 0，使用其默认值即可。</li>
+</ul>
+<p>2）重新启动 sshd 服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service sshd restart</div></pre></td></tr></table></figure>
+<p>2.配置服务器，修改/etc/profile 配置文件，增加 TMOUT：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TMOUT=1800</div></pre></td></tr></table></figure>
+<p>使修改过的配置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
+<p>如此一来，30 分钟没操作就自动 LOGOUT（SSH超时断开）</p>
+<p>常用的就上述两种方法！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/工具/" rel="tag"># 工具</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/23/Android 监控 Top Activity/" rel="next" title="Android 获取 Top Activity 方案总结">
+                <i class="fa fa-chevron-left"></i> Android 获取 Top Activity 方案总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题的根源："><span class="nav-number">1.</span> <span class="nav-text">问题的根源：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案："><span class="nav-number">2.</span> <span class="nav-text">解决方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#确定-Ipv4-还是-Ipv6-被封锁了："><span class="nav-number">2.0.1.</span> <span class="nav-text">确定 Ipv4 还是 Ipv6 被封锁了：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置指定模式（Ipv4-or-Ipv6）访问："><span class="nav-number">2.0.2.</span> <span class="nav-text">设置指定模式（Ipv4 or Ipv6）访问：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-解决-SSH-超时断开问题："><span class="nav-number">3.</span> <span class="nav-text">ssh 解决 SSH 超时断开问题：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
