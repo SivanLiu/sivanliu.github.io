@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-31T03:38:03.258Z">
+<meta property="og:updated_time" content="2017-12-31T03:42:44.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VPS 设置 IPv6&#x2F;IPv4 模式科学上网">
 <meta name="twitter:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
@@ -338,8 +338,9 @@
 <h3 id="问题的根源："><a href="#问题的根源：" class="headerlink" title="问题的根源："></a>问题的根源：</h3><p>针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当然不是啦，只有 google 检测到你的网段发生异常的时候才会进行过滤，比如说你的 vps，ipv4 或者 ipv6 网段被用来做爬虫爬取 google 内容，但是 google 一般不会把你的 ipv4 和 ipv6 地址全部屏蔽。</p>
 <h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><h5 id="确定-Ipv4-还是-Ipv6-被封锁了："><a href="#确定-Ipv4-还是-Ipv6-被封锁了：" class="headerlink" title="确定 Ipv4 还是 Ipv6 被封锁了："></a>确定 Ipv4 还是 Ipv6 被封锁了：</h5><ol>
 <li>找到访问 google 的 ip 地址，当你通过 ss 使用 google 时，出现了验证码页面，上面会有相应的 ip 地址，此时你就可以知道是 ipv4 还是 ipv6 被封掉了。</li>
-<li>可以在 vps 上用 curl 命令测试下：<br>1）Ipv4 测试：</li>
+<li>可以在 vps 上用 curl 命令测试下：</li>
 </ol>
+<p>1）Ipv4 测试：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@154255 ~]# curl -4 -s -w 'Testing Website Response Time for :%&#123;url_effective&#125;\n\nLookup Time:\t\t%&#123;time_namelookup&#125;\nConnect Time:\t\t%&#123;time_connect&#125;\nPre-transfer Time:\t%&#123;time_pretransfer&#125;\nStart-transfer Time:\t%&#123;time_starttransfer&#125;\n\nTotal Time:\t\t%&#123;time_total&#125;\n' -o /dev/null http://www.google.com</div><div class="line">Testing Website Response Time for :http://www.google.com/</div></pre></td></tr></table></figure>
 <p>结果：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Lookup Time:		0.030</div><div class="line">Connect Time:		0.032</div><div class="line">Pre-transfer Time:	0.032</div><div class="line">Start-transfer Time:	0.086</div><div class="line"></div><div class="line">Total Time:		0.086</div></pre></td></tr></table></figure>
@@ -348,15 +349,11 @@
 <p>结果：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Lookup Time:            0.061</div><div class="line">Connect Time:           63.063</div><div class="line">Pre-transfer Time:      63.063</div><div class="line">Start-transfer Time:    63.116</div><div class="line"></div><div class="line">Total Time:             63.116</div></pre></td></tr></table></figure>
 <p>从上述结果可以看到，ipv6 连接时间很长，说明 ipv6 不正常，已经被封锁了。</p>
-<h5 id="设置指定模式（Ipv4-or-Ipv6）访问："><a href="#设置指定模式（Ipv4-or-Ipv6）访问：" class="headerlink" title="设置指定模式（Ipv4 or Ipv6）访问："></a>设置指定模式（Ipv4 or Ipv6）访问：</h5><ol>
-<li>强制 Ipv4 访问，一般情况下，Vps 会同时支持 Ipv4 和 Ipv6，此时你只需设置禁用 Ipv6 访问模式即可：<br>1）编辑/etc/sysctl.conf，在文件末尾加入：</li>
-</ol>
+<h5 id="设置指定模式（Ipv4-or-Ipv6）访问："><a href="#设置指定模式（Ipv4-or-Ipv6）访问：" class="headerlink" title="设置指定模式（Ipv4 or Ipv6）访问："></a>设置指定模式（Ipv4 or Ipv6）访问：</h5><p>1.强制 Ipv4 访问，一般情况下，Vps 会同时支持 Ipv4 和 Ipv6，此时你只需设置禁用 Ipv6 访问模式即可：<br>1）编辑/etc/sysctl.conf，在文件末尾加入：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> disable ipv6</div><div class="line">net.ipv6.conf.all.disable_ipv6=1</div><div class="line">net.ipv6.conf.default.disable_ipv6=1</div><div class="line">net.ipv6.conf.lo.disable_ipv6=1</div></pre></td></tr></table></figure>
 <p>然后执行如下命令，让修改过的模式生效：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sysctl -p</div></pre></td></tr></table></figure>
-<ol>
-<li>强制使用 Ipv6 模式访问：<br>如果是 IPv4 地址被封，那么只需要强制 VPS 使用 Ipv6 访问 Google 就行了。<br>在 VPS 的 hosts 中指定 Google 的Ipv6 <a href="https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts" target="_blank" rel="external">https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts</a> 地址即可。</li>
-</ol>
+<p>2.强制使用 Ipv6 模式访问：<br>如果是 IPv4 地址被封，那么只需要强制 VPS 使用 Ipv6 访问 Google 就行了。<br>在 VPS 的 hosts 中指定 Google 的Ipv6 <a href="https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts" target="_blank" rel="external">https://raw.githubusercontent.com/lennylxx/ipv6-hosts/master/hosts</a> 地址即可。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2404:6800:4008:c00::71 google.com</div><div class="line">2404:6800:4008:c02::63 www.google.com</div><div class="line">2404:6800:4008:c04::66 aboutme.google.com #plus.l.google.com</div><div class="line">2404:6800:4008:c00::54 accounts.google.com #accounts.l.google.com</div><div class="line">2404:6800:4008:c03::71 admin.google.com</div></pre></td></tr></table></figure>
 <p>最后重新启动下 ss 服务，应该就可以正常访问 google 了。</p>
 <h3 id="ssh-解决-SSH-超时断开问题："><a href="#ssh-解决-SSH-超时断开问题：" class="headerlink" title="ssh 解决 SSH 超时断开问题："></a>ssh 解决 SSH 超时断开问题：</h3><p>平时通过终端连接服务器时，当长时间不操作，服务器就会自动断开连接，也就是 SSH 超时断开，下次操作需要重新连接，感觉很麻烦，总结一下解决此问题的方法。</p>
@@ -371,9 +368,7 @@
 </ul>
 <p>2）重新启动 sshd 服务：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service sshd restart</div></pre></td></tr></table></figure>
-<ol>
-<li>修改/etc/profile 配置文件，增加 TMOUT：</li>
-</ol>
+<p>2.修改/etc/profile 配置文件，增加 TMOUT：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TMOUT=1800</div></pre></td></tr></table></figure>
 <p>使修改过的配置生效：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
