@@ -92,7 +92,7 @@ sysctl -p
 ### ssh 解决 SSH 超时断开问题：
 平时通过终端连接服务器时，当长时间不操作，服务器就会自动断开连接，也就是 SSH 超时断开，下次操作需要重新连接，感觉很麻烦，总结一下解决此问题的方法。
 
-1. 修改 sshd_config 文件:
+1.修改 sshd_config 文件:
 
 1）打开 /etc/ssh/sshd_config 配置文件，找到ClientAliveCountMax（单位为分钟）修改你想要的值，执行service sshd reload：
 
