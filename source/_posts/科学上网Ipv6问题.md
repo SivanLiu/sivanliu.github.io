@@ -21,7 +21,7 @@ top: 26
 ### 解决方案：
 ##### 确定 Ipv4 还是 Ipv6 被封锁了：
 
-1.找到访问 google 的 ip 地址，当你通过 ss 使用 google 时，出现了验证码页面，上面会有相应的 ip 地址，此时你就可以知道是 ipv4 还是 ipv6 被封掉了。
+1. 找到访问 google 的 ip 地址，当你通过 ss 使用 google 时，出现了验证码页面，上面会有相应的 ip 地址，此时你就可以知道是 ipv4 还是 ipv6 被封掉了。
 2. 可以在 vps 上用 curl 命令测试下：
 1）Ipv4 测试：
 
@@ -39,7 +39,7 @@ Start-transfer Time:	0.086
 
 Total Time:		0.086
 ```
-* Ipv6 测试：
+2）Ipv6 测试：
 
 ```shell
 [root@154255 ~]# curl -s --ipv6 -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null http://www.google.com
@@ -60,7 +60,7 @@ Total Time:             63.116
 从上述结果可以看到，ipv6 连接时间很长，说明 ipv6 不正常，已经被封锁了。
 
 ##### 设置指定模式（Ipv4 or Ipv6）访问：
-1.强制 Ipv4 访问，一般情况下，Vps 会同时支持 Ipv4 和 Ipv6，此时你只需设置禁用 Ipv6 访问模式即可：
+1. 强制 Ipv4 访问，一般情况下，Vps 会同时支持 Ipv4 和 Ipv6，此时你只需设置禁用 Ipv6 访问模式即可：
 1）编辑/etc/sysctl.conf，在文件末尾加入：
 
 ```shell
@@ -91,9 +91,9 @@ sysctl -p
 ### ssh 解决 SSH 超时断开问题：
 平时通过终端连接服务器时，当长时间不操作，服务器就会自动断开连接，也就是 SSH 超时断开，下次操作需要重新连接，感觉很麻烦，总结一下解决此问题的方法。
 
-1. 配置服务器:
+1. 修改 sshd_config 文件:
 
-1）修改/etc/ssh/sshd_config 配置文件，找到ClientAliveCountMax（单位为分钟）修改你想要的值，执行service sshd reload：
+1）打开 /etc/ssh/sshd_config 配置文件，找到ClientAliveCountMax（单位为分钟）修改你想要的值，执行service sshd reload：
 
 ```shell
 ClientAliveInterval 30
@@ -108,7 +108,7 @@ ClientAliveCountMax 3
 service sshd restart
 ```
 
-2.配置服务器，修改/etc/profile 配置文件，增加 TMOUT：
+2. 修改/etc/profile 配置文件，增加 TMOUT：
 
 ```shell
 TMOUT=1800
