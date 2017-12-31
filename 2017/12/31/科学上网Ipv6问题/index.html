@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-31T03:42:44.004Z">
+<meta property="og:updated_time" content="2017-12-31T03:44:32.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VPS 设置 IPv6&#x2F;IPv4 模式科学上网">
 <meta name="twitter:description" content="想必那些经常科学访问 google 的友友们，肯定会遇到这样的问题：  为什么访问 google 页面偶尔会出现验证码输入页面？ 为什么可以 ping 通 google，但是用命令行（w3m，curl，lynx，links）浏览网页超级慢，甚至打不开？  问题的根源：针对上述问题的原因基本上是由于 google 对你的 ip 地址做了 ipv4 或者 ipv6 过滤，为什么会做过滤呢？必须的吗？当">
@@ -357,9 +357,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2404:6800:4008:c00::71 google.com</div><div class="line">2404:6800:4008:c02::63 www.google.com</div><div class="line">2404:6800:4008:c04::66 aboutme.google.com #plus.l.google.com</div><div class="line">2404:6800:4008:c00::54 accounts.google.com #accounts.l.google.com</div><div class="line">2404:6800:4008:c03::71 admin.google.com</div></pre></td></tr></table></figure>
 <p>最后重新启动下 ss 服务，应该就可以正常访问 google 了。</p>
 <h3 id="ssh-解决-SSH-超时断开问题："><a href="#ssh-解决-SSH-超时断开问题：" class="headerlink" title="ssh 解决 SSH 超时断开问题："></a>ssh 解决 SSH 超时断开问题：</h3><p>平时通过终端连接服务器时，当长时间不操作，服务器就会自动断开连接，也就是 SSH 超时断开，下次操作需要重新连接，感觉很麻烦，总结一下解决此问题的方法。</p>
-<ol>
-<li>修改 sshd_config 文件:</li>
-</ol>
+<p>1.修改 sshd_config 文件:</p>
 <p>1）打开 /etc/ssh/sshd_config 配置文件，找到ClientAliveCountMax（单位为分钟）修改你想要的值，执行service sshd reload：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ClientAliveInterval 30</div><div class="line">ClientAliveCountMax 3</div></pre></td></tr></table></figure>
 <ul>
