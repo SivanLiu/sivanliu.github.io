@@ -74,8 +74,13 @@ public abstract int getComponentEnabledSetting(ComponentName componentName);
 
 基本上就这些点儿了，下面附上 Demo 效果：
 
-![效果](https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif)
+![](https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif)
 
 
+![](https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/compare.jpg)
+
+
+
+![Alt Text]("https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/compare.jpg")
 
 
