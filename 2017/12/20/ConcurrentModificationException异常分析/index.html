@@ -39,7 +39,7 @@
 
   
   
-  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -73,9 +73,9 @@
 
 
 
-<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="../../../../css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="java," />
@@ -87,7 +87,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.ico?v=5.1.2" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
 
 
 
@@ -202,7 +202,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -212,7 +212,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -222,7 +222,7 @@
       
         
         <li class="menu-item menu-item-commonweal">
-          <a href="" rel="section">
+          <a href="/404.html" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
             
@@ -263,12 +263,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/20/ConcurrentModificationException异常分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SivanLiu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="../../../../images/lyg.jpg">
+      <meta itemprop="image" content="/images/lyg.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -335,7 +335,7 @@
 <h3 id="fail-fast-机制"><a href="#fail-fast-机制" class="headerlink" title="fail-fast 机制"></a>fail-fast 机制</h3><p><strong>Demo:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">FirstThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            Iterator&lt;String&gt; iterator = list.iterator();</div><div class="line">            <span class="keyword">while</span> (iterator.hasNext()) &#123;</div><div class="line">                String s = iterator.next();</div><div class="line">                System.out.println(<span class="string">"FirstThread iterator :"</span> + s);</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    Thread.sleep(<span class="number">10</span>);</div><div class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">            <span class="keyword">while</span> (i &lt; <span class="number">5</span>) &#123;</div><div class="line">                System.out.println(<span class="string">"SecondThread run："</span> + String.valueOf(i));</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">2</span>) &#123;</div><div class="line">                    list.remove(String.valueOf(i));</div><div class="line">                &#125;</div><div class="line">                i++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</div><div class="line">            list.add(String.valueOf(i));</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">new</span> FirstThread().start();</div><div class="line">        <span class="keyword">new</span> SecondThread().start();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p><strong>结果抛出异常</strong>:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FirstThread iterator :<span class="number">0</span></div><div class="line">SecondThread run：<span class="number">0</span></div><div class="line">SecondThread run：<span class="number">1</span></div><div class="line">SecondThread run：<span class="number">2</span></div><div class="line">SecondThread run：<span class="number">3</span></div><div class="line">SecondThread run：<span class="number">4</span></div><div class="line">Exception in thread <span class="string">"Thread-0"</span> java.util.ConcurrentModificationException</div><div class="line">	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:<span class="number">901</span>)</div><div class="line">	at java.util.ArrayList$Itr.next(ArrayList.java:<span class="number">851</span>)</div><div class="line">	at com.company.Main$FirstThread.run(Main.java:<span class="number">213</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FirstThread iterator :<span class="number">0</span></div><div class="line">SecondThread run：<span class="number">0</span></div><div class="line">SecondThread run：<span class="number">1</span></div><div class="line">SecondThread run：<span class="number">2</span></div><div class="line">SecondThread run：<span class="number">3</span></div><div class="line">SecondThread run：<span class="number">4</span></div><div class="line">Exception in thread <span class="string">"Thread-0"</span> java.util.ConcurrentModificationException</div><div class="line">trueat java.util.ArrayList$Itr.checkForComodification(ArrayList.java:<span class="number">901</span>)</div><div class="line">trueat java.util.ArrayList$Itr.next(ArrayList.java:<span class="number">851</span>)</div><div class="line">trueat com.company.Main$FirstThread.run(Main.java:<span class="number">213</span>)</div></pre></td></tr></table></figure>
 <p><strong>分析：</strong></p>
 <p>从上述示例可以看出，fail-fast 产生的原因就在于 FristSecond 在对 list 进行迭代时，同时 SecondThread 也对该 list 进行了修改，此时 Iterator 就会抛出 ConcurrentModificationException 异，从而产生 fail-fast。</p>
 <p>看看抛出异常的源码：</p>
@@ -426,7 +426,7 @@
       
         <div class="post-tags">
           
-            <a href="../../../../tags/java/" rel="tag"># java</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -439,7 +439,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="../../16/reflect/" rel="next" title="浅谈 Java 反射">
+              <a href="/2017/12/16/reflect/" rel="next" title="浅谈 Java 反射">
                 <i class="fa fa-chevron-left"></i> 浅谈 Java 反射
               </a>
             
@@ -449,7 +449,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="../../23/Android 监控 Top Activity/" rel="prev" title="Android 获取 Top Activity 方案总结">
+              <a href="/2017/12/23/Android 监控 Top Activity/" rel="prev" title="Android 获取 Top Activity 方案总结">
                 Android 获取 Top Activity 方案总结 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -516,7 +516,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="../../../../images/lyg.jpg"
+               src="/images/lyg.jpg"
                alt="SivanLiu" />
           <p class="site-author-name" itemprop="name">SivanLiu</p>
            
@@ -527,7 +527,7 @@
 
           
             <div class="site-state-item site-state-posts">
-              <a href="../../../../archives/">
+              <a href="/archives/">
                 <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -541,7 +541,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -677,46 +677,46 @@
 
 
   
-  <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.2"></script>
-<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.2"></script>
-
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
 
 
 
