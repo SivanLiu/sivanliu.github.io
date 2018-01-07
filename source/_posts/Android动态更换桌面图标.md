@@ -10,7 +10,7 @@ top: 27
 
 ---
 
-每当双 11、12 来临之际，Android 手机 Launcher 中的淘宝、天猫图标就会变成双 11、12 主题的图标。大家有木有想过，这个功能是怎么实现的呢？下面来分析下该功能的实现原理
+大家有木有想过，在平时开过程中，需要冬天切换 Launcher icon, 这个功能是怎么实现的呢？下面来分析下该功能的实现原理
 
 ### 原理：
 1.Manifest 中 activity 组件 activity-alias 组件：
@@ -72,11 +72,21 @@ public abstract void setComponentEnabledSetting(ComponentName componentName,
 public abstract int getComponentEnabledSetting(ComponentName componentName);
 ```
 
+### 实现：
 基本上就这些点儿了，下面附上 Demo 效果：
+
 ![](https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif?raw=true)
+
 
 Demo 源码地址：
 <http://download.csdn.net/download/lyg468088/10192798>
+
+### 网购类应用更新 Launcher icon 方案:
+每当大型购物日来临，许多购物类应用都会修改，新增节日类元素， 比如京东、淘宝、唯品会、支付宝，小编刚才把他们都反编译看看，发现该类应用并没有采用上述方式更新图标，而是在每次节假日来临前都会发布一个版本，更新了图标，并不是像很多童鞋在博客中说到他们都用这种方式来动态更新 icon，估计他们并没有去反编译尝试看看？因此误导了很多初学者认为都是采用此类方式动态替换 Launcher icon，所以这里就带出了一个问题：为什么不采用这种方式呢？小编认为大概有如下原因：
+
+* 由于在禁用组件后的刷新效率受到 ROM 影响，影响用户体验；
+* 在正在切换 icon 的时候，马上点击该应用会提示说未安装该应用；
+* 升级版本中 activity-alias 的 name 需要与之前保持一致；
 
 
 
