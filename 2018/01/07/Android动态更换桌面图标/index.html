@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android icon," />
 
 
 
@@ -94,16 +94,20 @@
 
 
 
+<meta name="description" content="每当双 11、12 来临之际，Android 手机 Launcher 中的淘宝、天猫图标就会变成双 11、12 主题的图标。大家有木有想过，这个功能是怎么实现的呢？下面来分析下该功能的实现原理 原理：1.Manifest 中 activity 组件 activity-alias 组件：  对于 Android，所有的 activity 都是一个组件，可以对每个组件进行管理。通过 android.i">
+<meta name="keywords" content="Android icon">
 <meta property="og:type" content="article">
-<meta property="og:title" content="本地图片">
-<meta property="og:url" content="http://yoursite.com/2018/01/07/本地图片/index.html">
+<meta property="og:title" content="Android 动态更换 Launcher 中的 icon">
+<meta property="og:url" content="http://yoursite.com/2018/01/07/Android动态更换桌面图标/index.html">
 <meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="每当双 11、12 来临之际，Android 手机 Launcher 中的淘宝、天猫图标就会变成双 11、12 主题的图标。大家有木有想过，这个功能是怎么实现的呢？下面来分析下该功能的实现原理 原理：1.Manifest 中 activity 组件 activity-alias 组件：  对于 Android，所有的 activity 都是一个组件，可以对每个组件进行管理。通过 android.i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/本地图片/hack.png">
-<meta property="og:updated_time" content="2018-01-07T03:35:21.138Z">
+<meta property="og:image" content="https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif?raw=true">
+<meta property="og:updated_time" content="2018-01-07T06:22:33.402Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="本地图片">
-<meta name="twitter:image" content="http://yoursite.com/本地图片/hack.png">
+<meta name="twitter:title" content="Android 动态更换 Launcher 中的 icon">
+<meta name="twitter:description" content="每当双 11、12 来临之际，Android 手机 Launcher 中的淘宝、天猫图标就会变成双 11、12 主题的图标。大家有木有想过，这个功能是怎么实现的呢？下面来分析下该功能的实现原理 原理：1.Manifest 中 activity 组件 activity-alias 组件：  对于 Android，所有的 activity 都是一个组件，可以对每个组件进行管理。通过 android.i">
+<meta name="twitter:image" content="https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif?raw=true">
 
 
 
@@ -132,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/07/本地图片/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/07/Android动态更换桌面图标/"/>
 
 
 
 
 
-  <title>本地图片 | Sivan</title>
+  <title>Android 动态更换 Launcher 中的 icon | Sivan</title>
   
 
 
@@ -271,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/本地图片/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/Android动态更换桌面图标/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SivanLiu">
@@ -288,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">本地图片</h1>
+          <h1 class="post-title" itemprop="name headline">Android 动态更换 Launcher 中的 icon</h1>
         
 
         <div class="post-meta">
@@ -300,7 +304,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T11:30:44+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T11:42:21+08:00">
                 2018-01-07
               </time>
             
@@ -319,9 +323,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/07/本地图片/#comments" itemprop="discussionUrl">
+                <a href="/2018/01/07/Android动态更换桌面图标/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/07/本地图片/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/01/07/Android动态更换桌面图标/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -349,7 +353,69 @@
       
 
       
-        <p><img src="/本地图片/hack.png" alt="ggg"></p>
+        <p>每当双 11、12 来临之际，Android 手机 Launcher 中的淘宝、天猫图标就会变成双 11、12 主题的图标。大家有木有想过，这个功能是怎么实现的呢？下面来分析下该功能的实现原理</p>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>1.Manifest 中 activity 组件 activity-alias 组件：</p>
+<ul>
+<li>对于 Android，所有的 activity 都是一个组件，可以对每个组件进行管理。<br>通过 android.intent.action.MAIN 可以指定程序的入口。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//指定应用最先启动的 Activity</div><div class="line"><span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></div><div class="line"></div><div class="line">// 决定应用是否在桌面（Launcher）上显示</div><div class="line"><span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>通过 activity-alias 属性，可以创建应用多个不同的入口</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity-alias</span> </span></div><div class="line"><span class="tag">                <span class="attr">android:enabled</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></div><div class="line"><span class="tag">                <span class="attr">android:exported</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></div><div class="line"><span class="tag">                <span class="attr">android:icon</span>=<span class="string">"drawable resource"</span></span></div><div class="line"><span class="tag">                <span class="attr">android:label</span>=<span class="string">"string resource"</span></span></div><div class="line"><span class="tag">                <span class="attr">android:name</span>=<span class="string">"string"</span></span></div><div class="line"><span class="tag">                <span class="attr">android:permission</span>=<span class="string">"string"</span></span></div><div class="line"><span class="tag">                <span class="attr">android:targetActivity</span>=<span class="string">"string"</span> &gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">activity-alias</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>其中大部分属性与 <activity> 标签的属性一致，大概解释下：</activity></p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>android:enabled</td>
+<td>boolean</td>
+<td>是否开启别名设置，默认值为 true</td>
+</tr>
+<tr>
+<td>android:exported</td>
+<td>boolean</td>
+<td>是否支持其他应用通过这个别名访问目标 Activity，默认值为 true</td>
+</tr>
+<tr>
+<td>android:icon</td>
+<td>drawable</td>
+<td>Launcher 显示的图标</td>
+</tr>
+<tr>
+<td>android:label</td>
+<td>string</td>
+<td>Launcher 显示的标签</td>
+</tr>
+<tr>
+<td>android:name</td>
+<td>string</td>
+<td>Activity 别名</td>
+</tr>
+<tr>
+<td>android:permission</td>
+<td>权限</td>
+<td>别名的使用约束</td>
+</tr>
+<tr>
+<td>android:targetActivity</td>
+<td>string</td>
+<td>指定别名能够启动的目标 Activity</td>
+</tr>
+</tbody>
+</table>
+<p>android.intent.action.MAIN 表示别名设置是整个应用的入口，应用启动时第一个创建的就是这个 Activity；<br>android.intent.category.LAUNCHER 表示别名设置将出现在桌面 Launcher 应用上；<br>默认的，需要将 android:enabled 属性设为 false，否则运行时将会在桌面上出现两个相同功能但不同显示的应用图标和名称。</p>
+<p>2.PackageManager 类进行启用/禁用组件；</p>
+<p>Android apk 的 icon 是相对于整个包而言的，既然是修改 apk 包，那么系统有木有管理整个包的类呢？幸运的是，系统给我们提供了 PackageManager 类，通过 PM 可以实现对所有的系统组件进行管理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 设置某组件是否可以启动</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">setComponentEnabledSetting</span><span class="params">(ComponentName componentName,</span></span></div><div class="line"><span class="function"><span class="params">            <span class="keyword">int</span> newState, <span class="keyword">int</span> flags)</span></span>;</div><div class="line"></div><div class="line"><span class="comment">// 获取某组件启动与否的状态      </span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">getComponentEnabledSetting</span><span class="params">(ComponentName componentName)</span></span>;</div></pre></td></tr></table></figure>
+<p>基本上就这些点儿了，下面附上 Demo 效果：<br><img src="https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif?raw=true" alt=""></p>
+<p>Demo 源码地址：<br><a href="http://download.csdn.net/download/lyg468088/10192798" target="_blank" rel="external">http://download.csdn.net/download/lyg468088/10192798</a></p>
 
       
     </div>
@@ -394,6 +460,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Android-icon/" rel="tag"># Android icon</a>
+          
+        </div>
+      
 
       
       
@@ -403,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/06/Android动态更换桌面图标/" rel="next" title="Android 动态更换 Launcher 中的 icon">
-                <i class="fa fa-chevron-left"></i> Android 动态更换 Launcher 中的 icon
+              <a href="/2017/12/31/科学上网Ipv6问题/" rel="next" title="VPS 设置 IPv6/IPv4 模式科学上网">
+                <i class="fa fa-chevron-left"></i> VPS 设置 IPv6/IPv4 模式科学上网
               </a>
             
           </div>
@@ -470,8 +542,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/lyg.jpg"
@@ -486,7 +567,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -537,6 +618,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理："><span class="nav-number">1.</span> <span class="nav-text">原理：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -674,9 +771,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/01/07/本地图片/';
-          this.page.identifier = '2018/01/07/本地图片/';
-          this.page.title = '本地图片';
+          this.page.url = 'http://yoursite.com/2018/01/07/Android动态更换桌面图标/';
+          this.page.identifier = '2018/01/07/Android动态更换桌面图标/';
+          this.page.title = 'Android 动态更换 Launcher 中的 icon';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-sivanliu-github-io.disqus.com/embed.js';
