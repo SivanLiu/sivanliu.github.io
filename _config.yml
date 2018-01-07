@@ -29,13 +29,13 @@ skip_render:
 
 # Writing
 new_post_name: :title.md # File name of new posts
-default_layout: page
+default_layout: _post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
-render_drafts: false
+render_drafts: true
 post_asset_folder: true
-relative_link: true
+relative_link: false
 future: true
 highlight:
   enable: true
@@ -98,6 +98,13 @@ alipay: /uploads/zhifubao.JPG
 #links:
 #  MacTalk: http://macshuo.com/
 #  Title: http://example.com/
+# 填写你自己的 shortname
+#
+## Disqus
+disqus:
+  enable: true
+  shortname: https-sivanliu-github-io
+  count: true
 
 # 站点的建立时间
 since: 2017

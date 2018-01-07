@@ -2,7 +2,7 @@
 
 title: Android 动态更换 Launcher 中的 icon
 
-date:  2018-1-6 11:42:21
+date:  2018-1-7 11:42:21
 
 tags:  Android icon
 
@@ -73,5 +73,10 @@ public abstract int getComponentEnabledSetting(ComponentName componentName);
 ```
 
 基本上就这些点儿了，下面附上 Demo 效果：
+![](https://github.com/SivanLiu/sivanliu.github.io/blob/hexo_src/source/_posts/changeIcon.gif?raw=true)
+
+Demo 源码地址：
+<http://download.csdn.net/download/lyg468088/10192798>
+
 
 
