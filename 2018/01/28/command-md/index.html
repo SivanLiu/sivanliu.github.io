@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="平时经常用到 linux shell 命令，今天就来总结下使用频率较高的命令，便于以后查询。 一、ls 命令ls 命令就是list的缩写，用来打印出当前目录的清单，如果 ls 指定其他目录那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)，查看目录信息等等。 1. 命令格式：1ls [选项] [目录名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="command.md">
+<meta property="og:url" content="http://yoursite.com/2018/01/28/command-md/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="平时经常用到 linux shell 命令，今天就来总结下使用频率较高的命令，便于以后查询。 一、ls 命令ls 命令就是list的缩写，用来打印出当前目录的清单，如果 ls 指定其他目录那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)，查看目录信息等等。 1. 命令格式：1ls [选项] [目录名">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-28T06:43:57.983Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="command.md">
+<meta name="twitter:description" content="平时经常用到 linux shell 命令，今天就来总结下使用频率较高的命令，便于以后查询。 一、ls 命令ls 命令就是list的缩写，用来打印出当前目录的清单，如果 ls 指定其他目录那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)，查看目录信息等等。 1. 命令格式：1ls [选项] [目录名">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/28/command-md/"/>
+
+
+
+
+
+  <title>command.md | Sivan</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ff0d617138643c59e0c7534ddbc02ca9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/28/command-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">command.md</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T12:11:47+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/28/command-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/28/command-md/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>平时经常用到 linux shell 命令，今天就来总结下使用频率较高的命令，便于以后查询。</p>
+<h3 id="一、ls-命令"><a href="#一、ls-命令" class="headerlink" title="一、ls 命令"></a>一、ls 命令</h3><p>ls 命令就是list的缩写，用来打印出当前目录的清单，如果 ls 指定其他目录那么就会显示指定目录里的文件及文件夹清单。 通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)，查看目录信息等等。</p>
+<h4 id="1-命令格式："><a href="#1-命令格式：" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls [选项] [目录名]</div></pre></td></tr></table></figure>
+<h4 id="2-常用参数："><a href="#2-常用参数：" class="headerlink" title="2. 常用参数："></a>2. 常用参数：</h4><table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-a</td>
+<td>all 列出目录下的所有文件，包括以 . 开头的隐含文件</td>
+</tr>
+<tr>
+<td>-A</td>
+<td>同 -a，但不列出”.”(表示当前目录)和“..”(表示当前目录的父目录)</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>根据 ctime 排序及显示 ctime (文件状态最后更改的时间)配合 -l：显示 ctime 但根据名称排序否则：根据 ctime 排序</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>–directory 将目录象文件一样显示，而不是显示其下的文件。</td>
+</tr>
+<tr>
+<td>-D</td>
+<td>–dired产生适合 Emacs 的 dired 模式使用的结果</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>对输出的文件不进行排序，-aU 选项生效，-lst 选项失效</td>
+</tr>
+<tr>
+<td>-g</td>
+<td>类似 -l,但不列出所有者</td>
+</tr>
+<tr>
+<td>-G</td>
+<td>–no-group 不列出任何有关组的信息</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>–human-readable 以容易理解的格式列出文件大小 (例如 1K 234M 2G)</td>
+</tr>
+<tr>
+<td>-H</td>
+<td>–dereference-command-line 使用命令列中的符号链接指示的真正目的地</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>–inode 印出每个文件的 inode 号</td>
+</tr>
+<tr>
+<td>-k</td>
+<td>–block-size=1K,以 k 字节的形式表示文件的大小</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>所有项目以逗号分隔，并填满整行行宽</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>–reverse 依相反次序排列</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>–size 以块大小为单位列出所有文件的大小</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例："><a href="#3-示例：" class="headerlink" title="3.示例："></a>3.示例：</h4><ul>
+<li>列出当前文件下的所有文件和目录的详细资料：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l -R .</div></pre></td></tr></table></figure>
+<ul>
+<li>列出当前目录中所有以“t”开头的目录的详细内容：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l t**</div></pre></td></tr></table></figure>
+<ul>
+<li>只列出文件下的子目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -F . |grep /$</div></pre></td></tr></table></figure>
+<ul>
+<li>列出目前工作目录下所有名称是 s 开头的文件：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -ltr s*</div></pre></td></tr></table></figure>
+<ul>
+<li>列出当前工作目录下所有档案及目录，目录于名称后加”/“, 可执行档于名称后加”*” ：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -AF</div></pre></td></tr></table></figure>
+<ul>
+<li>计算当前目录下的文件数和目录数：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ls -l * |grep "^-"|wc -l ---文件个数  </div><div class="line"></div><div class="line">ls -l * |grep "^d"|wc -l    ---目录个数</div></pre></td></tr></table></figure>
+<ul>
+<li>列出文件的绝对路径：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls | sed "s:^:`pwd`/:"</div></pre></td></tr></table></figure>
+<ul>
+<li>列出当前目录下的所有文件（包括隐藏文件）的绝对路径，对目录不做递归：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find $PWD -maxdepth 1 | xargs ls -ld</div></pre></td></tr></table></figure>
+<ul>
+<li>递归列出当前目录下的所有文件（包括隐藏文件）的绝对路径：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find $PWD | xargs ls -ld</div></pre></td></tr></table></figure>
+<h3 id="二、cd-命令：Linux-cd-命令可以说是-Linux-中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用-cd-命令上的"><a href="#二、cd-命令：Linux-cd-命令可以说是-Linux-中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用-cd-命令上的" class="headerlink" title="二、cd 命令：Linux cd 命令可以说是 Linux 中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用 cd 命令上的"></a>二、cd 命令：Linux cd 命令可以说是 Linux 中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用 cd 命令上的</h3><h4 id="1-命令格式：-1"><a href="#1-命令格式：-1" class="headerlink" title="1.命令格式："></a>1.命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd [目录名]</div></pre></td></tr></table></figure>
+<h4 id="2-示例："><a href="#2-示例：" class="headerlink" title="2.示例："></a>2.示例：</h4><ul>
+<li>进入系统根目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd /</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 cd 命令进入当前用户主目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd</div></pre></td></tr></table></figure>
+<ul>
+<li>跳转到指定目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd ~/Downloads</div></pre></td></tr></table></figure>
+<ul>
+<li>返回进入此目录之前所在的目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd -</div></pre></td></tr></table></figure>
+<ul>
+<li>把上个命令的参数作为 cd 参数使用：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd !$</div></pre></td></tr></table></figure>
+<h3 id="三、pwd-命令来查看当前工作目录的完整路径"><a href="#三、pwd-命令来查看当前工作目录的完整路径" class="headerlink" title="三、pwd 命令来查看当前工作目录的完整路径"></a>三、pwd 命令来查看当前工作目录的完整路径</h3><h4 id="1-命令格式：-2"><a href="#1-命令格式：-2" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pwd [选项]</div></pre></td></tr></table></figure>
+<h4 id="2-常用参数：一般情况下不带任何参数，如果目录是链接时："><a href="#2-常用参数：一般情况下不带任何参数，如果目录是链接时：" class="headerlink" title="2. 常用参数：一般情况下不带任何参数，如果目录是链接时："></a>2. 常用参数：一般情况下不带任何参数，如果目录是链接时：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pwd -P  显示出实际路径，而非使用连接（link）路径</div></pre></td></tr></table></figure>
+<h4 id="3-示例：-1"><a href="#3-示例：-1" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>查看默认工作目录的完整路径：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pwd</div></pre></td></tr></table></figure>
+<ul>
+<li>查看指定文件夹：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pwd ~/Downloads</div></pre></td></tr></table></figure>
+<ul>
+<li>目录连接链接时，pwd -P 显示出实际路径，而非使用连接（link）路径；pwd显示的是连接路径：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pwd -p</div></pre></td></tr></table></figure>
+<ul>
+<li>查看默认工作目录的完整路径：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/bin/pwd [选项]</div><div class="line">选项：</div><div class="line">-L 目录连接链接时，输出连接路径</div><div class="line">-P 输出物理路径</div><div class="line"></div><div class="line">SivanLiu:Downloads sivanliu$ /bin/pwd -L</div><div class="line">/Users/sivanliu/Downloads</div><div class="line"></div><div class="line">SivanLiu:Downloads sivanliu$ /bin/pwd -P</div><div class="line">/Users/sivanliu/Downloads</div></pre></td></tr></table></figure>
+<h3 id="四、mkdir-命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。"><a href="#四、mkdir-命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。" class="headerlink" title="四、mkdir 命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。"></a>四、mkdir 命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。</h3><h4 id="1-命令格式：-3"><a href="#1-命令格式：-3" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir [选项] 目录...</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数："><a href="#2-命令参数：" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数选项</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-m</td>
+<td style="text-align:center">–mode=模式，设定权限&lt;模式&gt; (类似 chmod)</td>
+</tr>
+<tr>
+<td style="text-align:center">-p</td>
+<td style="text-align:center">–parents 可以是一个路径名称。此时若路径中的某些目录尚不存在，加上此选项后,系统将自动建立好那些尚不存在的目录，即一次可以建立多个目录</td>
+</tr>
+<tr>
+<td style="text-align:center">-v</td>
+<td style="text-align:center">–verbose  每次创建新目录都显示信息</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-2"><a href="#3-示例：-2" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>创建一个空目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir test</div></pre></td></tr></table></figure>
+<ul>
+<li>递归创建多个目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir -p parent/son</div></pre></td></tr></table></figure>
+<ul>
+<li>创建权限为 777 的目录 ：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir -m 777 test</div></pre></td></tr></table></figure>
+<h4 id="五、rm-命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。"><a href="#五、rm-命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。" class="headerlink" title="五、rm 命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。"></a>五、rm 命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。</h4><h4 id="1-命令格式：-4"><a href="#1-命令格式：-4" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm [选项] 文件…</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-1"><a href="#2-命令参数：-1" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-f</td>
+<td>–force 忽略不存在的文件，从不给出提示</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>–interactive 进行交互式删除</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>–recursive 指示 rm 将参数中列出的全部目录和子目录均递归地删除。</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>–verbose 详细显示进行的步骤</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-3"><a href="#3-示例：-3" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>删除文件file，系统会先询问是否删除：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">rm 文件名</div><div class="line">``` </div><div class="line"></div><div class="line">* 强行删除file，系统不再提示：</div><div class="line"></div><div class="line">```shell</div><div class="line">rm -f 文件名</div></pre></td></tr></table></figure>
+<ul>
+<li>删除 test 文件，删除前逐一询问确认 ：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -i test</div></pre></td></tr></table></figure>
+<ul>
+<li>将 test 子目录及子目录中所有档案删除：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -r test</div></pre></td></tr></table></figure>
+<ul>
+<li>rm -rf test 命令会将 test 子目录及子目录中所有档案删除，并且不用一一确认：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -rf test</div></pre></td></tr></table></figure>
+<ul>
+<li>删除以 -f 开头的文件：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -- -f</div></pre></td></tr></table></figure>
+<h3 id="六、rmdir-命令，删除空目录，一个目录被删除之前必须是空的。"><a href="#六、rmdir-命令，删除空目录，一个目录被删除之前必须是空的。" class="headerlink" title="六、rmdir 命令，删除空目录，一个目录被删除之前必须是空的。"></a>六、rmdir 命令，删除空目录，一个目录被删除之前必须是空的。</h3><h4 id="1-命令格式：-5"><a href="#1-命令格式：-5" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mdir [选项]... 目录...</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-2"><a href="#2-命令参数：-2" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-p</td>
+<td>递归删除目录 dirname，当子目录删除后其父目录为空时，也一同被删除</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>–verbose 显示指令执行过程</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-4"><a href="#3-示例：-4" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>rmdir 不能删除非空目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rmdir test(test 为空)</div></pre></td></tr></table></figure>
+<ul>
+<li>rmdir -p 当子目录被删除后使它也成为空目录的话，则顺便一并删除 ：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rmdir -p test</div></pre></td></tr></table></figure>
+<h3 id="七、mv-命令是-move-的缩写，用来移动文件或者将文件改名（move-rename-files），是Linux系统下常用的命令，经常用来备份文件或者目录"><a href="#七、mv-命令是-move-的缩写，用来移动文件或者将文件改名（move-rename-files），是Linux系统下常用的命令，经常用来备份文件或者目录" class="headerlink" title="七、mv 命令是 move 的缩写，用来移动文件或者将文件改名（move (rename) files），是Linux系统下常用的命令，经常用来备份文件或者目录"></a>七、mv 命令是 move 的缩写，用来移动文件或者将文件改名（move (rename) files），是Linux系统下常用的命令，经常用来备份文件或者目录</h3><h4 id="1-命令格式：-6"><a href="#1-命令格式：-6" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv [选项] 源文件或目录 目标文件或目录</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-3"><a href="#2-命令参数：-3" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-b</td>
+<td>若需覆盖文件，则覆盖前先行备份</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>若目标文件 (destination) 已经存在时，就会询问是否覆盖</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>若目标文件已经存在，且 source 比较新，才会更新(update)</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>指定 mv 目标目录，该选项适用于移动多个源文件到一个目录的情况</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-5"><a href="#3-示例：-5" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>文件改名：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv file1.txt file2.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>移动文件：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv file1.txt file</div></pre></td></tr></table></figure>
+<ul>
+<li>将文件 file1.txt，file2.txt，file3.txt 移动到目录 test 中：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv file1.txt file2.txt file3.txt test</div></pre></td></tr></table></figure>
+<ul>
+<li>将文件 file1 改名为 file2，如果 file2 已经存在，则询问是否覆盖：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv -i file1 file2</div></pre></td></tr></table></figure>
+<ul>
+<li>将文件 file1 改名为 file2，即使 file2 存在，也是直接覆盖掉。：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv -f file1 file2</div></pre></td></tr></table></figure>
+<ul>
+<li>目录的移动：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv test1 test2</div></pre></td></tr></table></figure>
+<ul>
+<li>移动当前文件夹下的所有文件到上一级目录：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv * ../</div></pre></td></tr></table></figure>
+<ul>
+<li>把当前目录的一个子目录里的文件移动到另一个子目录里：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv test/* test2</div></pre></td></tr></table></figure>
+<ul>
+<li>文件被覆盖前做简单备份，前面加参数-b：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv file1.txt -b file2.txt</div></pre></td></tr></table></figure>
+<h3 id="八、cp-命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用-i-参数。但是如果是在-shell-脚本中执行-cp-时，没有-i-参数时不会询问是否覆盖。"><a href="#八、cp-命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用-i-参数。但是如果是在-shell-脚本中执行-cp-时，没有-i-参数时不会询问是否覆盖。" class="headerlink" title="八、cp 命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用 -i 参数。但是如果是在 shell 脚本中执行 cp 时，没有 -i 参数时不会询问是否覆盖。"></a>八、cp 命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用 -i 参数。但是如果是在 shell 脚本中执行 cp 时，没有 -i 参数时不会询问是否覆盖。</h3><h4 id="1-命令格式：-7"><a href="#1-命令格式：-7" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp [选项]... [-T] 源 目的</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-4"><a href="#2-命令参数：-4" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-a</td>
+<td>–archive 等于-dR –preserve=all –backup[=CONTROL    为每个已存在的目标文件创建备份</td>
+</tr>
+<tr>
+<td>-b</td>
+<td>类似–backup 但不接受参数</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>等于–no-dereference –preserve=links</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>如果目标文件无法打开则将其移除并重试(当 -n 选项存在时则不需再选此项)</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>覆盖前询问(使前面的 -n 选项失效)</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>链接文件而不复制</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>总是跟随符号链接</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>不要覆盖已存在的文件(使前面的 -i 选项失效)</td>
+</tr>
+<tr>
+<td>-P</td>
+<td>不跟随源文件中的符号链接</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>等于–preserve=模式,所有权,时间戳</td>
+</tr>
+<tr>
+<td>-R</td>
+<td>–recursive 复制目录及目录内的所有项目</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-6"><a href="#3-示例：-6" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>复制单个文件到目标目录，文件在目标文件中不存在：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp file1.txt test</div></pre></td></tr></table></figure>
+<ul>
+<li>将文件 file 复制到目录 ~/Downloads/test下，并改名为 file1：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp file ~/Downloads/test/file1</div></pre></td></tr></table></figure>
+<ul>
+<li>将目录 files 下的所有文件及其子目录复制到目录 ~/Downloads/test 中：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp -r files ~/Downloads/test</div></pre></td></tr></table></figure>
+<ul>
+<li>交互式地将目录files 中的以 m 打头的所有 .txt 文件复制到目录 ~/Downloads/test 中：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp -i files m*.txt ~/Downloads/test</div></pre></td></tr></table></figure>
+<h3 id="九、touch-在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件"><a href="#九、touch-在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件" class="headerlink" title="九、touch 在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件"></a>九、touch 在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件</h3><h4 id="1-命令格式：-8"><a href="#1-命令格式：-8" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch [选项]... 文件...</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-5"><a href="#2-命令参数：-5" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-a</td>
+<td>–time = atime 或 –time = access 或 –time = use 只更改存取时间</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>–no-create 不建立任何文档</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>使用指定的日期时间，而非现在的时间</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>此参数将忽略不予处理，仅负责解决 BSD 版本 touch 指令的兼容性问题</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>-time = mtime 或 –time=modify 只更改变动时间。</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>把指定文档或目录的日期时间，统统设成和参考文档或目录的日期时间相同</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>使用指定的日期时间，而非现在的时间</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-7"><a href="#3-示例：-7" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>创建不存在的文件：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch file.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>更新 file1.txt 的时间和 file2.txt 时间戳相同：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch -r file1.txt file2.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>设定文件的时间戳：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch -t 201801142234.54 file.txt</div></pre></td></tr></table></figure>
+<h3 id="十、cat-是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用"><a href="#十、cat-是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用" class="headerlink" title="十、cat 是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用"></a>十、cat 是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用</h3><h4 id="1-命令格式：-9"><a href="#1-命令格式：-9" class="headerlink" title="1. 命令格式："></a>1. 命令格式：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat [选项] [文件]...</div></pre></td></tr></table></figure>
+<h4 id="2-命令参数：-6"><a href="#2-命令参数：-6" class="headerlink" title="2. 命令参数："></a>2. 命令参数：</h4><table>
+<thead>
+<tr>
+<th>参数选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-A</td>
+<td>–show-all 等价于</td>
+</tr>
+<tr>
+<td>-b</td>
+<td>–number-nonblank 对非空输出行编号</td>
+</tr>
+<tr>
+<td>-E</td>
+<td>在每行结束处显示 $</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>对输出的所有行编号，由 1 开始对所有输出的行数编号</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>有连续两行以上的空白行，就代换为一行的空白行</td>
+</tr>
+<tr>
+<td>-T</td>
+<td>将跳格字符显示为 ^I</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-示例：-8"><a href="#3-示例：-8" class="headerlink" title="3. 示例："></a>3. 示例：</h4><ul>
+<li>把 file1.txt 的文件内容加上行号后输入 file2.txt 这个文件里：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat -n file1.txt file2.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>把 file1.txt 和 file2.txt 的文件内容加上行号（空白行不加）之后将内容附加到 file3.txt 里。：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat -b file1.txt file2.txt file3.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 here doc 生成文件：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat &gt;file1.txt&lt;&lt;EOF</div></pre></td></tr></table></figure>
+<p>先写到这儿了，后续再补充！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/07/Android动态更换桌面图标/" rel="next" title="Android 动态更换 Launcher 中的 icon">
+                <i class="fa fa-chevron-left"></i> Android 动态更换 Launcher 中的 icon
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、ls-命令"><span class="nav-number">1.</span> <span class="nav-text">一、ls 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式："><span class="nav-number">1.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-常用参数："><span class="nav-number">1.2.</span> <span class="nav-text">2. 常用参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例："><span class="nav-number">1.3.</span> <span class="nav-text">3.示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、cd-命令：Linux-cd-命令可以说是-Linux-中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用-cd-命令上的"><span class="nav-number">2.</span> <span class="nav-text">二、cd 命令：Linux cd 命令可以说是 Linux 中最基本的命令语句，其他的命令语句要进行操作，都是建立在使用 cd 命令上的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-1"><span class="nav-number">2.1.</span> <span class="nav-text">1.命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-示例："><span class="nav-number">2.2.</span> <span class="nav-text">2.示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、pwd-命令来查看当前工作目录的完整路径"><span class="nav-number">3.</span> <span class="nav-text">三、pwd 命令来查看当前工作目录的完整路径</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-2"><span class="nav-number">3.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-常用参数：一般情况下不带任何参数，如果目录是链接时："><span class="nav-number">3.2.</span> <span class="nav-text">2. 常用参数：一般情况下不带任何参数，如果目录是链接时：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-1"><span class="nav-number">3.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、mkdir-命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。"><span class="nav-number">4.</span> <span class="nav-text">四、mkdir 命令，用来创建指定的名称的目录，要求创建目录的用户在当前目录中具有写权限，并且指定的目录名不能是当前目录中已有的目录。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-3"><span class="nav-number">4.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数："><span class="nav-number">4.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-2"><span class="nav-number">4.3.</span> <span class="nav-text">3. 示例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、rm-命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。"><span class="nav-number">4.4.</span> <span class="nav-text">五、rm 命令，为删除一个目录中的一个或多个文件或目录，它也可以将某个目录及其下的所有文件及子目录均删除。对于链接文件，只是删除了链接，原有文件均保持不变。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-4"><span class="nav-number">4.5.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-1"><span class="nav-number">4.6.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-3"><span class="nav-number">4.7.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、rmdir-命令，删除空目录，一个目录被删除之前必须是空的。"><span class="nav-number">5.</span> <span class="nav-text">六、rmdir 命令，删除空目录，一个目录被删除之前必须是空的。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-5"><span class="nav-number">5.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-2"><span class="nav-number">5.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-4"><span class="nav-number">5.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、mv-命令是-move-的缩写，用来移动文件或者将文件改名（move-rename-files），是Linux系统下常用的命令，经常用来备份文件或者目录"><span class="nav-number">6.</span> <span class="nav-text">七、mv 命令是 move 的缩写，用来移动文件或者将文件改名（move (rename) files），是Linux系统下常用的命令，经常用来备份文件或者目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-6"><span class="nav-number">6.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-3"><span class="nav-number">6.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-5"><span class="nav-number">6.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、cp-命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用-i-参数。但是如果是在-shell-脚本中执行-cp-时，没有-i-参数时不会询问是否覆盖。"><span class="nav-number">7.</span> <span class="nav-text">八、cp 命令用来复制文件或者目录，在命令行下复制文件时，如果目标文件已经存在，就会询问是否覆盖，不管你是否使用 -i 参数。但是如果是在 shell 脚本中执行 cp 时，没有 -i 参数时不会询问是否覆盖。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-7"><span class="nav-number">7.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-4"><span class="nav-number">7.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-6"><span class="nav-number">7.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、touch-在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件"><span class="nav-number">8.</span> <span class="nav-text">九、touch 在新疆文件的时候可能会用到，用来修改文件时间戳，或者新建一个不存在的文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-8"><span class="nav-number">8.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-5"><span class="nav-number">8.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-7"><span class="nav-number">8.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十、cat-是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用"><span class="nav-number">9.</span> <span class="nav-text">十、cat 是连接文件或标准输入并打印，常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-命令格式：-9"><span class="nav-number">9.1.</span> <span class="nav-text">1. 命令格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-命令参数：-6"><span class="nav-number">9.2.</span> <span class="nav-text">2. 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-8"><span class="nav-number">9.3.</span> <span class="nav-text">3. 示例：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-sivanliu-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/01/28/command-md/';
+          this.page.identifier = '2018/01/28/command-md/';
+          this.page.title = 'command.md';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-sivanliu-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
