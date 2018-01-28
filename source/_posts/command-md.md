@@ -1,6 +1,6 @@
 ---
 layout: linux
-title: command.md
+title: Linux 常用命令
 date: 2018-01-28 12:11:47
 tags:
 ---
