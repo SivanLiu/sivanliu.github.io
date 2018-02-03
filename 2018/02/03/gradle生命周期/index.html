@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="gradle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="直到现在，As 和 gradle 应该算是 Android 开发的标配了，可以极大地提高开发效率。在此过程中，有必要弄清楚 gradle 生命周期，才可以更好地实现自定义编译需求。 gradle 生命周期中的三个重要阶段，也是网上说的比较多的：初始化 —&amp;gt; 配置 —&amp;gt; 执行 1、构建阶段： 初始化： Gradle 支持单工程、多工程，在初始化阶段，Gradle 确定需要构建哪些 pro">
+<meta name="keywords" content="gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle 生命周期">
+<meta property="og:url" content="http://yoursite.com/2018/02/03/gradle生命周期/index.html">
+<meta property="og:site_name" content="Sivan">
+<meta property="og:description" content="直到现在，As 和 gradle 应该算是 Android 开发的标配了，可以极大地提高开发效率。在此过程中，有必要弄清楚 gradle 生命周期，才可以更好地实现自定义编译需求。 gradle 生命周期中的三个重要阶段，也是网上说的比较多的：初始化 —&amp;gt; 配置 —&amp;gt; 执行 1、构建阶段： 初始化： Gradle 支持单工程、多工程，在初始化阶段，Gradle 确定需要构建哪些 pro">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-03T04:23:00.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle 生命周期">
+<meta name="twitter:description" content="直到现在，As 和 gradle 应该算是 Android 开发的标配了，可以极大地提高开发效率。在此过程中，有必要弄清楚 gradle 生命周期，才可以更好地实现自定义编译需求。 gradle 生命周期中的三个重要阶段，也是网上说的比较多的：初始化 —&amp;gt; 配置 —&amp;gt; 执行 1、构建阶段： 初始化： Gradle 支持单工程、多工程，在初始化阶段，Gradle 确定需要构建哪些 pro">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","Sidebar Display, available value":null,"display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/03/gradle生命周期/"/>
+
+
+
+
+
+  <title>Gradle 生命周期 | Sivan</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ff0d617138643c59e0c7534ddbc02ca9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sivan</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Fortune always appreciate a hardworking man!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/gradle生命周期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SivanLiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lyg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sivan">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle 生命周期</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T09:03:03+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/03/gradle生命周期/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/03/gradle生命周期/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>直到现在，As 和 gradle 应该算是 Android 开发的标配了，可以极大地提高开发效率。在此过程中，有必要弄清楚 gradle 生命周期，才可以更好地实现自定义编译需求。</p>
+<p>gradle 生命周期中的三个重要阶段，也是网上说的比较多的：<strong>初始化 —&gt; 配置 —&gt; 执行</strong></p>
+<h4 id="1、构建阶段："><a href="#1、构建阶段：" class="headerlink" title="1、构建阶段："></a>1、构建阶段：</h4><ul>
+<li><p>初始化： Gradle 支持单工程、多工程，在初始化阶段，Gradle 确定需要构建哪些 project，然后为参与构建的每个工程创建一个 project 实例。</p>
+</li>
+<li><p>配置：此阶段，对 project 对象进行配置，属于构建的所有 projects 的构建脚本都会被执行。</p>
+</li>
+<li><p>执行：Gradle 确定在配置阶段中，创建和配置的要被执行的任务的子集，这个子集是由传递给gradle命令的任务名称参数和当前目录所决定的，然后 Gradle 执行每个选定的任务。</p>
+</li>
+</ul>
+<h4 id="2、settings-gradle-文件："><a href="#2、settings-gradle-文件：" class="headerlink" title="2、settings.gradle 文件："></a>2、settings.gradle 文件：</h4><p>每个 Gradle 工程中，都会存在一个 settings.gradle，该文件是由 Gradle 通过一种命名约定来决定的，setttings.gradle 会在初始化阶段执行。对于多项目的构建，必须在这个多项目的层次结构中的根目录下有一个 settings.gradle 文件来定义哪些项目会加入这个多项目构建。而对于单项目的构建，有没有 settings.gradle 都可以。</p>
+<ul>
+<li><strong>单项目构建</strong>：  </li>
+</ul>
+<p><strong>settings.gradle</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">println(<span class="string">'sivan this is a initialization phase'</span>)</div></pre></td></tr></table></figure>
+<p><strong>build.gradle</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">println(<span class="string">'sivan this is a configuration phase'</span>)</div><div class="line">task configured &#123;</div><div class="line">    println <span class="string">'sivan this is also configuration phase.'</span></div><div class="line">&#125;</div><div class="line">task stest &lt;&lt; &#123;</div><div class="line">    println(<span class="string">'sivan this is execution phase'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>结果:</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sivanliu$ gradle stest</div><div class="line">sivan <span class="keyword">this</span> is a initialization phase</div><div class="line">sivan <span class="keyword">this</span> is a configuration phase</div><div class="line">sivan <span class="keyword">this</span> is also configuration phase.</div><div class="line">sivan <span class="keyword">this</span> is execution phase</div></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>多项目构建</strong>：多项目构建是指在一次 Gradle 执行中，构建多个项目，需要在 settings 文件中，声明要加入多项目构建的项目。</p>
+</li>
+<li><p><strong>项目位置</strong>：多项目构建总是由一个具有单个根节点的树表示。树中的每个元素表示一个项目。一个项目有一个路径，表示在多项目构建树中的位置。在大多数情况下，项目路径是符合在文件系统中项目的物理位置的。不过，这种行为是可配置的。项目树在 settings.gradle 文件中创建。默认情况下，它假设设置文件的位置也是根项目的位置。但你可以在设置文件中重新定义根项目的位置。</p>
+</li>
+<li><p><strong>生成树</strong>：在设置文件中你可以使用一套方法来生成项目树。</p>
+</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">include <span class="string">':app'</span>, <span class="string">':lib:mylibrary'</span></div></pre></td></tr></table></figure>
+<ul>
+<li>修改项目树元素: 在设置文件中创建的多项目树组成了所谓的项目描述符。你可以在任何时间修改设置文件中的这些描述符。</li>
+</ul>
+<p><strong>settings.gradle:</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rootProject.name = <span class="string">'GradleDemo'</span></div><div class="line">project(<span class="string">':projectA'</span>).projectDir = <span class="keyword">new</span> File(settingsDir, <span class="string">'../app'</span>)</div><div class="line">project(<span class="string">':projectA'</span>).buildFileName = <span class="string">'projectA.gradle'</span></div></pre></td></tr></table></figure>
+<p>对于一个构建脚本，属性的访问和方法的调用会委派给一个 project 对象。同样，在设置文件中的属性访问和方法调用也会委托给一个 settings 对象。</p>
+<h4 id="3-构建脚本生命周期监听："><a href="#3-构建脚本生命周期监听：" class="headerlink" title="3.构建脚本生命周期监听："></a>3.构建脚本生命周期监听：</h4><p>在构建通过其生命周期的时候，构建脚本会在特定的阶段接收到对应的通知，通知一般有两种形式︰<br>1）实现一个特定的监听接口；<br>2）提供一个用于在收到通知时执行的闭包。</p>
+<ul>
+<li><strong>gradle 回调闭包监听</strong>：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> beforeProject(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> afterProject(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> buildStarted(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> settingsEvaluated(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> projectsLoaded(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> projectsEvaluated(Closure var1);</div><div class="line"></div><div class="line"><span class="keyword">void</span> buildFinished(Closure var1);</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>project 回调闭包监听</strong>：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/**</span></div><div class="line"><span class="comment"> * Adds an action to execute immediately before this project is evaluated.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> action the action to execute.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">void</span> beforeEvaluate(Action&lt;? super Project&gt; action);</div><div class="line"></div><div class="line">/**</div><div class="line"> * Adds an action to execute immediately after this project is evaluated.</div><div class="line"> *</div><div class="line"> * @param action the action to execute.</div><div class="line"> */</div><div class="line">void afterEvaluate(Action&lt;? super Project&gt; action);</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>测试示例</strong>：</li>
+</ul>
+<p>settings.gradle:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">include <span class="string">':app'</span>, <span class="string">':mylibrary'</span></div><div class="line">gradle.projectsLoaded &#123;</div><div class="line">    println(<span class="string">'sssss sivan projectsLoaded '</span>+it)</div><div class="line">&#125;</div><div class="line">gradle.settingsEvaluated &#123;</div><div class="line">    println(<span class="string">'sssss sivan settingsEvaluated '</span>+it)</div><div class="line">&#125;</div><div class="line">gradle.beforeProject &#123;</div><div class="line">    println(<span class="string">'sssss sivan beforeProject '</span>+it)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>root/build.gradle:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">allprojects &#123;</div><div class="line">    beforeEvaluate &#123;</div><div class="line">        println(<span class="string">'sssss sivan beforeEvaluate '</span> + it)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>app/build.gradle:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">gradle.projectsEvaluated &#123;</div><div class="line">    println(<span class="string">'sssss sivan projectsEvaluated '</span>+ it))</div><div class="line">&#125;</div><div class="line"></div><div class="line">project.afterEvaluate &#123;</div><div class="line">    println(<span class="string">'sssss sivan afterEvaluate '</span>+ it)</div><div class="line">&#125;</div><div class="line">gradle.buildFinished &#123;</div><div class="line">    println(<span class="string">'sssss sivan buildFinished '</span>+ it))</div><div class="line">&#125;</div><div class="line"></div><div class="line">gradle.afterProject &#123;</div><div class="line">    println(<span class="string">'sssss sivan afterProject '</span>+ it))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * buildStarted 回调在构建开始后，init.gradle 执行前，buildStarted 方法就会被回调，</span></div><div class="line"><span class="comment"> * 因此在 build.gradle 加入的监听器 buildStarted 是不会被回调的，只有在 gradle 内部注册的才会回调</span></div><div class="line"><span class="comment"> */</span></div><div class="line">gradle.buildStarted &#123;</div><div class="line">    println(<span class="string">'sssss sivan buildStarted '</span>+it)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>结果</strong>：</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">sssss sivan settingsEvaluated settings <span class="string">'GradleDemo'</span></div><div class="line">sssss sivan projectsLoaded build <span class="string">'GradleDemo'</span></div><div class="line">sssss sivan beforeProject root project <span class="string">'GradleDemo'</span></div><div class="line">sssss sivan beforeProject project <span class="string">':app'</span></div><div class="line">sssss sivan beforeEvaluate project <span class="string">':app'</span></div><div class="line">sssss sivan afterProject project <span class="string">':app'</span></div><div class="line">sssss sivan afterEvaluate project <span class="string">':app'</span></div><div class="line">sssss sivan beforeProject project <span class="string">':mylibrary'</span></div><div class="line">sssss sivan beforeEvaluate project <span class="string">':mylibrary'</span></div><div class="line">sssss sivan afterProject project <span class="string">':mylibrary'</span></div><div class="line">sssss sivan projectsEvaluated build <span class="string">'GradleDemo'</span></div></pre></td></tr></table></figure>
+<p>可以看出每个回调只有在特定的阶段执行才会收到回调通知，了解了这些回调的时机之后，就可以根据自己的需求去 hook 指定的任务了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/weixin.JPG" alt="SivanLiu WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/zhifubao.JPG" alt="SivanLiu Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gradle/" rel="tag"># gradle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/28/command-md/" rel="next" title="Linux 常用命令">
+                <i class="fa fa-chevron-left"></i> Linux 常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/lyg.jpg"
+               alt="SivanLiu" />
+          <p class="site-author-name" itemprop="name">SivanLiu</p>
+           
+              <p class="site-description motion-element" itemprop="description">雅兴至然，随风而懿</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/SivanLiu/" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、构建阶段："><span class="nav-number">1.</span> <span class="nav-text">1、构建阶段：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、settings-gradle-文件："><span class="nav-number">2.</span> <span class="nav-text">2、settings.gradle 文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-构建脚本生命周期监听："><span class="nav-number">3.</span> <span class="nav-text">3.构建脚本生命周期监听：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SivanLiu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-sivanliu-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/02/03/gradle生命周期/';
+          this.page.identifier = '2018/02/03/gradle生命周期/';
+          this.page.title = 'Gradle 生命周期';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-sivanliu-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
