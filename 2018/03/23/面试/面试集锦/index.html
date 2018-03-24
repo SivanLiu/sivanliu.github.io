@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="Android、Java 面试集锦一、Android 面试二、Java 面试1. Java 基础：1. 请简述下 java 中 ==，equals，hashCode 的区别a. 概念 == ：操作符，生成的是一个 boolean 结果，它计算的是操作数的值之间的关系，针对于原生类型的比较； equals ： Object 的实例方法，比较两个对象的内容是否相同； hashCode ： Object">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-24T14:33:25.854Z">
+<meta property="og:updated_time" content="2018-03-24T16:26:18.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android&#x2F;Java 面试锦囊">
 <meta name="twitter:description" content="Android、Java 面试集锦一、Android 面试二、Java 面试1. Java 基础：1. 请简述下 java 中 ==，equals，hashCode 的区别a. 概念 == ：操作符，生成的是一个 boolean 结果，它计算的是操作数的值之间的关系，针对于原生类型的比较； equals ： Object 的实例方法，比较两个对象的内容是否相同； hashCode ： Object">
@@ -371,7 +371,7 @@
 <th style="text-align:center">类型</th>
 <th style="text-align:center">字节(byte)</th>
 <th style="text-align:center">bit 数</th>
-<th style="text-align:left">取值范围</th>
+<th style="text-align:center">取值范围</th>
 <th>封装类</th>
 </tr>
 </thead>
@@ -380,53 +380,53 @@
 <td style="text-align:center">int</td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">32</td>
-<td style="text-align:left">-2147483648~2147483647</td>
+<td style="text-align:center">-2147483648~2147483647</td>
 <td>Integer</td>
 </tr>
 <tr>
 <td style="text-align:center">short</td>
 <td style="text-align:center">2</td>
 <td style="text-align:center">16</td>
-<td style="text-align:left">-32768~32767</td>
+<td style="text-align:center">-32768~32767</td>
 <td>Short</td>
 </tr>
 <tr>
 <td style="text-align:center">long</td>
 <td style="text-align:center">8</td>
 <td style="text-align:center">64</td>
-<td style="text-align:left">Long</td>
+<td style="text-align:center">Long</td>
 </tr>
 <tr>
 <td style="text-align:center">byte</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">8</td>
-<td style="text-align:left">-128~127</td>
+<td style="text-align:center">-128~127</td>
 <td>Byte</td>
 </tr>
 <tr>
 <td style="text-align:center">float</td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">32</td>
-<td style="text-align:left">Float</td>
+<td style="text-align:center">Float</td>
 </tr>
 <tr>
 <td style="text-align:center">double</td>
 <td style="text-align:center">8</td>
 <td style="text-align:center">64</td>
-<td style="text-align:left">Double</td>
+<td style="text-align:center">Double</td>
 </tr>
 <tr>
 <td style="text-align:center">boolean</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">8</td>
-<td style="text-align:left">true、false</td>
+<td style="text-align:center">true、false</td>
 <td>Boolean</td>
 </tr>
 <tr>
 <td style="text-align:center">char</td>
 <td style="text-align:center">2</td>
 <td style="text-align:center">16</td>
-<td style="text-align:left">Character</td>
+<td style="text-align:center">Character</td>
 </tr>
 </tbody>
 </table>
@@ -440,6 +440,49 @@
 <li>某些情况下，数据必须作为对象出现，此时必须使用封装类来将简单类型封装成对象。比如，如果想使用 List 来保存数值，由于 List 中只能添加对象，因此我们需要将数据封装到封装类中再加入 List。在 JDK5.0 以后可以自动封包，可以简写成 list.add(1) 的形式，但添加的数据依然是封装后的对象</li>
 <li>某些情况下，自定义诸如 func(Object o) 的这种方法，它可以接受所有类型的对象数据，但对于简单数据类型，我们则必须使用封装类的对象</li>
 <li>某些情况下，使用封装类使我们可以更加方便的操作数据。比如封装类具有一些基本类型不具备的方法，比如 valueOf()，toString()，以及方便的返回各种类型数据的方法，如 Integer 的 shortValue()，longValue()，intValue()等</li>
+</ul>
+<h4 id="3-谈谈你对-java-多态的理解"><a href="#3-谈谈你对-java-多态的理解" class="headerlink" title="3. 谈谈你对 java 多态的理解"></a>3. 谈谈你对 java 多态的理解</h4><h5 id="a-多态的三个必要条件："><a href="#a-多态的三个必要条件：" class="headerlink" title="a. 多态的三个必要条件："></a>a. <strong>多态的三个必要条件</strong>：</h5><ul>
+<li>继承</li>
+<li>子类要重写父类的方法</li>
+<li>父类引用指向子类对象</li>
+</ul>
+<p><strong>下面看个例子：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//父类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> num = <span class="number">10</span>;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> age = <span class="number">20</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"动物吃饭"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"动物睡觉"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"动物奔跑"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//子类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> num = <span class="number">100</span>;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> age = <span class="number">40</span>;</div><div class="line"></div><div class="line">    String name = <span class="string">"MyDog"</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"小狗吃饭"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"小狗睡觉"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">playFootball</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"小狗玩球"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Polymorphism</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Animal animal = <span class="keyword">new</span> Dog();</div><div class="line">        animal.eat();</div><div class="line">        animal.sleep();</div><div class="line">        animal.run();</div><div class="line">        System.out.println(<span class="string">"num = "</span> + animal.num);</div><div class="line">        System.out.println(<span class="string">"age = "</span> + animal.age);</div><div class="line">        </div><div class="line"><span class="comment">//        System.out.println("age = " + animal.name);</span></div><div class="line"><span class="comment">//        animal.playFootball();</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>上述三段代码充分体现了多态的三个前提：</strong></p>
+<ul>
+<li>继承：Dog 类继承了 Animal 类</li>
+<li>子类要重写父类的方法：Dog 类重写了父类的 eat()，sleep() 两个成员方法，其中 eat() 是非静态的，sleep() 是静态的</li>
+<li>父类数据的类型的引用指向子类对象：Polymorphism 中 Animal animal = new Dog()；语句在堆内存中开辟了子类 Dog 的对象，并把栈内存中的父类 Animal 的引用指向了 Dog 对象</li>
+</ul>
+<p><strong>下面看看结果是什么？</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">小狗吃饭</div><div class="line">动物睡觉</div><div class="line">动物奔跑</div><div class="line">num = <span class="number">10</span></div><div class="line">age = <span class="number">20</span></div><div class="line"></div><div class="line">Process finished with exit code <span class="number">0</span></div></pre></td></tr></table></figure>
+<p><strong>可以看出来：</strong></p>
+<ul>
+<li>子类 Dog 重写了父类 Animal 的非静态成员方法 animal.eat()；的输出结果为：小狗吃饭</li>
+<li>子类重写了父类 Animal 的静态成员方法 animal.sleep()；的输出结果为：动物睡觉</li>
+<li>未被子类 Dog 重写的父类 Animal 方法 animal.run()；输出结果为：动物奔跑</li>
+<li>子类 Dog 重新定义了父类中的成员变量 num，age，输出结果为：10，20</li>
+</ul>
+<p><strong>从上述结果可知：</strong></p>
+<ul>
+<li>成员变量：编译看父类，运行看父类</li>
+<li>非静态成员方法：编译看父类，运行看子类</li>
+<li>静态成员方法：编译看父类，运行看父类</li>
+</ul>
+<h5 id="b-那么多态有什么缺点吗？"><a href="#b-那么多态有什么缺点吗？" class="headerlink" title="b. 那么多态有什么缺点吗？"></a>b. <strong>那么多态有什么缺点吗？</strong></h5><p>Polymorphism 中最后两行代码会报错，找不到 Dog 中的 name 和 playFootball<br>从上述结果可知，<strong>多态后不能使用子类特有的成员属性和子类特有的成员方法</strong></p>
+<p>如果想要在多态中访问特有的成员属性和方法，该怎么做呢？<br><strong>将父类引用指向子类对象 animal 再强制转回 Dog 类型后就可以访问 Dog 类中的所有属性和方法了。</strong></p>
+<p><strong>修改后的代码如下：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Polymorphism</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Animal animal = <span class="keyword">new</span> Dog();</div><div class="line">        animal.eat();</div><div class="line">        animal.sleep();</div><div class="line">        animal.run();</div><div class="line">        System.out.println(<span class="string">"num = "</span> + animal.num);</div><div class="line">        System.out.println(<span class="string">"age = "</span> + animal.age);</div><div class="line"></div><div class="line"><span class="comment">//        System.out.println("age = " + animal.name);</span></div><div class="line"><span class="comment">//        animal.playFootball();</span></div><div class="line"></div><div class="line">        System.out.println(<span class="string">"*****************************"</span>);</div><div class="line">        Dog dog = (Dog) animal;</div><div class="line">        dog.eat();</div><div class="line">        dog.sleep();</div><div class="line">        dog.run();</div><div class="line">        System.out.println(<span class="string">"num = "</span> + dog.num);</div><div class="line">        System.out.println(<span class="string">"age = "</span> + dog.age);</div><div class="line"></div><div class="line">        System.out.println(<span class="string">"age = "</span> + dog.name);</div><div class="line">        dog.playFootball();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">小狗吃饭</div><div class="line">动物睡觉</div><div class="line">动物奔跑</div><div class="line">num = <span class="number">10</span></div><div class="line">age = <span class="number">20</span></div><div class="line">*****************************</div><div class="line">小狗吃饭</div><div class="line">小狗睡觉</div><div class="line">动物奔跑</div><div class="line">num = <span class="number">100</span></div><div class="line">age = <span class="number">40</span></div><div class="line">age = MyDog</div><div class="line">小狗玩球</div></pre></td></tr></table></figure>
+<p>现在 dog 就指向了最开始在堆内存中创建的 Dog 类型的对象了，尽管多态存在缺点，但优势十分明显。</p>
+<h5 id="c-多态的优点主要有以下几个方面："><a href="#c-多态的优点主要有以下几个方面：" class="headerlink" title="c. 多态的优点主要有以下几个方面："></a>c. <strong>多态的优点主要有以下几个方面：</strong></h5><ul>
+<li>消除类型之间的耦合关系 </li>
+<li>可替换性：多态对已存在的代码具有可替换性。</li>
+<li>可扩充性：多态对代码具有可扩充性，增加新的子类不影响已存在类的多态性、继承性，以及其他特性的运行和操作。</li>
+<li>接口性：多态是超类通过方法签名，向子类提供了一个共同接口，由子类来完善或者覆盖它而实现的。</li>
+<li>灵活性：它在应用中体现了灵活多样的操作，提高了使用效率。</li>
+<li>简化性：多态简化了对应用软件的代码编写和修改过程，尤其在处理大量对象的运算和操作时，这个特点尤为突出和重要。值得注意的是，多态并不能够解决提高执行速度的问题，因为它基于动态装载和地址引用，或称动态绑定。 </li>
 </ul>
 
       
@@ -657,7 +700,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android、Java-面试集锦"><span class="nav-number">1.</span> <span class="nav-text">Android、Java 面试集锦</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-面试"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android 面试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Java-面试"><span class="nav-number">1.2.</span> <span class="nav-text">二、Java 面试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-基础："><span class="nav-number">1.2.1.</span> <span class="nav-text">1. Java 基础：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-请简述下-java-中-，equals，hashCode-的区别"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. 请简述下 java 中 ==，equals，hashCode 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-概念"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">a. 概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-异同点："><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">b. 异同点：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-int、char、long-各占多少字节数"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. int、char、long 各占多少字节数?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-基本数据类型："><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">a. 基本数据类型：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-int-与-integer-的区别（基本类型与其封装类的区别）："><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">b. int 与 integer 的区别（基本类型与其封装类的区别）：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-有了基本类型，为什么还要使用封装类呢？"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">c. 有了基本类型，为什么还要使用封装类呢？</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android、Java-面试集锦"><span class="nav-number">1.</span> <span class="nav-text">Android、Java 面试集锦</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-面试"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android 面试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Java-面试"><span class="nav-number">1.2.</span> <span class="nav-text">二、Java 面试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-基础："><span class="nav-number">1.2.1.</span> <span class="nav-text">1. Java 基础：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-请简述下-java-中-，equals，hashCode-的区别"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. 请简述下 java 中 ==，equals，hashCode 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-概念"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">a. 概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-异同点："><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">b. 异同点：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-int、char、long-各占多少字节数"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. int、char、long 各占多少字节数?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-基本数据类型："><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">a. 基本数据类型：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-int-与-integer-的区别（基本类型与其封装类的区别）："><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">b. int 与 integer 的区别（基本类型与其封装类的区别）：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-有了基本类型，为什么还要使用封装类呢？"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">c. 有了基本类型，为什么还要使用封装类呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-谈谈你对-java-多态的理解"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3. 谈谈你对 java 多态的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-多态的三个必要条件："><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">a. 多态的三个必要条件：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-那么多态有什么缺点吗？"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">b. 那么多态有什么缺点吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-多态的优点主要有以下几个方面："><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">c. 多态的优点主要有以下几个方面：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
