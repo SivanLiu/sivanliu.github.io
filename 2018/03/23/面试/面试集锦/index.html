@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Sivan">
 <meta property="og:description" content="Android、Java 面试集锦一、Android 面试二、Java 面试1. Java 基础：1. 请简述下 java 中 ==，equals，hashCode 的区别a. 概念 == ：操作符，生成的是一个 boolean 结果，它计算的是操作数的值之间的关系，针对于原生类型的比较； equals ： Object 的实例方法，比较两个对象的内容是否相同； hashCode ： Object">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-24T16:26:18.674Z">
+<meta property="og:updated_time" content="2018-03-27T16:23:15.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android&#x2F;Java 面试锦囊">
 <meta name="twitter:description" content="Android、Java 面试集锦一、Android 面试二、Java 面试1. Java 基础：1. 请简述下 java 中 ==，equals，hashCode 的区别a. 概念 == ：操作符，生成的是一个 boolean 结果，它计算的是操作数的值之间的关系，针对于原生类型的比较； equals ： Object 的实例方法，比较两个对象的内容是否相同； hashCode ： Object">
@@ -484,6 +484,111 @@
 <li>灵活性：它在应用中体现了灵活多样的操作，提高了使用效率。</li>
 <li>简化性：多态简化了对应用软件的代码编写和修改过程，尤其在处理大量对象的运算和操作时，这个特点尤为突出和重要。值得注意的是，多态并不能够解决提高执行速度的问题，因为它基于动态装载和地址引用，或称动态绑定。 </li>
 </ul>
+<h4 id="4-String、StringBuffer、StringBuilder-区别"><a href="#4-String、StringBuffer、StringBuilder-区别" class="headerlink" title="4. String、StringBuffer、StringBuilder 区别"></a>4. String、StringBuffer、StringBuilder 区别</h4><h5 id="a-定义："><a href="#a-定义：" class="headerlink" title="a. 定义："></a>a. 定义：</h5><ul>
+<li>String: 字符串常量，使用 char[] 保存字符串，有 final 修饰，其对象不可变，对 String 对象的任何改变都不影响到原对象，相关的任何改变操作都会生成新的对象；</li>
+<li>StringBuffer: 字符串变量（Synchronized，即线程安全），继承自 AbstractStringBuilder 类，AbstractStringBuilder 中也是使用 char[] 来保存字符串；</li>
+<li>StringBuilder: 字符串变量，线程不安全，继承自 AbstractStringBuilder 类；</li>
+</ul>
+<h5 id="b-使用场景："><a href="#b-使用场景：" class="headerlink" title="b. 使用场景："></a>b. 使用场景：</h5><ul>
+<li>String：操作少量数据的情况下</li>
+<li>StringBuffer：多线程情况下操作大量数据 </li>
+<li>StringBuilder：单线程情况下操作大量数据</li>
+</ul>
+<h4 id="5-什么是内部类？说说内部类的作用？"><a href="#5-什么是内部类？说说内部类的作用？" class="headerlink" title="5. 什么是内部类？说说内部类的作用？"></a>5. 什么是内部类？说说内部类的作用？</h4><h5 id="a-定义：-1"><a href="#a-定义：-1" class="headerlink" title="a. 定义："></a>a. 定义：</h5><p>内部类是指定义在类的内部的类，主要分为以下几种：</p>
+<h6 id="1）成员内部类"><a href="#1）成员内部类" class="headerlink" title="1）成员内部类"></a>1）成员内部类</h6><p>在外部类内部直接定义（不在方法内部或代码块内部）的类就是成员内部类，它可以直接使用外部类的所有变量和方法，即使是 private 的。外部类要想访问内部类的成员变量和方法，则需要通过内部类的对象来获取。</p>
+<ul>
+<li>静态内部类：使用 static 修饰的成员内部类，除了访问权限修饰符比外围类多以外, 和外围类没有区别, 只是代码上将静态内部类组织在了外围类里面. 如果在外围类外部引用静态内部类, 需要带上外围类的名字</li>
+<li>非静态内部类：没有 static 修饰的成员内部类</li>
+</ul>
+<h6 id="2）局部内部类"><a href="#2）局部内部类" class="headerlink" title="2）局部内部类"></a>2）局部内部类</h6><p>局部内部类是在某个作用域或方法体内定义的内部类，局部内部类不能有 private 等访问说明符</p>
+<h6 id="3）匿名内部类"><a href="#3）匿名内部类" class="headerlink" title="3）匿名内部类"></a>3）匿名内部类</h6><p>匿名内部类则用来创建一个继承自某个基类的匿名类的对象，并向上转型为该基类的引用。</p>
+<ul>
+<li>匿名内部类不能是抽象类：匿名内部类创建时，会立即创建匿名内部类的对象</li>
+<li>匿名内部类不能定义构造器：无类名，无法定义构造器，但可定义初始化块</li>
+</ul>
+<h6 id="4）匿名内部类与-Lambda："><a href="#4）匿名内部类与-Lambda：" class="headerlink" title="4）匿名内部类与 Lambda："></a>4）匿名内部类与 Lambda：</h6><ul>
+<li>Lambda 表达式的目标类型必须是明确的函数式接口</li>
+<li>Lambda 表达式只能为函数式接口创建对象</li>
+</ul>
+<p><strong>Lambda 常见方式：</strong></p>
+<ul>
+<li>将 Lambda 表达式赋值给函数式接口类型的变量</li>
+<li>将 Lambda 表达式作为函数式接口类型的参数传给某个方法</li>
+<li>使用函数式接口对 Lambda 表达式进行强制类型转换</li>
+</ul>
+<p><strong>Lambda 表达式支持的方法引用和构造器引用</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">种类</th>
+<th style="text-align:left">示例</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">对应的 Lambda 表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">引用类方法</td>
+<td style="text-align:left">类名::类方法</td>
+<td style="text-align:left">函数式接口中被实现方法的全部参数传给该类方法作为参数</td>
+<td style="text-align:left">(a, b…)-&gt; 类名.类方法(a, b…)</td>
+</tr>
+<tr>
+<td style="text-align:left">引用特定对象的实例方法</td>
+<td style="text-align:left">特定对象::实例方法</td>
+<td style="text-align:left">函数式接口中被实现方法的全部参数传给该方法作为参数</td>
+<td style="text-align:left">(a, b…)-&gt; 特定对象.实例方法(a, b,…)</td>
+</tr>
+<tr>
+<td style="text-align:left">引用某类对象的实例方法</td>
+<td style="text-align:left">类型::实例方法</td>
+<td style="text-align:left">函数式接口中被实现方法的第一个参数作为调用者，后面的参数全部传给该方法作为采纳数</td>
+<td style="text-align:left">(a, b…)-&gt; a.实例方法(b,…)</td>
+</tr>
+<tr>
+<td style="text-align:left">引用构造器</td>
+<td style="text-align:left">类名::new</td>
+<td style="text-align:left">函数式接口中被实现方法的全部参数传给该构造器作为参数</td>
+<td style="text-align:left">(a, b…)-&gt; new 类名(a, b,…)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lambda 表达式与匿名内部类的主要区别</strong>：</p>
+<ul>
+<li>匿名内部类可以为任意接口创建实例，但 Lambda 只能为函数式接口创建实例；</li>
+<li>匿名内部类可以为抽象类甚至普通类创建实例，但 Lambda 表达式只能为函数式接口创建实例；</li>
+<li>匿名内部类实现抽象方法的方法允许调用接口中定义的默认方法，但 Lambda 表达式的代码不允许调用接口中定义的默认方法</li>
+</ul>
+<h6 id="6）内部类与外部类语法区别："><a href="#6）内部类与外部类语法区别：" class="headerlink" title="6）内部类与外部类语法区别："></a>6）内部类与外部类语法区别：</h6><ul>
+<li>内部类比外部类可以多使用三个修饰符：private/protected/static</li>
+<li>非静态内部类不能拥有静态成员</li>
+</ul>
+<h5 id="b-作用："><a href="#b-作用：" class="headerlink" title="b. 作用："></a>b. 作用：</h5><ul>
+<li>可以用来实现“多重继承”，弥补了单继承的缺陷；</li>
+<li>内部类可以有多个实例，每个对象都与外围类相互独立；</li>
+<li>可以让多个内部类以不同的方式实现同一个接口，或继承同一个类；</li>
+<li>创建内部类对象的时刻并不依赖于外围类对象的创建；</li>
+<li>内部类可以直接或利用引用访问外部类的属性和方法，包括私有属性和方法（但静态内部类不能访问外部类的非静态成员变量和方法）</li>
+<li>内部类提供了更好的封装，可以把内部类隐藏在外部类之内，不允许同一个包中的其他类访问该类</li>
+<li>内容类成员可以直接访问外部类的私有数据，因为内部类被当做其外部类成员，同一个类的成员之间可以相互访问，但外部类不能访问内部类的实现细节，如内部类的成员变量</li>
+<li>匿名内部类适合用于创建那些仅需要一次使用的类</li>
+</ul>
+<h4 id="6-抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？"><a href="#6-抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？" class="headerlink" title="6. 抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？"></a>6. 抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？</h4><ul>
+<li>均不能被实例化 不能直接实例化 多态实例化其子类</li>
+<li>接口抽象级别高于抽象类</li>
+<li>接口只能声明方法，抽象类既可以声明方法也可以实现方法</li>
+<li>抽象类内可以没有抽象方法，抽象方法不能是静态以及私有的</li>
+<li>抽象类单继承，接口多实现</li>
+</ul>
+<h4 id="7-泛型中-extends-和-super-的区别"><a href="#7-泛型中-extends-和-super-的区别" class="headerlink" title="7. 泛型中 extends 和 super 的区别"></a>7. 泛型中 extends 和 super 的区别</h4><ul>
+<li>extends：表示包括 T 在内的任何 T 的父类 下界通配符</li>
+<li>super：表示包括 T 在内的任何 T 的子类 上界通配符</li>
+</ul>
+<h4 id="8-父类的静态方法能否被子类重写"><a href="#8-父类的静态方法能否被子类重写" class="headerlink" title="8. 父类的静态方法能否被子类重写"></a>8. 父类的静态方法能否被子类重写</h4><p>可被继承 不能被重写<br>静态方法从程序开始运行后就已经分配了内存,子类中如果定义了相同名称的静态方法，并不会重写，而应该是在内存中又分配了一块给子类的静态方法。</p>
+<h4 id="9-进程和线程的区别"><a href="#9-进程和线程的区别" class="headerlink" title="9. 进程和线程的区别"></a>9. 进程和线程的区别</h4><p>进程是cpu资源分配的最小单位，线程是cpu调度的最小单位。<br>进程之间不能共享资源，而线程共享所在进程的地址空间和其它资源。<br>一个进程内可拥有多个线程，进程可开启进程，也可开启线程。<br>一个线程只能属于一个进程，线程可直接使用同进程的资源,线程依赖于进程而存在。</p>
+<h4 id="10-final，finally，finalize的区别"><a href="#10-final，finally，finalize的区别" class="headerlink" title="10. final，finally，finalize的区别"></a>10. final，finally，finalize的区别</h4><p>final:修饰类、成员变量和成员方法，类不可被继承，成员变量不可变，成员方法不可重写<br>finally:与try…catch…共同使用，确保无论是否出现异常都能被调用到<br>finalize:类的方法,垃圾回收之前会调用此方法,子类可以重写finalize()方法实现对资源的回收</p>
+<h4 id="11-序列化的方式，Serializable-和-Parcelable-的区别"><a href="#11-序列化的方式，Serializable-和-Parcelable-的区别" class="headerlink" title="11. 序列化的方式，Serializable 和 Parcelable 的区别"></a>11. 序列化的方式，Serializable 和 Parcelable 的区别</h4><p>static、trasient修饰的变量不可被序列化<br>若一个类可序列化，其子类，内部类都要可序列化<br>序列化的定义：任何数据都是以二进制的形式存贮到硬盘或是在网络上传送，而Java为了能将Java对象存贮到硬盘上或在网络上传送，把Java对象转换成字节流进行传输，这个转换过程就称之为Java序列化。Java –&gt; 二进制字节流。</p>
+<p>Serializable Java 序列化接口 在硬盘上读写 读写过程中有大量临时变量的生成<br>Parcelable Android 序列化接口 效率高 使用麻烦 在内存中读写（AS有相关插件 一键生成所需方法）</p>
 
       
     </div>
@@ -700,7 +805,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android、Java-面试集锦"><span class="nav-number">1.</span> <span class="nav-text">Android、Java 面试集锦</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-面试"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android 面试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Java-面试"><span class="nav-number">1.2.</span> <span class="nav-text">二、Java 面试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-基础："><span class="nav-number">1.2.1.</span> <span class="nav-text">1. Java 基础：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-请简述下-java-中-，equals，hashCode-的区别"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. 请简述下 java 中 ==，equals，hashCode 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-概念"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">a. 概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-异同点："><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">b. 异同点：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-int、char、long-各占多少字节数"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. int、char、long 各占多少字节数?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-基本数据类型："><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">a. 基本数据类型：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-int-与-integer-的区别（基本类型与其封装类的区别）："><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">b. int 与 integer 的区别（基本类型与其封装类的区别）：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-有了基本类型，为什么还要使用封装类呢？"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">c. 有了基本类型，为什么还要使用封装类呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-谈谈你对-java-多态的理解"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3. 谈谈你对 java 多态的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-多态的三个必要条件："><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">a. 多态的三个必要条件：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-那么多态有什么缺点吗？"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">b. 那么多态有什么缺点吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-多态的优点主要有以下几个方面："><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">c. 多态的优点主要有以下几个方面：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android、Java-面试集锦"><span class="nav-number">1.</span> <span class="nav-text">Android、Java 面试集锦</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-面试"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android 面试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Java-面试"><span class="nav-number">1.2.</span> <span class="nav-text">二、Java 面试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-基础："><span class="nav-number">1.2.1.</span> <span class="nav-text">1. Java 基础：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-请简述下-java-中-，equals，hashCode-的区别"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. 请简述下 java 中 ==，equals，hashCode 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-概念"><span class="nav-number">1.2.1.1.1.</span> <span class="nav-text">a. 概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-异同点："><span class="nav-number">1.2.1.1.2.</span> <span class="nav-text">b. 异同点：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-int、char、long-各占多少字节数"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. int、char、long 各占多少字节数?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-基本数据类型："><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">a. 基本数据类型：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-int-与-integer-的区别（基本类型与其封装类的区别）："><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">b. int 与 integer 的区别（基本类型与其封装类的区别）：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-有了基本类型，为什么还要使用封装类呢？"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">c. 有了基本类型，为什么还要使用封装类呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-谈谈你对-java-多态的理解"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3. 谈谈你对 java 多态的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-多态的三个必要条件："><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">a. 多态的三个必要条件：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-那么多态有什么缺点吗？"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">b. 那么多态有什么缺点吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-多态的优点主要有以下几个方面："><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">c. 多态的优点主要有以下几个方面：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-String、StringBuffer、StringBuilder-区别"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">4. String、StringBuffer、StringBuilder 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-定义："><span class="nav-number">1.2.1.4.1.</span> <span class="nav-text">a. 定义：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-使用场景："><span class="nav-number">1.2.1.4.2.</span> <span class="nav-text">b. 使用场景：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-什么是内部类？说说内部类的作用？"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">5. 什么是内部类？说说内部类的作用？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-定义：-1"><span class="nav-number">1.2.1.5.1.</span> <span class="nav-text">a. 定义：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1）成员内部类"><span class="nav-number">1.2.1.5.1.1.</span> <span class="nav-text">1）成员内部类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2）局部内部类"><span class="nav-number">1.2.1.5.1.2.</span> <span class="nav-text">2）局部内部类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3）匿名内部类"><span class="nav-number">1.2.1.5.1.3.</span> <span class="nav-text">3）匿名内部类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4）匿名内部类与-Lambda："><span class="nav-number">1.2.1.5.1.4.</span> <span class="nav-text">4）匿名内部类与 Lambda：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#6）内部类与外部类语法区别："><span class="nav-number">1.2.1.5.1.5.</span> <span class="nav-text">6）内部类与外部类语法区别：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-作用："><span class="nav-number">1.2.1.5.2.</span> <span class="nav-text">b. 作用：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">6. 抽象类和接口区别，抽象类的意义，抽象类是否可以没有方法和属性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-泛型中-extends-和-super-的区别"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">7. 泛型中 extends 和 super 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-父类的静态方法能否被子类重写"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">8. 父类的静态方法能否被子类重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-进程和线程的区别"><span class="nav-number">1.2.1.9.</span> <span class="nav-text">9. 进程和线程的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-final，finally，finalize的区别"><span class="nav-number">1.2.1.10.</span> <span class="nav-text">10. final，finally，finalize的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-序列化的方式，Serializable-和-Parcelable-的区别"><span class="nav-number">1.2.1.11.</span> <span class="nav-text">11. 序列化的方式，Serializable 和 Parcelable 的区别</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
